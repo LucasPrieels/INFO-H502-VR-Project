@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="infoh502-cpp"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="clang"/>
+		<Option virtualFolders="CMake Files\;CMake Files\3rdParty\;CMake Files\3rdParty\glfw\;CMake Files\3rdParty\glfw\CMake\;CMake Files\3rdParty\glfw\src\;CMake Files\Project\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/local">
+				<Option working_dir="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/local"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/strip">
+				<Option working_dir="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/strip"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glad">
+				<Option output="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug/libglad.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glad/include"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/include"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glm"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/stb"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 glad"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glad/fast">
+				<Option output="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug/libglad.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glad/include"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/include"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glm"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/stb"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 glad/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install">
+				<Option working_dir="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 install"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="list_install_components">
+				<Option working_dir="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 list_install_components"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="uninstall">
+				<Option working_dir="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug/3rdParty/glfw"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/3rdParty/glfw/Makefile&quot;  VERBOSE=1 uninstall"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/3rdParty/glfw/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/3rdParty/glfw/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/3rdParty/glfw/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="update_mappings">
+				<Option working_dir="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug/3rdParty/glfw/src"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/3rdParty/glfw/src/Makefile&quot;  VERBOSE=1 update_mappings"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/3rdParty/glfw/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/3rdParty/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/3rdParty/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glfw">
+				<Option output="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug/3rdParty/glfw/src/libglfw3.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug/3rdParty/glfw/src"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add option="-D_GLFW_COCOA"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/include"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug/3rdParty/glfw/src"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/3rdParty/glfw/src/Makefile&quot;  VERBOSE=1 glfw"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/3rdParty/glfw/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/3rdParty/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/3rdParty/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glfw/fast">
+				<Option output="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug/3rdParty/glfw/src/libglfw3.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug/3rdParty/glfw/src"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add option="-D_GLFW_COCOA"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/include"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug/3rdParty/glfw/src"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/3rdParty/glfw/src/Makefile&quot;  VERBOSE=1 glfw/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/3rdParty/glfw/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/3rdParty/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/3rdParty/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Project_v1">
+				<Option output="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug/Project/Project_v1" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug/Project"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glad/include"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/include"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glm"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/stb"/>
+					<Add directory="/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/OpenGL.framework"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Project/Makefile&quot;  VERBOSE=1 Project_v1"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Project/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Project/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Project/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Project_v1/fast">
+				<Option output="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug/Project/Project_v1" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug/Project"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glad/include"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/include"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glm"/>
+					<Add directory="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/stb"/>
+					<Add directory="/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/OpenGL.framework"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Project/Makefile&quot;  VERBOSE=1 Project_v1/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Project/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Project/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/lucas/Documents/ULB/MA2/INFO-H502\ Virtual\ reality/INFO-H502\ VR\ Project/cmake-build-debug/Project/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glad/src/glad.c">
+			<Option target="glad"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/CMake/GenerateMappings.cmake">
+			<Option target="update_mappings"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/include/GLFW/glfw3.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/include/GLFW/glfw3native.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/cocoa_init.m">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/cocoa_joystick.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/cocoa_joystick.m">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/cocoa_monitor.m">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/cocoa_platform.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/cocoa_time.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/cocoa_time.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/cocoa_window.m">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/context.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/egl_context.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/init.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/input.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/internal.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/mappings.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/mappings.h.in">
+			<Option target="update_mappings"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/monitor.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/nsgl_context.m">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/null_init.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/null_joystick.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/null_joystick.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/null_monitor.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/null_platform.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/null_window.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/osmesa_context.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/platform.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/platform.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/posix_module.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/posix_thread.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/posix_thread.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/vulkan.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/window.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Camera.h">
+			<Option target="Project_v1"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Input_listener.h">
+			<Option target="Project_v1"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Main.cpp">
+			<Option target="Project_v1"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Shader.h">
+			<Option target="Project_v1"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\3rdParty\glfw\"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/CMake/cmake_uninstall.cmake.in">
+			<Option virtualFolder="CMake Files\3rdParty\glfw\CMake\"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/CMake/glfw3.pc.in">
+			<Option virtualFolder="CMake Files\3rdParty\glfw\CMake\"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/CMake/glfw3Config.cmake.in">
+			<Option virtualFolder="CMake Files\3rdParty\glfw\CMake\"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/3rdParty/glfw/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\3rdParty\glfw\src\"/>
+		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Project\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
