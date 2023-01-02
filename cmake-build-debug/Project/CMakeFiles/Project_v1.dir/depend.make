@@ -215,4 +215,6 @@ Project/CMakeFiles/Project_v1.dir/Main.cpp.o: \
  ../Project/Camera.h \
  ../Project/Input_listener.h \
  ../Project/Main.cpp \
- ../Project/Shader.h
+ ../Project/Shader.h \
+ ../Project/Texture.h \
+ ../Project/stb_image.h

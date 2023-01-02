@@ -14,6 +14,8 @@
 class Shader{
 public:
     Shader(std::string vertex_shader_path, std::string fragment_shader_path){
+        // Read then compile content of shader files
+
         std::string vertex_shader_code = read_content_file(vertex_shader_path);
         std::string fragment_shader_code = read_content_file(fragment_shader_path);
 
@@ -22,9 +24,16 @@ public:
         program = compileProgram(vertex_shader, fragment_shader);
     }
 
+    // Set mat4 uniform "name_uniform" with value given
     void set_uniform(std::string name_uniform, glm::mat4 value){
         unsigned int location = glGetUniformLocation(program, name_uniform.c_str());
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+    }
+
+    // Set int uniform "name_uniform" with value given
+    void set_uniform(std::string name_uniform, int value){
+        unsigned int location = glGetUniformLocation(program, name_uniform.c_str());
+        glUniform1i(location, value);
     }
 
     void use(){
@@ -40,7 +49,7 @@ private:
 
         std::string content = "";
         std::string line = "";
-        while (std::getline(stream, line)){
+        while (std::getline(stream, line)){ // Read file line by line
             content += line;
             content += "\n";
         }

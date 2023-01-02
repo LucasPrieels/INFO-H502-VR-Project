@@ -1,7 +1,7 @@
 project("Project")
 
 #Put the sources into a variable
-set(SOURCE "Main.cpp" "Camera.h" "Shader.h" "Input_listener.h")
+set(SOURCE "Main.cpp" "Camera.h" "Shader.h" "Input_listener.h" "stb_image.h" "Texture.h")
 
 #To use the content of a variable you need to use ${NAME_OF_YOUR_VARIABLE}
 #Specify that you want to generate an executable with a certain name using a set of sources

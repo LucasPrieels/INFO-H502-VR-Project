@@ -1,0 +1,11 @@
+#version 330 core
+
+precision mediump float;
+
+in vec2 texture_coordinate_transferred;
+out vec4 fragColor;
+uniform sampler2D texture_uniform;
+
+void main() {
+	fragColor = texture(texture_uniform, texture_coordinate_transferred);
+}
