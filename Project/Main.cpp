@@ -23,6 +23,7 @@
 #define DAY_DURATION 20000 // Duration of a game day in ms
 #define MOUSE_SENSITIVITY 0.05 // Sensitivity of yaw and pitch wrt mouse movements
 #define NUM_CUBES_SIDE 100 // We create a square of NUM_CUBES_SIDE x NUM_CUBES_SIDE
+#define RECOMPUTE_MODELS 10 // Recompute block models only once every RECOMPUTE_MODELS frames to gain time
 
  int width = 800, height = 500; // Size of screen
 
@@ -219,28 +220,24 @@ unsigned int generate_VAO_skybox(){
     return VAO_skybox;
 }
 
-void draw_cubes(glm::vec3 cube_positions[], unsigned int VAO_cubes, unsigned int texture, glm::mat4 view, glm::mat4 projection, Shader shader_texture){
+void draw_cubes(glm::vec3 cube_positions[], unsigned int VAO_cubes, unsigned int texture, glm::mat4 models[], glm::mat4 view, glm::mat4 projection, Shader shader_texture){
+    // Instead of re-computing glm::mat4 model at each frame, we do it less often and directly give the matrices to this function
     // Bind texture
     shader_texture.use();
     glBindTexture(GL_TEXTURE_2D, texture);
     glBindVertexArray(VAO_cubes);
 
+    // Bind texture
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    // Set uniforms in shader_texture
+    shader_texture.set_uniform("view", view);
+    shader_texture.set_uniform("projection", projection);
+
     for (int i = 0; i < NUM_CUBES_SIDE*NUM_CUBES_SIDE; i++){
-        // Model: move cubes at the given positions and rotate them
-        glm::mat4 model = glm::mat4(1.0f);
-        //model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-        model = glm::translate(model, cube_positions[i]); // Translates the cubes at the given positions
-        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); // Put the top of the texture on correct side
-        //model = glm::rotate(model, glm::radians(-10*(float)current_time), glm::vec3(0.0f, 1.0f, 0.0f));
-
         // Set uniforms in shader_texture
-        shader_texture.set_uniform("model", model);
-        shader_texture.set_uniform("view", view);
-        shader_texture.set_uniform("projection", projection);
-
-        // Bind texture
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        shader_texture.set_uniform("model", models[i]);
 
         // Draw one cube (3 vertices per triangle, 2 triangles per side, 6 sides per cube: 36 vertices per cube)
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
@@ -286,6 +283,15 @@ void draw_skybox(unsigned int VAO_skybox, unsigned int texture_cubemap_night, gl
     glBindTexture(GL_TEXTURE_CUBE_MAP, texture_cubemap_night);
     glDrawArrays(GL_TRIANGLES, 0, 36); // Print 6 vertices for each of the 6 cube faces
     glDepthMask(GL_TRUE);
+}
+
+void recompute_models_blocks(glm::mat4* models, glm::vec3 cube_positions[]){
+    // Move cubes at the given positions and rotate them
+    for (int i = 0; i < NUM_CUBES_SIDE*NUM_CUBES_SIDE; i++){
+        models[i] = glm::mat4(1.0f);
+        models[i] = glm::translate(models[i], cube_positions[i]); // Translates the cubes at the given positions
+        models[i] = glm::rotate(models[i], glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); // Put the top of the texture on correct side
+    }
 }
 
 int main(int argc, char* argv[]){
@@ -336,8 +342,15 @@ int main(int argc, char* argv[]){
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST); // Enable depth testing to know which triangles are more in front
 
+    // Models: compute only once every RECOMPUTE_MODELS frames to gain time
+    glm::mat4 models [NUM_CUBES_SIDE*NUM_CUBES_SIDE];
+    recompute_models_blocks(models, cube_positions);
+
     // Render loop
+    int frame_nb = 0;
     while (!glfwWindowShouldClose(window)){
+        frame_nb++;
+
         // Checks if a key is being pressed
         Input_listener::processInput(window, deltaTime);
 
@@ -351,9 +364,14 @@ int main(int argc, char* argv[]){
         glClearColor(0.5f, 0.5f, 0.5f, 1.0f); // Set color to use when clearing
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
 
+        // Model: recompute block models only once every RECOMPUTE_MODELS frames
+        if (frame_nb % RECOMPUTE_MODELS == 0){
+            recompute_models_blocks(models, cube_positions);
+        }
+
         // View: move world view on camera space
         glm::mat4 view = glm::mat4(1.0f);
-        view = glm::lookAt(Camera::camera_pos, Camera::camera_pos+Camera::camera_front, Camera::camera_up);
+        view = glm::lookAt(Camera::camera_pos, Camera::camera_pos+Camera::camera_front, Camera::movement_up);
         // CameraFront is the direction from camera to object, so cameraPos+cameraFront is one of the points we are looking it
 
         // Projection: project 3D view on 2D
@@ -361,7 +379,7 @@ int main(int argc, char* argv[]){
         projection = glm::perspective(glm::radians(45.0f), (float)width/(float)height, 0.1f, 100.0f);
 
         draw_skybox(VAO_skybox, cubemap.cubemap_ID, view, projection, current_time, shader_skybox); // current_time used to blend day color and night texture during morning and evening
-        draw_cubes(cube_positions, VAO_cubes, texture.texture_ID, view, projection, shader_texture);
+        draw_cubes(cube_positions, VAO_cubes, texture.texture_ID, models, view, projection, shader_texture);
         draw_axis(VAO_axis, view, projection, shader_color);
 
         glfwPollEvents(); // Checks if an event has been triggered, and if needed calls the corresponding callback

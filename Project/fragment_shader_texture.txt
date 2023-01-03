@@ -2,10 +2,10 @@
 
 precision mediump float;
 
-in vec2 texture_coordinate_transferred;
+in vec2 texture_coord_transferred;
 out vec4 fragColor;
 uniform sampler2D texture_uniform;
 
 void main() {
-	fragColor = texture(texture_uniform, texture_coordinate_transferred);
+	fragColor = texture(texture_uniform, texture_coord_transferred);
 }
