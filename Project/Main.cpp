@@ -20,7 +20,9 @@
 #include "Cubemap.h"
 
 #define PATH "../../Project/" // Path to go from where the program is run to current folder
-#define DAY_DURATION 60000 // Duration of a game day in ms
+#define DAY_DURATION 20000 // Duration of a game day in ms
+#define MOUSE_SENSITIVITY 0.05 // Sensitivity of yaw and pitch wrt mouse movements
+#define NUM_CUBES_SIDE 100 // We create a square of NUM_CUBES_SIDE x NUM_CUBES_SIDE
 
  int width = 800, height = 500; // Size of screen
 
@@ -217,7 +219,7 @@ unsigned int generate_VAO_skybox(){
     return VAO_skybox;
 }
 
-void draw_cubes(glm::vec3 cube_positions[], int NUM_CUBES_SIDE, unsigned int VAO_cubes, unsigned int texture, glm::mat4 view, glm::mat4 projection, Shader shader_texture){
+void draw_cubes(glm::vec3 cube_positions[], unsigned int VAO_cubes, unsigned int texture, glm::mat4 view, glm::mat4 projection, Shader shader_texture){
     // Bind texture
     shader_texture.use();
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -295,14 +297,13 @@ int main(int argc, char* argv[]){
     glViewport(0, 0, width, height); // Set window size to let OpenGL transform from normalized coordinates
 
     // Creates input listener, camera, and compile shaders
-    Input_listener::staticConstructor(window);
+    Input_listener::staticConstructor(window, MOUSE_SENSITIVITY);
     Camera::staticConstructor();
     std::string path_string = PATH;
     Shader shader_texture(path_string + "vertex_shader_texture.txt", path_string + "fragment_shader_texture.txt");
     Shader shader_color(path_string + "vertex_shader_color.txt", path_string + "fragment_shader_color.txt");
 
-    // Positions where to place cubes
-    int NUM_CUBES_SIDE = 100; // We create a square of NUM_CUBES_SIDE x NUM_CUBES_SIDE
+    // Positions where to place cubes: create a square of NUM_CUBES_SIDE x NUM_CUBES_SIDE
     glm::vec3 cube_positions[NUM_CUBES_SIDE*NUM_CUBES_SIDE];
     for (int i = -NUM_CUBES_SIDE/2; i < NUM_CUBES_SIDE/2; i++){
         for (int j = -NUM_CUBES_SIDE/2; j < NUM_CUBES_SIDE/2; j++){
@@ -360,7 +361,7 @@ int main(int argc, char* argv[]){
         projection = glm::perspective(glm::radians(45.0f), (float)width/(float)height, 0.1f, 100.0f);
 
         draw_skybox(VAO_skybox, cubemap.cubemap_ID, view, projection, current_time, shader_skybox); // current_time used to blend day color and night texture during morning and evening
-        draw_cubes(cube_positions, NUM_CUBES_SIDE, VAO_cubes, texture.texture_ID, view, projection, shader_texture);
+        draw_cubes(cube_positions, VAO_cubes, texture.texture_ID, view, projection, shader_texture);
         draw_axis(VAO_axis, view, projection, shader_color);
 
         glfwPollEvents(); // Checks if an event has been triggered, and if needed calls the corresponding callback

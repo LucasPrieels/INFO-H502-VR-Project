@@ -15,13 +15,13 @@
 public:
     Input_listener() = default; // Default constructor (we only use the static one)
 
-    static void staticConstructor(GLFWwindow* window){
+    static void staticConstructor(GLFWwindow* window, float mouse_sensitivity){
         // Window resizing
         glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
         // Mouse input
         Input_listener::first_call_mouse = true;
-        Input_listener::mouse_sensitivity = 0.05; // Sensitivity of yaw and pitch change according to mouse movement
+        Input_listener::mouse_sensitivity = mouse_sensitivity; // Sensitivity of yaw and pitch change according to mouse movement
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Capture cursor and hide it
         glfwSetCursorPosCallback(window, mouse_callback); // Set callback when mouse moves
     }
@@ -30,12 +30,18 @@ public:
          // Called at each frame to check whether a key is pressed
          if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) glfwSetWindowShouldClose(window, true); // Close the window if esc key is pressed
 
-         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) Camera::update_position("front", deltaTime); // Z on AZERTY keyboard
-         if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) Camera::update_position("back", deltaTime);
-         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) Camera::update_position("left", deltaTime); // Q on AZERTY keyboard
-         if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) Camera::update_position("right", deltaTime);
-         if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) Camera::update_position("up", deltaTime);
-         if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) Camera::update_position("down", deltaTime);
+         std::vector<std::string> directions;
+         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) directions.push_back("front"); // Z on AZERTY keyboard
+         if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) directions.push_back("back");
+         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) directions.push_back("left"); // Q on AZERTY keyboard
+         if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) directions.push_back("right");
+         if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) directions.push_back("up");
+         if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) directions.push_back("down");
+         for (int i = 0; i < directions.size(); i++){
+             Camera::update_position(directions[i], deltaTime/sqrt(directions.size()));
+             // Without correction, we are going faster when moving in 2 directions at the same time (e.g. front and
+             // right), because we are going at set speed in each direction, so speed*sqrt(2) in total
+         }
      }
 
 private:
