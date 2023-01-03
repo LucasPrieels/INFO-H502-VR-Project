@@ -36,6 +36,18 @@ public:
         glUniform1i(location, value);
     }
 
+    // Set float uniform "name_uniform" with value given
+    void set_uniform(std::string name_uniform, float value){
+        unsigned int location = glGetUniformLocation(program, name_uniform.c_str());
+        glUniform1f(location, value);
+    }
+
+    // Set glm::vec3 uniform "name_uniform" with value given
+    void set_uniform(std::string name_uniform, glm::vec3 value){
+        unsigned int location = glGetUniformLocation(program, name_uniform.c_str());
+        glUniform3f(location, value.x, value.y, value.z);
+    }
+
     void use(){
         glUseProgram(program);
     }

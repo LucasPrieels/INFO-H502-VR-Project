@@ -25,8 +25,8 @@ public:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        int width_texture, height_texture, nrChannels;
-        unsigned char *data = stbi_load(filename.c_str(), &width_texture, &height_texture, &nrChannels, 0);
+        int width_texture, height_texture, channels_nb;
+        unsigned char *data = stbi_load(filename.c_str(), &width_texture, &height_texture, &channels_nb, 0);
         if (data){
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width_texture, height_texture, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);

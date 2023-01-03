@@ -38,7 +38,7 @@ public:
     }
 
     static void update_position(std::string direction, float deltaTime){
-        const float camera_speed = 2.5f * deltaTime; // Camera speed depends on time between frames => same apparent speed no matter the number of fps
+        const float camera_speed = 5.0f * deltaTime; // Camera speed depends on time between frames => same apparent speed no matter the number of fps
 
         // Calculate variation of camera_pos according to direction of movement and camera_speed
         glm::vec3 variation_pos;

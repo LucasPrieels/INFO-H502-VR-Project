@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp> // for to_string
+#include <vector>
 
 // Texture
 #define STB_IMAGE_IMPLEMENTATION
@@ -16,8 +17,10 @@
 #include "Input_listener.h"
 #include "Camera.h"
 #include "Texture.h"
+#include "Cubemap.h"
 
 #define PATH "../../Project/" // Path to go from where the program is run to current folder
+#define DAY_DURATION 60000 // Duration of a game day in ms
 
  int width = 800, height = 500; // Size of screen
 
@@ -39,6 +42,50 @@ float cube_vertices[] = {
         -0.5f, 0.5f, -0.5f, 1.0f, 0.334f,
         -0.5f, 0.5f, -0.5f, 0.25f, 0.0f,
         0.5f, 0.5f, -0.5f, 0.5f, 0.0f
+};
+
+float skyboxVertices[] = { // Cube but defined face by face (on the contrary of cube_vertices)
+        -1.0f,  1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+        -1.0f,  1.0f, -1.0f,
+        1.0f,  1.0f, -1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+        1.0f, -1.0f,  1.0f
 };
 
 unsigned int cube_indices[] = {
@@ -91,7 +138,7 @@ unsigned int generate_VAO_cubes(){
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
 
-    glBindVertexArray(VAO_cubes); // Bind VAO_cubes to store next commands
+    glBindVertexArray(VAO_cubes); // Bind VAO to store next commands
 
     // Set cube_vertices in VBO
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -108,8 +155,8 @@ unsigned int generate_VAO_cubes(){
     glEnableVertexAttribArray(1);
 
     // Deactivate the buffer
-    glBindBuffer(GL_ARRAY_BUFFER, 0); // First unbind the VBO and then VAO_cubes otherwise the VAO_cubes will store the unbinding of VBO
-    glBindVertexArray(0); // Unbind VAO_cubes: stop storing commands
+    glBindBuffer(GL_ARRAY_BUFFER, 0); // First unbind the VBO and then VAO otherwise the VAO will store the unbinding of VBO
+    glBindVertexArray(0); // Unbind VAO: stop storing commands
 
     // De-allocate
     glDeleteBuffers(1, &VBO);
@@ -123,9 +170,9 @@ unsigned int generate_VAO_axis(){
     glGenVertexArrays(1, &VAO_axis);
     glGenBuffers(1, &VBO);
 
-    glBindVertexArray(VAO_axis); // Bind VAO_lines to store next commands
+    glBindVertexArray(VAO_axis); // Bind VAO to store next commands
 
-    // Set cube_lines in VBO
+    // Set axis_lines in VBO
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(axis_lines), axis_lines, GL_STATIC_DRAW);
 
@@ -137,7 +184,7 @@ unsigned int generate_VAO_axis(){
 
     // Deactivate the buffer
     glBindBuffer(GL_ARRAY_BUFFER, 0); // First unbind the VBO and then VAO otherwise the VAO will store the unbinding of VBO
-    glBindVertexArray(0); // Unbind VAO_lines: stop storing commands
+    glBindVertexArray(0); // Unbind VAO: stop storing commands
 
     // De-allocate
     glDeleteBuffers(1, &VBO);
@@ -145,8 +192,34 @@ unsigned int generate_VAO_axis(){
     return VAO_axis;
 }
 
+unsigned int generate_VAO_skybox(){
+    unsigned int VAO_skybox, VBO;
+    glGenVertexArrays(1, &VAO_skybox);
+    glGenBuffers(1, &VBO);
+
+    glBindVertexArray(VAO_skybox); // Bind VAO to store next commands
+
+    // Set cube_lines in VBO (we don't use the cube texture, only the vertices)
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
+
+    // Set position attributes in VAO
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); // There are also 2 texture values but we don't use them
+    glEnableVertexAttribArray(0);
+
+    // Deactivate the buffer
+    glBindBuffer(GL_ARRAY_BUFFER, 0); // First unbind the VBO and then VAO otherwise the VAO will store the unbinding of VBO
+    glBindVertexArray(0); // Unbind VAO_lines: stop storing commands
+
+    // De-allocate
+    glDeleteBuffers(1, &VBO);
+
+    return VAO_skybox;
+}
+
 void draw_cubes(glm::vec3 cube_positions[], int NUM_CUBES_SIDE, unsigned int VAO_cubes, unsigned int texture, glm::mat4 view, glm::mat4 projection, Shader shader_texture){
     // Bind texture
+    shader_texture.use();
     glBindTexture(GL_TEXTURE_2D, texture);
     glBindVertexArray(VAO_cubes);
 
@@ -184,6 +257,35 @@ void draw_axis(unsigned int VAO_axis, glm::mat4 view, glm::mat4 projection, Shad
     glDrawArrays(GL_LINES, 0, 6);
 }
 
+void draw_skybox(unsigned int VAO_skybox, unsigned int texture_cubemap_night, glm::mat4 view, glm::mat4 projection, float current_time, Shader shader_skybox){
+    glDepthMask(GL_FALSE);
+    shader_skybox.use();
+    glBindVertexArray(VAO_skybox);
+    // Set uniforms in shader_skybox
+    float time_of_day = (int)round(1000*current_time)%DAY_DURATION; // In ms, 0 is start of morning
+    // A day is made of 40% day, 10% evening, 40% night and 10% morning
+    if (time_of_day < DAY_DURATION*0.1f){ // Morning
+        shader_skybox.set_uniform("blend_factor", time_of_day/(DAY_DURATION*0.1f));
+    }
+    else if (time_of_day < DAY_DURATION*0.5f){ // Day
+        shader_skybox.set_uniform("blend_factor", 1.0f);
+    }
+    else if (time_of_day < DAY_DURATION*0.6f){ // Evening
+        shader_skybox.set_uniform("blend_factor", (DAY_DURATION*0.6f-time_of_day)/(DAY_DURATION*0.1f));
+    }
+    else {// Night
+        shader_skybox.set_uniform("blend_factor", 0.0f);
+    }
+    glm::mat4 rotation = glm::mat4(1.0f);
+    rotation = glm::rotate(rotation, glm::radians(time_of_day/DAY_DURATION*360), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotate sky to make 360 degrees in a day
+    shader_skybox.set_uniform("view", glm::mat4(glm::mat3(view))*rotation);
+    shader_skybox.set_uniform("projection", projection);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, texture_cubemap_night);
+    glDrawArrays(GL_TRIANGLES, 0, 36); // Print 6 vertices for each of the 6 cube faces
+    glDepthMask(GL_TRUE);
+}
+
 int main(int argc, char* argv[]){
     GLFWwindow* window = init_window();
 
@@ -202,9 +304,9 @@ int main(int argc, char* argv[]){
     // Positions where to place cubes
     int NUM_CUBES_SIDE = 100; // We create a square of NUM_CUBES_SIDE x NUM_CUBES_SIDE
     glm::vec3 cube_positions[NUM_CUBES_SIDE*NUM_CUBES_SIDE];
-    for (int i = 0; i < NUM_CUBES_SIDE; i++){
-        for (int j = 0; j < NUM_CUBES_SIDE; j++){
-            cube_positions[i*NUM_CUBES_SIDE+j] = glm::vec3((float)i, -3.0f, (float)j);
+    for (int i = -NUM_CUBES_SIDE/2; i < NUM_CUBES_SIDE/2; i++){
+        for (int j = -NUM_CUBES_SIDE/2; j < NUM_CUBES_SIDE/2; j++){
+            cube_positions[(i+NUM_CUBES_SIDE/2)*NUM_CUBES_SIDE+(j+NUM_CUBES_SIDE/2)] = glm::vec3((float)i, -3.0f, (float)j);
         }
     }
 
@@ -214,6 +316,21 @@ int main(int argc, char* argv[]){
     Texture texture(path_string + "Textures/texture.jpg"); // 0 is index number of texture
     shader_texture.use();
     shader_texture.set_uniform("texture_uniform", 0); // Bound texture will be put at index 0 so we write as uniform
+
+    std::vector<std::string> faces_night = { // Filenames of skybox
+            path_string + "Textures/skybox/night_right.png",
+            path_string + "Textures/skybox/night_left.png",
+            path_string + "Textures/skybox/night_top.png",
+            path_string + "Textures/skybox/night_bottom.png",
+            path_string + "Textures/skybox/night_front.png",
+            path_string + "Textures/skybox/night_back.png"
+    };
+    Cubemap cubemap(faces_night);
+    Shader shader_skybox(path_string + "vertex_shader_skybox.txt", path_string + "fragment_shader_skybox.txt");
+    shader_skybox.use();
+    shader_skybox.set_uniform("color_day", glm::vec3(0.05f, 0.4f, 0.9f)); // Set color to use for the sky during the day
+    shader_skybox.set_uniform("skybox_night", 0); // Set texture to use for the sky during the night
+    unsigned int VAO_skybox = generate_VAO_skybox();
 
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST); // Enable depth testing to know which triangles are more in front
@@ -232,7 +349,6 @@ int main(int argc, char* argv[]){
 
         glClearColor(0.5f, 0.5f, 0.5f, 1.0f); // Set color to use when clearing
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
-        shader_texture.use();
 
         // View: move world view on camera space
         glm::mat4 view = glm::mat4(1.0f);
@@ -243,6 +359,7 @@ int main(int argc, char* argv[]){
         glm::mat4 projection = glm::mat4(1.0f);
         projection = glm::perspective(glm::radians(45.0f), (float)width/(float)height, 0.1f, 100.0f);
 
+        draw_skybox(VAO_skybox, cubemap.cubemap_ID, view, projection, current_time, shader_skybox); // current_time used to blend day color and night texture during morning and evening
         draw_cubes(cube_positions, NUM_CUBES_SIDE, VAO_cubes, texture.texture_ID, view, projection, shader_texture);
         draw_axis(VAO_axis, view, projection, shader_color);
 

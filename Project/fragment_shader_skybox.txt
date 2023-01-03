@@ -1,0 +1,12 @@
+#version 330 core
+out vec4 FragColor;
+
+in vec3 TexCoords;
+
+uniform samplerCube skybox_night;
+uniform vec3 color_day;
+uniform float blend_factor; // 1 for day and 0 for night
+
+void main(){
+   FragColor = mix(texture(skybox_night, TexCoords), vec4(color_day, 1.0f), blend_factor);
+}
