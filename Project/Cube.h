@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <array>
+#include <vector>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Shader.h"
@@ -82,7 +83,7 @@ unsigned int cube_indices[36] = {
         return VAO_cubes;
     }
     
-void draw_cubes(glm::vec3 cube_positions[], unsigned int VAO_cubes, unsigned int texture, glm::mat4 models[], glm::mat4 view, glm::mat4 projection, Shader shader_texture){
+void draw_cubes(std::vector<glm::vec3> cube_positions, unsigned int VAO_cubes, unsigned int texture, glm::mat4 models[], glm::mat4 view, glm::mat4 projection, Shader shader_texture){
     // Instead of re-computing glm::mat4 model at each frame, we do it less often and directly give the matrices to this function
     // Bind texture
     shader_texture.use();
@@ -97,7 +98,7 @@ void draw_cubes(glm::vec3 cube_positions[], unsigned int VAO_cubes, unsigned int
     shader_texture.set_uniform("view", view);
     shader_texture.set_uniform("projection", projection);
 
-    for (int i = 0; i < NUM_CUBES_SIDE*NUM_CUBES_SIDE; i++){
+    for (int i = 0; i < cube_positions.size(); i++){
         // Set uniforms in shader_texture
         shader_texture.set_uniform("model", models[i]);
 
@@ -106,18 +107,28 @@ void draw_cubes(glm::vec3 cube_positions[], unsigned int VAO_cubes, unsigned int
     }
 }
 
-void cubePositions(glm::vec3 cube_positions[]){
+std::vector<glm::vec3> cubePositions(std::vector<glm::vec3> cube_positions){
+    float altitude;
+    
     for (int i = -NUM_CUBES_SIDE/2; i < NUM_CUBES_SIDE/2; i++){
         for (int j = -NUM_CUBES_SIDE/2; j < NUM_CUBES_SIDE/2; j++){
-            cube_positions[(i+NUM_CUBES_SIDE/2)*NUM_CUBES_SIDE+(j+NUM_CUBES_SIDE/2)] = glm::vec3((float)i, 3*cos(((float)i+(float)j)/NUM_CUBES_SIDE*2*3.1481)-10, (float)j);
+
+            altitude =round(3*cos(((float)i+(float)j)/NUM_CUBES_SIDE*2*3.1481)-5);
+
+            for (float k =-10.0; k<= altitude; k++){
+                cube_positions.push_back(glm::vec3((float)i, k, (float)j)) ;
+                std::cout << "pushback: " << cube_positions[2][2] << std::endl;
+            }   
         }
     }
+    std::cout << "pushback end: " << cube_positions[2][2] << std::endl;
+    return cube_positions;
 }
 
 
-void recompute_models_blocks(glm::mat4* models, glm::vec3 cube_positions[]){
+void recompute_models_blocks(glm::mat4* models, std::vector<glm::vec3> cube_positions){
     // Move cubes at the given positions and rotate them
-    for (int i = 0; i < NUM_CUBES_SIDE*NUM_CUBES_SIDE; i++){
+    for (int i = 0; i < cube_positions.size(); i++){
         models[i] = glm::mat4(1.0f);
         models[i] = glm::translate(models[i], cube_positions[i]); // Translates the cubes at the given positions
         models[i] = glm::rotate(models[i], glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); // Put the top of the texture on correct side
