@@ -117,11 +117,9 @@ std::vector<glm::vec3> cubePositions(std::vector<glm::vec3> cube_positions){
 
             for (float k =-10.0; k<= altitude; k++){
                 cube_positions.push_back(glm::vec3((float)i, k, (float)j)) ;
-                std::cout << "pushback: " << cube_positions[2][2] << std::endl;
             }   
         }
     }
-    std::cout << "pushback end: " << cube_positions[2][2] << std::endl;
     return cube_positions;
 }
 

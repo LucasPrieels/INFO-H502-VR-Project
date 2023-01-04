@@ -66,10 +66,9 @@ int main(int argc, char* argv[]){
     std::vector<glm::vec3> cube_positions;
     Cube cube;
     cube_positions = cube.cubePositions(cube_positions);
-    std::cout << "cube position: "<< std::endl;
-    std::cout << "altitude: " << cube_positions[2][2] << std::endl;
+
     unsigned int VAO_cubes = cube.generateVAOCubes();
-    std::cout << "vao: " << VAO_cubes<< std::endl;
+
     
     Axis axis;
     unsigned int VAO_axis = axis.generate_VAO_axis();
@@ -98,7 +97,7 @@ int main(int argc, char* argv[]){
     // Models: compute only once every RECOMPUTE_MODELS frames to gain time
     glm::mat4 models [cube_positions.size()];
     cube.recompute_models_blocks(models, cube_positions);
-    std::cout << "recompute: " << std::endl;
+
     
     // Render loop
     int frame_nb = 0;
@@ -116,7 +115,6 @@ int main(int argc, char* argv[]){
         // Model: recompute block models only once every RECOMPUTE_MODELS frames
         if (frame_nb % RECOMPUTE_MODELS == 0){
             cube.recompute_models_blocks(models, cube_positions);
-            std::cout << "altitude while: " << cube_positions[2][2] << std::endl;
         }
 
         // View: move world view on camera space
