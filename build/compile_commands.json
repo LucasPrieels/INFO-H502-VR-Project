@@ -1,0 +1,117 @@
+[
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build",
+  "command": "/usr/bin/clang  -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glad/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glm -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/stb -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -o CMakeFiles/glad.dir/3rdParty/glad/src/glad.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glad/src/glad.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glad/src/glad.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/context.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/context.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/context.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/init.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/init.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/init.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/input.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/input.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/input.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/monitor.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/monitor.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/monitor.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/platform.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/platform.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/platform.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/vulkan.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/vulkan.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/vulkan.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/window.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/window.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/window.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/egl_context.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/egl_context.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/egl_context.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/osmesa_context.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/osmesa_context.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/osmesa_context.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/null_init.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/null_init.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/null_init.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/null_monitor.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/null_monitor.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/null_monitor.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/null_window.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/null_window.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/null_window.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/null_joystick.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/null_joystick.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/null_joystick.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/cocoa_time.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/cocoa_time.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/cocoa_time.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/posix_module.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/posix_module.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/posix_module.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/posix_thread.c.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/posix_thread.c",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/posix_thread.c"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/cocoa_init.m.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/cocoa_init.m",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/cocoa_init.m"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/cocoa_joystick.m.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/cocoa_joystick.m",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/cocoa_joystick.m"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/cocoa_monitor.m.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/cocoa_monitor.m",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/cocoa_monitor.m"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/cocoa_window.m.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/cocoa_window.m",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/cocoa_window.m"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src",
+  "command": "/usr/bin/clang -D_GLFW_COCOA -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/3rdParty/glfw/src -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fPIC -Wall -std=c99 -o CMakeFiles/glfw.dir/nsgl_context.m.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/nsgl_context.m",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/src/nsgl_context.m"
+},
+{
+  "directory": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/build/Project",
+  "command": "/usr/bin/clang++  -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glad/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glfw/include -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glm -I/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/stb -iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/System/Library/Frameworks -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -std=gnu++14 -o CMakeFiles/Project_v1.dir/Main.cpp.o -c /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Main.cpp",
+  "file": "/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Main.cpp"
+}
+]
