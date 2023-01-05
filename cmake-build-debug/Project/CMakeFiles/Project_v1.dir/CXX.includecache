@@ -1571,6 +1571,8 @@ glm/glm.hpp
 -
 Shader.h
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Shader.h
+Drawable.h
+/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Drawable.h
 
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Camera.h
 iostream

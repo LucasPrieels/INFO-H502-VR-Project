@@ -33,14 +33,8 @@ public:
         shader.use();
 
         // Bind texture if needed (if texture == -1 it means we don't want to use one)
-        if (texture >= 0){
-            glBindTexture(GL_TEXTURE_2D, texture);
-            glBindVertexArray(VAO);
-        }
-
-        // Bind texture
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        if (texture >= 0) glBindTexture(GL_TEXTURE_2D, texture);
+        glBindVertexArray(VAO);
 
         // Set uniforms in shader
         shader.set_uniform("view", view);

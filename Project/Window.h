@@ -9,9 +9,9 @@
 
 class Window{
     public:
-    static inline int height, width;
+    static inline int height = 1000, width = 1600;
 
-    static GLFWwindow* init_window(int width, int height){
+    static GLFWwindow* init_window(){
         // Create OpenGL context
         if (!glfwInit()) throw std::runtime_error("Failed to initialise GLFW \n");
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); // Use version 4.0 of OpenGL
@@ -30,7 +30,7 @@ class Window{
         return window;
     }
 
-    static void loadWindow(GLFWwindow* window, int width, int height){
+    static void loadWindow(GLFWwindow* window){
         // Load OpenGL functions thanks to GLAD
         if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) throw std::runtime_error("Failed to initialize GLAD");
         glfwGetFramebufferSize(window, &width, &height); // Get real width and height of window (might be different from what we asked for because of Retine displays)

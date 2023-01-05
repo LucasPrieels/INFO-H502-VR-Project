@@ -20,7 +20,7 @@ public:
     Map(int num_cubes_side, std::string path_to_current_folder):
         Drawable(Cube::vertices, true, Cube::vertices_indices,{3, 2}),
         shader(path_to_current_folder + "vertex_shader_texture.txt", path_to_current_folder + "fragment_shader_texture.txt"),
-        texture(path_to_current_folder + "Textures/texture.jpg") // 0 is index number of texture
+        texture(path_to_current_folder + "Textures/texture.jpg")
     { // We will create a map of size num_cubes_side x num_cubes_side cubes, with variable altitude
 
         init_map(num_cubes_side); // Init cubes vector

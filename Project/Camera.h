@@ -24,7 +24,7 @@ public:
         yaw = -90.0f;
         pitch = 0;
 
-        camera_pos = glm::vec3(0.0f, 7.0f,  0.0f); // Initial position
+        camera_pos = glm::vec3(0.0f, 8.0f,  0.0f); // Initial position
         camera_front = glm::vec3(0.0f, 0.0f, -1.0f); // By convention z axis is facing towards us
         movement_front = glm::vec3(0.0f, 0.0f, -1.0f);
         movement_up = glm::vec3(0.0f, 1.0f,  0.0f);
