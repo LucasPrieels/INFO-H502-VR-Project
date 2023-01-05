@@ -9,8 +9,6 @@
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "Shader.h"
-#include "Texture.h"
 
 class Cube{
 public:
@@ -60,8 +58,14 @@ public:
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); // Put the top of the texture on correct side
     }
 
-    bool part(glm::vec3 pos){ // Checks if position "pos" is inside the cube, meaning it's less than 0.5 away from the center of the cube
-        return abs(this->x - pos.x) <= 0.505 && abs(this->y - pos.y) <= 0.505 && abs(this->z - pos.z) <= 0.505;
+    bool part(glm::vec3 pos){ // Checks if position "pos" is inside the cube, meaning it's less than half a cube away from the center of the cube
+        return abs(this->x - pos.x) <= 0.51 && abs(this->y - pos.y) <= 0.51 && abs(this->z - pos.z) <= 0.51;
+    }
+
+    bool valid_camera_position(glm::vec3 pos){ // Checks if camera position "pos" is too close to this cube
+        return abs(this->x - pos.x) <= 1 && pos.y - this->y <= 2 && this->y - pos.y <= 1 && abs(this->z - pos.z) <= 1;
+        // The user is supposed to be 2 blocks tall and 1 block wide so the middle of the user should be more than 1 block
+        // away from the middle of any block in x, y-, and z direction, 2 in y+ direction (since he is 2 blocks tall)
     }
 };
 #endif

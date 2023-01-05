@@ -13,7 +13,6 @@
 #include "Texture.h"
 #include "Shader.h"
 #include "Cube.h"
-#include "Input_listener.h"
 
 class Map: public Drawable{
 public:
@@ -34,45 +33,41 @@ public:
         draw(models, view, projection, shader, texture.texture_ID, 36, GL_TRIANGLES);
     }
 
-    void check_remove_add_cube(){ // Check if the input listener wrote that we should remove or add cubes, and remove or add them if needed
-        for (glm::vec3 position_to_remove: Input_listener::positions_to_remove) {
-            std::cout << "Position to remove: " << glm::to_string(position_to_remove) << std::endl;
-            for (int index = 0; index < cubes.size(); index++) {
-                if (cubes[index].part(position_to_remove)) {
-                    std::cout << "Delete cube #" << index << std::endl;
-                    cubes.erase(cubes.begin() + index);
-                    models.erase(models.begin() + index);
-                }
+    void check_remove_cube(glm::vec3 pos) { // Check if the clicked position "pos" corresponds to a cube to remove
+        for (int index = 0; index < cubes.size(); index++) {
+            if (cubes[index].part(pos)){ // Check if position is less than half a block away from center of cube
+                cubes.erase(cubes.begin() + index);
+                models.erase(models.begin() + index);
             }
-            break; // We make sure to remove only one block
         }
-        Input_listener::positions_to_remove = {}; // Clear positions to remove
+    }
 
-        for (glm::vec3 position_to_add: Input_listener::positions_to_add) {
-            std::cout << "Position to add: " << glm::to_string(position_to_add) << std::endl;
-            for (int index = 0; index < cubes.size(); index++) {
-                if (cubes[index].part(position_to_add)) {
-                    // The new cube will be placed alongside cubes[index], but not at the same position, rather just besides it
-                    std::cout << "Alongside cube at " << cubes[index].x << ", " << cubes[index].y << ", " << cubes[index].z << std::endl;
-                    int x_new_cube = cubes[index].x;
-                    int y_new_cube = cubes[index].y;
-                    int z_new_cube = cubes[index].z;
-                    // The direction in which the clicked position is the furtest away from cubes[index] is the direction in which we need to increment coordinate of cubes[index]
-                    if (position_to_add.x - cubes[index].x > 0.495) x_new_cube++;
-                    else if (position_to_add.x - cubes[index].x < -0.495) x_new_cube--;
-                    else if (position_to_add.y - cubes[index].y > 0.495) y_new_cube++;
-                    else if (position_to_add.y - cubes[index].y < -0.495) y_new_cube--;
-                    else if (position_to_add.z - cubes[index].z > 0.495) z_new_cube++;
-                    else if (position_to_add.z - cubes[index].z < -0.495) z_new_cube--;
-                    std::cout << "Add cube at " << x_new_cube << ", " << y_new_cube << ", " << z_new_cube << std::endl;
-                    Cube new_cube = Cube(x_new_cube, y_new_cube, z_new_cube);
-                    cubes.push_back(new_cube);
-                    models.push_back(new_cube.model);
-                    break; // If we already added the new cube alongside a cube, we won't place it alongside another one
-                }
+    void check_add_cube(glm::vec3 pos) { // Add the cube corresponding to clicked position "pos"
+        std::cout << "Position to add: " << glm::to_string(pos) << std::endl;
+        for (int index = 0; index < cubes.size(); index++) {
+            if (cubes[index].part(pos)){ // Check if position is less than half a block away from center of cube
+                // The new cube will be placed alongside cubes[index], but not at the same position, rather just besides it
+                int x_new_cube = cubes[index].x;
+                int y_new_cube = cubes[index].y;
+                int z_new_cube = cubes[index].z;
+                // The direction in which the clicked position is the furtest away from cubes[index] is the direction in which we need to increment coordinate of cubes[index]
+                if (pos.x - cubes[index].x > 0.49) x_new_cube++;
+                else if (pos.x - cubes[index].x < -0.49) x_new_cube--;
+                else if (pos.y - cubes[index].y > 0.49) y_new_cube++;
+                else if (pos.y - cubes[index].y < -0.49) y_new_cube--;
+                else if (pos.z - cubes[index].z > 0.49) z_new_cube++;
+                else if (pos.z - cubes[index].z < -0.49) z_new_cube--;
+                Cube new_cube = Cube(x_new_cube, y_new_cube, z_new_cube);
+                cubes.push_back(new_cube);
+                models.push_back(new_cube.model);
+                break; // If we already added the new cube alongside a cube, we won't place it alongside another one
             }
         }
-        Input_listener::positions_to_add= {}; // Clear positions to remove
+    }
+
+    bool part_of_cubes(glm::vec3 pos){ // Checks if the given position is too close to any of the cubes
+        for (Cube cube: cubes) if (cube.valid_camera_position(pos)) return false;
+        return true;
     }
 
 private:
