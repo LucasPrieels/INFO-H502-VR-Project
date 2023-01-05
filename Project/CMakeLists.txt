@@ -1,7 +1,7 @@
 project("Project")
 
 #Put the sources into a variable
-set(SOURCE "Main.cpp" "Camera.h" "Shader.h" "Input_listener.h" "stb_image.h" "Texture.h" "Cubemap.h" "Cube.h" "Axis.h" "Window.h")
+set(SOURCE "Main.cpp" "Camera.h" "Shader.h" "Input_listener.h" "stb_image.h" "Texture.h" "Cubemap.h" "Cube.h" "Axis.h" "Window.h" "Target.h" "Drawable.h" "Map.h")
 
 
 #To use the content of a variable you need to use ${NAME_OF_YOUR_VARIABLE}

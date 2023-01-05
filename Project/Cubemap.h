@@ -9,7 +9,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp> // for to_string
 #include <fstream>
-#include "Input_listener.h"
 
 #define DAY_DURATION 20000 // Duration of a game day in ms
 

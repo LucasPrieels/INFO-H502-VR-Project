@@ -1,3 +1,6 @@
+#ifndef WINDOW_H
+#define WINDOW_H
+
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -5,10 +8,8 @@
 #include "Shader.h"
 
 class Window{
-
-    
-
-    public: 
+    public:
+    static inline int height, width;
 
     static GLFWwindow* init_window(int width, int height){
         // Create OpenGL context
@@ -34,6 +35,10 @@ class Window{
         if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) throw std::runtime_error("Failed to initialize GLAD");
         glfwGetFramebufferSize(window, &width, &height); // Get real width and height of window (might be different from what we asked for because of Retine displays)
         glViewport(0, 0, width, height); // Set window size to let OpenGL transform from normalized coordinates
+        Window::width = width;
+        Window::height = height;
     }
     
 };
+
+#endif

@@ -8,10 +8,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp> // for to_string
 #include <vector>
-
-// Texture
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "Map.h"
 
 #include "Shader.h"
 #include "Input_listener.h"
@@ -21,18 +18,19 @@
 #include "Cube.h"
 #include "Axis.h"
 #include "Window.h"
+#include "Target.h"
 
 #define PATH "../../Project/" // Path to go from where the program is run to current folder
 // #define DAY_DURATION 20000 // Duration of a game day in ms
 #define MOUSE_SENSITIVITY 0.05 // Sensitivity of yaw and pitch wrt mouse movements
-#define RECOMPUTE_MODELS 10 // Recompute block models only once every RECOMPUTE_MODELS frames to gain time
+#define MAX_DISTANCE_REMOVE 15 // We only remove clicked blocks up to this distance
+#define NUM_CUBES_SIDE 80
 
-static int width = 800, height = 500; // Size of screen
+ int width = 1600, height = 1000; // Size of screen
 
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 std::string path_string = PATH;
-
 
 double fps(){
     // Calculates and prints FPS
@@ -50,29 +48,17 @@ int main(int argc, char* argv[]){
     GLFWwindow* window = Window::init_window(width, height);
     Window::loadWindow(window, width, height);
 
-    // Creates input listener, camera, and compile shaders
-    Input_listener::staticConstructor(window, MOUSE_SENSITIVITY);
-    Camera::staticConstructor();
-
-
-    Shader shader_texture(path_string + "vertex_shader_texture.txt", path_string + "fragment_shader_texture.txt");
-    Shader shader_color(path_string + "vertex_shader_color.txt", path_string + "fragment_shader_color.txt");
-
-    Texture texture(path_string + "Textures/texture.jpg"); // 0 is index number of texture
-    shader_texture.use();
-    shader_texture.set_uniform("texture_uniform", 0); // Bound texture will be put at index 0 so we write as uniform
-    
- // Positions where to place cubes: create a square of NUM_CUBES_SIDE x NUM_CUBES_SIDE
-    std::vector<glm::vec3> cube_positions;
-    Cube cube;
-    cube_positions = cube.cubePositions(cube_positions);
-
-    unsigned int VAO_cubes = cube.generateVAOCubes();
-
-    
     Axis axis;
     unsigned int VAO_axis = axis.generate_VAO_axis();
+    Target target;
+    unsigned int VAO_target = target.generate_VAO_lines(target.target_lines, sizeof(target.target_lines)); // Same shaders
 
+    // Creates input listener, camera, and compile shaders
+    Map map(NUM_CUBES_SIDE, path_string);
+    Input_listener::staticConstructor(window, MOUSE_SENSITIVITY, MAX_DISTANCE_REMOVE);
+    Camera::staticConstructor();
+
+    Shader shader_color(path_string + "vertex_shader_color.txt", path_string + "fragment_shader_color.txt");
 
     std::vector<std::string> faces_night = { // Filenames of skybox
         path_string + "Textures/skybox/night_right.png",
@@ -93,16 +79,12 @@ int main(int argc, char* argv[]){
 
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST); // Enable depth testing to know which triangles are more in front
-
-    // Models: compute only once every RECOMPUTE_MODELS frames to gain time
-    glm::mat4 models [cube_positions.size()];
-    cube.recompute_models_blocks(models, cube_positions);
-
     
     // Render loop
     int frame_nb = 0;
     while (!glfwWindowShouldClose(window)){
         frame_nb++;
+        map.check_remove_add_cube(); // Check if the input listener wrote that we should remove or add cubes, and remove or add them if needed
 
         // Checks if a key is being pressed
         Input_listener::processInput(window, deltaTime);
@@ -111,11 +93,6 @@ int main(int argc, char* argv[]){
 
         glClearColor(0.5f, 0.5f, 0.5f, 1.0f); // Set color to use when clearing
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
-
-        // Model: recompute block models only once every RECOMPUTE_MODELS frames
-        if (frame_nb % RECOMPUTE_MODELS == 0){
-            cube.recompute_models_blocks(models, cube_positions);
-        }
 
         // View: move world view on camera space
         glm::mat4 view = glm::mat4(1.0f);
@@ -127,15 +104,16 @@ int main(int argc, char* argv[]){
         projection = glm::perspective(glm::radians(45.0f), (float)width/(float)height, 0.1f, 100.0f);
 
         cubemap.draw_skybox(VAO_skybox, cubemap.cubemap_ID, view, projection, current_time, shader_skybox); // current_time used to blend day color and night texture during morning and evening
-        cube.draw_cubes(cube_positions, VAO_cubes, texture.texture_ID, models, view, projection, shader_texture);
+        map.draw_cubes(view, projection);
         axis.draw_axis(VAO_axis, view, projection, shader_color);
+        target.draw_target(VAO_target, shader_color);
 
         glfwPollEvents(); // Checks if an event has been triggered, and if needed calls the corresponding callback
         glfwSwapBuffers(window); // Shows rendering buffer on the screen
     }
     // De-allocate
-    glDeleteVertexArrays(1, &VAO_cubes);
     glDeleteVertexArrays(1, &VAO_axis);
+    glDeleteVertexArrays(1, &VAO_target);
 
     glfwTerminate(); // Clean GLFW resources
     return 0;

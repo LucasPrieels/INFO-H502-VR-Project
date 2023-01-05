@@ -8,14 +8,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp> // for to_string
-#include "Shader.h"
 #include "Camera.h"
 
- class Input_listener{
+class Input_listener{
 public:
-    Input_listener() = default; // Default constructor (we only use the static one)
+    static inline std::vector<glm::vec3> positions_to_remove, positions_to_add;
+    Input_listener() = default;
 
-    static void staticConstructor(GLFWwindow* window, float mouse_sensitivity){
+    static void staticConstructor(GLFWwindow* window, float mouse_sensitivity, float max_distance_remove){
         // Window resizing
         glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
@@ -24,6 +24,9 @@ public:
         Input_listener::mouse_sensitivity = mouse_sensitivity; // Sensitivity of yaw and pitch change according to mouse movement
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Capture cursor and hide it
         glfwSetCursorPosCallback(window, mouse_callback); // Set callback when mouse moves
+        glfwSetMouseButtonCallback(window, mouse_button_callback); // Set callback on mouse click
+
+        Input_listener::max_distance_remove = max_distance_remove; // We only remove clicked blocks up to this distance
     }
 
      static void processInput(GLFWwindow *window, float deltaTime){
@@ -46,9 +49,9 @@ public:
 
 private:
     static inline bool first_call_mouse; // Stores whether it is the first callback for mouse (needed to initilize last_mouse_pos_x and last_mouse_pos_y)
-    // TODO inline is C++17, are we allowed ?
     static inline int last_mouse_pos_x, last_mouse_pos_y; // Stores last position (x,y) of mouse
     static inline float mouse_sensitivity; // Sensitivity of yaw and pitch change according to mouse movement
+    static inline int max_distance_remove;
 
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height){ // Called when the window is resized
         std::cout << "Resized window to width=" << width << " height=" << height << std::endl;
@@ -73,6 +76,50 @@ private:
         float variation_pitch = mouse_movement_y * mouse_sensitivity;
 
         Camera::update_orientation(variation_yaw, variation_pitch);
+    }
+
+     // Callback on click on the mouse
+     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods){
+         if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){ // On left click, remove block
+            glm::vec4 unprojected = unproject_2D_coord(window);
+             glm::vec3 object_coord = glm::vec3(unprojected.x, unprojected.y, unprojected.z);
+             float depth_linear = unprojected.w;
+             float near = 0.1f, far = 100.0f;
+            if (depth_linear < max_distance_remove) positions_to_remove.push_back(glm::vec3(object_coord.x, object_coord.y, object_coord.z));
+         }
+
+         else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS){ // On left click, add block
+             glm::vec4 unprojected = unproject_2D_coord(window);
+             glm::vec3 object_coord = glm::vec3(unprojected.x, unprojected.y, unprojected.z);
+             float depth_linear = unprojected.w;
+             if (depth_linear < max_distance_remove) positions_to_add.push_back(glm::vec3(object_coord.x, object_coord.y, object_coord.z));
+         }
+     }
+
+     static glm::vec4 unproject_2D_coord(GLFWwindow* window){ // First 3 components of output is the 3D object coordinates, and 4th is its depth
+         int width, height;
+         glfwGetFramebufferSize(window, &width, &height); // Get width and height of window
+         glm::vec4 viewport = glm::vec4(0, 0, width, height);
+
+         // Retrieve depth of clicked point
+         float x = width/2, y = height/2; // We always click on the middle of the window
+         float* data = (float*)calloc(1, sizeof(float));
+         glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, (void*)data); // Get depth corresponding to clicked point
+         float depth = *data;
+         glm::vec3 screen_coord = glm::vec3(x, height - y - 1, depth);
+
+         // Re-create view and projection matrices
+         glm::mat4 view = glm::lookAt(Camera::camera_pos, Camera::camera_pos+Camera::camera_front, Camera::movement_up);
+         glm::mat4 projection = glm::mat4(1.0f);
+         float near = 0.1f, far = 100.0f;
+         projection = glm::perspective(glm::radians(45.0f), (float)width/(float)height, near, far);
+
+         // Use view and projection matrices to un-project clicked point and get their 3D coordinates
+         glm::vec3 object_coord = glm::unProject(screen_coord, view, projection, viewport);
+         std::cout << depth << " " << object_coord.x << " " << object_coord.y << " " << object_coord.z << std::endl;
+         float z = depth * 2.0 - 1.0; // back to NDC
+         float depth_linear =  (2.0 * near * far) / (far + near - z * (far - near));
+         return glm::vec4(object_coord, depth_linear);
     }
 };
 

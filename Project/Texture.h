@@ -9,7 +9,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp> // for to_string
 #include <fstream>
-#include "Input_listener.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 class Texture{
 public:

@@ -212,10 +212,16 @@ Project/CMakeFiles/Project_v1.dir/Main.cpp.o: \
  ../3rdParty/glm/glm/vec3.hpp \
  ../3rdParty/glm/glm/vec4.hpp \
  ../3rdParty/glm/glm/vector_relational.hpp \
+ ../Project/Axis.h \
  ../Project/Camera.h \
+ ../Project/Cube.h \
  ../Project/Cubemap.h \
+ ../Project/Drawable.h \
  ../Project/Input_listener.h \
  ../Project/Main.cpp \
+ ../Project/Map.h \
  ../Project/Shader.h \
+ ../Project/Target.h \
  ../Project/Texture.h \
+ ../Project/Window.h \
  ../Project/stb_image.h
