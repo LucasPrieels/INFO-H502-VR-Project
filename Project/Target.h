@@ -20,7 +20,6 @@ class Target: public Drawable{
     Drawable(Target::vertices, false, {},{3, 3}),
     shader(path_to_current_folder + "vertex_shader_color.txt", path_to_current_folder + "fragment_shader_color.txt")
     { // Create a 3-axis system at (0,0,0) in the map
-        for (int i = 0; i < vertices.size(); i++) std::cout << vertices[i] << std::endl;
         // Init shader
         shader.use();
     }

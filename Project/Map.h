@@ -44,6 +44,7 @@ public:
                     models.erase(models.begin() + index);
                 }
             }
+            break; // We make sure to remove only one block
         }
         Input_listener::positions_to_remove = {}; // Clear positions to remove
 
@@ -57,12 +58,12 @@ public:
                     int y_new_cube = cubes[index].y;
                     int z_new_cube = cubes[index].z;
                     // The direction in which the clicked position is the furtest away from cubes[index] is the direction in which we need to increment coordinate of cubes[index]
-                    if (position_to_add.x - cubes[index].x > 0.49) x_new_cube++;
-                    else if (position_to_add.x - cubes[index].x < -0.49) x_new_cube--;
-                    else if (position_to_add.y - cubes[index].y > 0.49) y_new_cube++;
-                    else if (position_to_add.y - cubes[index].y < -0.49) y_new_cube--;
-                    else if (position_to_add.z - cubes[index].z > 0.49) z_new_cube++;
-                    else if (position_to_add.z - cubes[index].z < -0.49) z_new_cube--;
+                    if (position_to_add.x - cubes[index].x > 0.495) x_new_cube++;
+                    else if (position_to_add.x - cubes[index].x < -0.495) x_new_cube--;
+                    else if (position_to_add.y - cubes[index].y > 0.495) y_new_cube++;
+                    else if (position_to_add.y - cubes[index].y < -0.495) y_new_cube--;
+                    else if (position_to_add.z - cubes[index].z > 0.495) z_new_cube++;
+                    else if (position_to_add.z - cubes[index].z < -0.495) z_new_cube--;
                     std::cout << "Add cube at " << x_new_cube << ", " << y_new_cube << ", " << z_new_cube << std::endl;
                     Cube new_cube = Cube(x_new_cube, y_new_cube, z_new_cube);
                     cubes.push_back(new_cube);

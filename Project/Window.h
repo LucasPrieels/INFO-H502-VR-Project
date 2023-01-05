@@ -10,8 +10,9 @@
 class Window{
     public:
     static inline int height = 1000, width = 1600;
+    static inline float near, far; // Near and far values used for perspective projection
 
-    static GLFWwindow* init_window(){
+    static GLFWwindow* init_window(float near, float far){
         // Create OpenGL context
         if (!glfwInit()) throw std::runtime_error("Failed to initialise GLFW \n");
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); // Use version 4.0 of OpenGL
@@ -26,6 +27,9 @@ class Window{
             throw std::runtime_error("Failed to create GLFW window\n");
         }
         glfwMakeContextCurrent(window);
+
+        Window::near = near;
+        Window::far = far;
 
         return window;
     }

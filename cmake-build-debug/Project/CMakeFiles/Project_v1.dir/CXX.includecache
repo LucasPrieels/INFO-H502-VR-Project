@@ -1631,6 +1631,8 @@ glm/gtx/string_cast.hpp
 -
 fstream
 -
+Shader.h
+/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Shader.h
 
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Drawable.h
 iostream
@@ -1669,6 +1671,8 @@ glm/gtx/string_cast.hpp
 -
 Camera.h
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Camera.h
+Window.h
+/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Window.h
 
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Main.cpp
 iostream

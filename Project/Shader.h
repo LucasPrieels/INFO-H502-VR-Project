@@ -12,11 +12,13 @@
 
 class Shader{
 public:
+    std::string vertex_shader_code, fragment_shader_code;
+
     Shader(std::string vertex_shader_path, std::string fragment_shader_path){
         // Read then compile content of shader files
 
-        std::string vertex_shader_code = read_content_file(vertex_shader_path);
-        std::string fragment_shader_code = read_content_file(fragment_shader_path);
+        vertex_shader_code = read_content_file(vertex_shader_path);
+        fragment_shader_code = read_content_file(fragment_shader_path);
 
         GLuint vertex_shader = compileShader(vertex_shader_code, GL_VERTEX_SHADER);
         GLuint fragment_shader = compileShader(fragment_shader_code, GL_FRAGMENT_SHADER);

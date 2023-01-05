@@ -33,6 +33,7 @@ public:
         shader.use();
 
         // Bind texture if needed (if texture == -1 it means we don't want to use one)
+        if (shader.vertex_shader_code == "vertex_shader_skybox.txt") glBindTexture(GL_TEXTURE_CUBE_MAP, texture); // To draw a skybox we use GL_TEXTURE_CUBE_MAP instead of GL_TEXTURE_2D
         if (texture >= 0) glBindTexture(GL_TEXTURE_2D, texture);
         glBindVertexArray(VAO);
 

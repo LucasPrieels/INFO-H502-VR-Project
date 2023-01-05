@@ -9,15 +9,13 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp> // for to_string
 #include <fstream>
+#include "Shader.h"
 
-#define DAY_DURATION 20000 // Duration of a game day in ms
-
-class Cubemap{
+class Cubemap: public Drawable{
 public:
     unsigned int cubemap_ID;
 
-
-    float skyboxVertices[108] = { // Cube but defined face by face (on the contrary of cube_vertices)
+    static inline std::vector<float> vertices = { // Cube but defined face by face (on the contrary of Cube::vertices)
         -1.0f,  1.0f, -1.0f,
         -1.0f, -1.0f, -1.0f,
         1.0f, -1.0f, -1.0f,
@@ -59,20 +57,37 @@ public:
         1.0f, -1.0f, -1.0f,
         -1.0f, -1.0f,  1.0f,
         1.0f, -1.0f,  1.0f
-};
+    };
 
-    Cubemap(std::vector<std::string> cubemap_faces){
+    static inline std::vector<std::string> faces_night = { // Filenames of skybox
+            "Textures/skybox/night_right.png",
+            "Textures/skybox/night_left.png",
+            "Textures/skybox/night_top.png",
+            "Textures/skybox/night_bottom.png",
+            "Textures/skybox/night_front.png",
+            "Textures/skybox/night_back.png"
+    };
+
+    Cubemap(std::string path_to_current_folder):
+        Drawable(Cubemap::vertices, false, {},{3}),
+        shader(path_to_current_folder + "vertex_shader_skybox.txt", path_to_current_folder + "fragment_shader_skybox.txt")
+    {
+        // Init shader
+        shader.use();
+        shader.set_uniform("color_day", glm::vec3(0.05f, 0.4f, 0.9f)); // Set color to use for the sky during the day
+        shader.set_uniform("skybox_night", 0); // Set texture to use for the sky during the night
+
         glGenTextures(1, &cubemap_ID);
         glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap_ID);
 
         int texture_width, texture_height, channels_nb;
-        for (unsigned int i = 0; i < cubemap_faces.size(); i++){
-            unsigned char *data = stbi_load(cubemap_faces[i].c_str(), &texture_width, &texture_height, &channels_nb, 0); // Load all skybox images
+        for (unsigned int i = 0; i < faces_night.size(); i++){
+            unsigned char *data = stbi_load((path_to_current_folder + faces_night[i]).c_str(), &texture_width, &texture_height, &channels_nb, 0); // Load all skybox images
             if (data){
                 glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, data); // Apply each image to a specific plane
             }
             else{
-                std::cout << "Error while loading cubemap texture file " << cubemap_faces[i] << std::endl;
+                std::cout << "Error while loading cubemap texture file " << path_to_current_folder + faces_night[i] << std::endl;
             }
             stbi_image_free(data);
         }
@@ -83,62 +98,40 @@ public:
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     }
 
+    void draw_skybox(glm::mat4 view, glm::mat4 projection, float current_time, int day_duration){
+        glDepthMask(GL_FALSE); // Don't compute depth, to make sure the skybox is put on the outside of the view
 
-    unsigned int generate_VAO_skybox(){
-    unsigned int VAO_skybox, VBO;
-    glGenVertexArrays(1, &VAO_skybox);
-    glGenBuffers(1, &VBO);
+        float time_of_day = (int)round(1000*current_time)%day_duration; // In ms, 0 is start of morning
+        // Depending on the time of day, the blend factor blending day and night skies will be different
+        float blend_factor;
+        // A day is made of 40% day, 10% evening, 40% night and 10% morning
+        if (time_of_day < day_duration*0.1f){ // Morning
+            blend_factor = time_of_day/(day_duration*0.1f);
+        }
+        else if (time_of_day < day_duration*0.5f){ // Day
+            blend_factor =  1.0f;
+        }
+        else if (time_of_day < day_duration*0.6f){ // Evening
+            blend_factor =(day_duration*0.6f-time_of_day)/(day_duration*0.1f);
+        }
+        else {// Night
+            blend_factor = 0.0f;
+        }
 
-    glBindVertexArray(VAO_skybox); // Bind VAO to store next commands
+        // Calculate angle of rotation of the sky depending on the time of day
+        glm::mat4 rotation = glm::mat4(1.0f);
+        rotation = glm::rotate(rotation, glm::radians(time_of_day/day_duration*360), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotate sky to make 360 degrees in a day
 
-    // Set cube_lines in VBO (we don't use the cube texture, only the vertices)
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
+        // Apply the rotation on the view to make the sky rotate
+        glm::mat4 view_rotated = glm::mat4(glm::mat3(view))*rotation;
 
-    // Set position attributes in VAO
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); // There are also 2 texture values but we don't use them
-    glEnableVertexAttribArray(0);
-
-    // Deactivate the buffer
-    glBindBuffer(GL_ARRAY_BUFFER, 0); // First unbind the VBO and then VAO otherwise the VAO will store the unbinding of VBO
-    glBindVertexArray(0); // Unbind VAO_lines: stop storing commands
-
-    // De-allocate
-    glDeleteBuffers(1, &VBO);
-
-    return VAO_skybox;
-}
-
-void draw_skybox(unsigned int VAO_skybox, unsigned int texture_cubemap_night, glm::mat4 view, glm::mat4 projection, float current_time, Shader shader_skybox){
-    glDepthMask(GL_FALSE);
-    shader_skybox.use();
-    glBindVertexArray(VAO_skybox);
-    // Set uniforms in shader_skybox
-    float time_of_day = (int)round(1000*current_time)%DAY_DURATION; // In ms, 0 is start of morning
-    // A day is made of 40% day, 10% evening, 40% night and 10% morning
-    if (time_of_day < DAY_DURATION*0.1f){ // Morning
-        shader_skybox.set_uniform("blend_factor", time_of_day/(DAY_DURATION*0.1f));
+        shader.use();
+        shader.set_uniform("blend_factor", blend_factor); // Set correct blending
+        draw({glm::mat4(0.0f)}, view_rotated, projection, shader, cubemap_ID, 36, GL_TRIANGLES); // Print 6 vertices for each of the 6 cube faces
+        glDepthMask(GL_TRUE);
     }
-    else if (time_of_day < DAY_DURATION*0.5f){ // Day
-        shader_skybox.set_uniform("blend_factor", 1.0f);
-    }
-    else if (time_of_day < DAY_DURATION*0.6f){ // Evening
-        shader_skybox.set_uniform("blend_factor", (DAY_DURATION*0.6f-time_of_day)/(DAY_DURATION*0.1f));
-    }
-    else {// Night
-        shader_skybox.set_uniform("blend_factor", 0.0f);
-    }
-    glm::mat4 rotation = glm::mat4(1.0f);
-    rotation = glm::rotate(rotation, glm::radians(time_of_day/DAY_DURATION*360), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotate sky to make 360 degrees in a day
-    shader_skybox.set_uniform("view", glm::mat4(glm::mat3(view))*rotation);
-    shader_skybox.set_uniform("projection", projection);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, texture_cubemap_night);
-    glDrawArrays(GL_TRIANGLES, 0, 36); // Print 6 vertices for each of the 6 cube faces
-    glDepthMask(GL_TRUE);
-}
-
-
+private:
+    Shader shader;
 };
 
 #endif

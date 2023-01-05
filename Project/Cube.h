@@ -61,7 +61,7 @@ public:
     }
 
     bool part(glm::vec3 pos){ // Checks if position "pos" is inside the cube, meaning it's less than 0.5 away from the center of the cube
-        return abs(this->x - pos.x) <= 0.51 && abs(this->y - pos.y) <= 0.51 && abs(this->z - pos.z) <= 0.51;
+        return abs(this->x - pos.x) <= 0.505 && abs(this->y - pos.y) <= 0.505 && abs(this->z - pos.z) <= 0.505;
     }
 };
 #endif
