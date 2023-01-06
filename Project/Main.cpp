@@ -95,7 +95,8 @@ int main(int argc, char* argv[]){
     // Load all possible block textures
     std::vector<Texture> textures;
     for (int i = 0; i < files_textures.size(); i++){
-        Texture texture(path_string + "Textures/" + files_textures[i], textures_shininess[i]);
+        bool opaque = !(files_textures[i] == "leaf.png" || files_textures[i] == "glass.png"); // Whether this texture is completely opaque or not. Only non-opaque textures are leaves and glass
+        Texture texture(path_string + "Textures/" + files_textures[i], textures_shininess[i], opaque);
         textures.push_back(texture);
     }
 
@@ -128,9 +129,10 @@ int main(int argc, char* argv[]){
         // Draw all Drawable objects
         cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION); // current_time used to blend day color and night texture during morning and evening
         axis.draw_axis(view, projection);
-        map.draw_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw ligh effectively
-        target.draw_axis();
         sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION);
+        map.draw_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw ligh effectively
+        // Draw cubes after sun and axis because some cubes are transparent so they should be drawn after the opaque objects
+        target.draw_axis(); // Target drawn the latest to be in front of the rest (despite being drawn with depth mask at false)
 
         // Checks for inputs signaled by Input_listener (button clicked, mouse clicked or mouse moved)
         check_for_input(window, &camera, &map);

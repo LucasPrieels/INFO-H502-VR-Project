@@ -8,6 +8,7 @@
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <map>
 #include <vector>
 #include "Drawable.h"
 #include "Texture.h"
@@ -31,20 +32,51 @@ public:
         shader.set_uniform("light_color", sun.light_color);
         shader.set_uniform("light_pos", sun.light_pos);
         shader.set_uniform("viewing_pos", camera_pos);
+        shader.set_uniform("texture_uniform", 0); // Bound texture will be put at index 0, so we write as uniform
+
+        // First draw only opaque objects (to make sure we see them through non-opaque ones)
+        int nb_cubes = 0;
         for (Texture texture: textures){
+            if (!texture.opaque) continue; // Skip non-opaque objects
             std::vector<glm::mat4> models_to_draw;
             for (Cube cube: cubes){ // Look for all cubes having this texture and put them in vector models_to_draw
                 if (cube.texture_ID == texture.texture_ID) models_to_draw.push_back(cube.model);
             }
-            shader.set_uniform("texture_uniform", 0); // Bound texture will be put at index 0, so we write as uniform
             shader.set_uniform("shininess", texture.shininess);
             glEnable(GL_CULL_FACE); // Improves computation power and allows to have leaves blocks without flickering
-            glEnable(GL_BLEND); // Allows blending of semi-transparent objects
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             draw(models_to_draw, view, projection, shader, texture.texture_ID, 36, GL_TRIANGLES);
-            glDisable(GL_BLEND);
             glDisable(GL_CULL_FACE);
+            nb_cubes += models_to_draw.size();
         }
+
+        // Then draw non-opaque objects starting with the furthest away
+        std::vector<std::pair<float, glm::mat4>> models_to_draw;
+        std::vector<std::pair<float, Texture>> textures_to_draw;
+        for (Texture texture: textures) {
+            if (texture.opaque) continue; // Skip opaque objects
+            for (Cube cube: cubes) { // Look for all cubes having this texture and put them in vector models_to_draw
+                if (cube.texture_ID == texture.texture_ID){
+                    float distance = glm::length(camera_pos-glm::vec3(cube.x, cube.y, cube.z));
+                    models_to_draw.push_back(std::make_pair(distance, cube.model));
+                    textures_to_draw.push_back(std::make_pair(distance, texture));
+                }
+            }
+        }
+
+        std::sort(models_to_draw.begin(), models_to_draw.end(), sort_by_first_val_mat4);
+        std::sort(textures_to_draw.begin(), textures_to_draw.end(), sort_by_first_val_texture);
+
+        glEnable(GL_CULL_FACE); // Improves computation power and allows to have leaves blocks without flickering
+        glEnable(GL_BLEND); // Allows blending of semi-transparent objects
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        std::cout << nb_cubes << " " << models_to_draw.size() << " " << cubes.size() << std::endl;
+        for (int i = models_to_draw.size()-1; i >= 0; i--){
+            shader.set_uniform("shininess", textures_to_draw[i].second.shininess);
+            draw({models_to_draw[i].second}, view, projection, shader, textures_to_draw[i].second.texture_ID, 36, GL_TRIANGLES);
+        }
+        glDisable(GL_BLEND);
+        glDisable(GL_CULL_FACE);
     }
 
     void check_remove_cube(glm::vec3 pos) { // Check if the clicked position "pos" corresponds to a cube to remove
@@ -116,7 +148,7 @@ private:
                         models.push_back(cube.model); // Add cube model (4x4 matrix) to the list of models
                     }
 
-                    // Add leaf blocks: 4 on the altitude+4 level, 7 on the altitude+5 and altitude+6 levels, and 5 on the altitude+7 level
+                    // Add leaf blocks: 4 on the altitude+4 level, 8 on the altitude+5 and altitude+6 levels, and 5 on the altitude+7 level
                     for (int k = 4; k <= 7; k++){
                         std::vector<std::pair<int, int>> offsets;
                         if (k == 4) offsets = {{-1,0}, {1,0}, {0,-1}, {0,1}};
@@ -131,6 +163,14 @@ private:
                 }
             }
         }
+    }
+
+    static bool sort_by_first_val_mat4(std::pair<float, glm::mat4> &a, std::pair<float, glm::mat4> &b){
+        return (a.first < b.first);
+    }
+
+    static bool sort_by_first_val_texture(std::pair<float, Texture> &a, std::pair<float, Texture> &b){
+        return (a.first < b.first);
     }
 };
 #endif

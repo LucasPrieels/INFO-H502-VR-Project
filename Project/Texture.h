@@ -16,8 +16,9 @@ class Texture{
 public:
     unsigned int texture_ID;
     float shininess; // Represents the amount of specular light reflected by this material texture
+    bool opaque; // Whether this texture is completely opaque or not
 
-    Texture(std::string filename, float shininess){
+    Texture(std::string filename, float shininess, bool opaque){
         // Load and create texture
         glGenTextures(1, &texture_ID);
         glBindTexture(GL_TEXTURE_2D, texture_ID);
@@ -38,6 +39,7 @@ public:
         }
         stbi_image_free(data);
         this->shininess = shininess;
+        this->opaque = opaque;
     }
 };
 
