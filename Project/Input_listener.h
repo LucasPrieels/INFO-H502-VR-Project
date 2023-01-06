@@ -24,9 +24,12 @@ public:
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Capture cursor and hide it
         glfwSetCursorPosCallback(window, mouse_callback); // Set callback when mouse moves
         glfwSetMouseButtonCallback(window, mouse_button_callback); // Set callback on mouse click
+
+        // Selected block is initially #1 (dirt)
+        currently_selected_block = 1;
     }
 
-     static std::vector<std::string> processInput(GLFWwindow *window){
+     static std::vector<std::string> process_movement_input(GLFWwindow* window){
          // Called at each frame to check whether a key is pressed
          if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) glfwSetWindowShouldClose(window, true); // Close the window if esc key is pressed
 
@@ -41,9 +44,20 @@ public:
          return directions;
      }
 
+     static int process_block_selection_input(GLFWwindow* window){
+         if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) currently_selected_block = 1;
+         else if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) currently_selected_block = 2;
+         else if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) currently_selected_block = 3;
+         else if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS) currently_selected_block = 4;
+         else if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS) currently_selected_block = 5;
+
+         return currently_selected_block;
+    }
+
 private:
     static inline bool first_call_mouse; // Stores whether it is the first callback for mouse (needed to initilize last_mouse_pos_x and last_mouse_pos_y)
     static inline int last_mouse_pos_x, last_mouse_pos_y; // Stores last position (x,y) of mouse
+    static inline int currently_selected_block; // Index of currently selected block (changes when user clicks a number on the keyboard)
 
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height){ // Called when the window is resized
         std::cout << "Resized window to width=" << width << " height=" << height << std::endl;

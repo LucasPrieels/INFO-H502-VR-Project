@@ -382,6 +382,9 @@
 		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Shader.h">
 			<Option target="Project_v1"/>
 		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Sun.h">
+			<Option target="Project_v1"/>
+		</Unit>
 		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Target.h">
 			<Option target="Project_v1"/>
 		</Unit>

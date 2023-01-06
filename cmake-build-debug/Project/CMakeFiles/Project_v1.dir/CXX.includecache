@@ -1703,6 +1703,8 @@ Window.h
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Window.h
 Target.h
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Target.h
+Sun.h
+/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Sun.h
 
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Map.h
 iostream
@@ -1731,6 +1733,8 @@ Shader.h
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Shader.h
 Cube.h
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Cube.h
+Sun.h
+/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Sun.h
 
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Shader.h
 iostream
@@ -1749,6 +1753,20 @@ glm/gtx/string_cast.hpp
 -
 fstream
 -
+
+/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Sun.h
+iostream
+-
+glad/glad.h
+-
+GLFW/glfw3.h
+-
+glm/glm.hpp
+-
+Shader.h
+/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Shader.h
+Drawable.h
+/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Drawable.h
 
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Target.h
 iostream

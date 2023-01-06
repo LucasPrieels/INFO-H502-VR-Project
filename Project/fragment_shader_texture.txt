@@ -3,9 +3,32 @@
 precision mediump float;
 
 in vec2 texture_coord_transferred;
-out vec4 fragColor;
+in vec3 fragment_pos_transferred;
+in vec3 normal_transferred;
+out vec4 final_color;
+
 uniform sampler2D texture_uniform;
+uniform vec3 light_color;
+uniform vec3 light_pos;
+uniform vec3 viewing_pos;
+uniform float shininess;
 
 void main() {
-	fragColor = texture(texture_uniform, texture_coord_transferred);
+    // Ambient light
+    float ambient_light_value = 0.5;
+    vec3 ambient = ambient_light_value * light_color;
+
+    // Diffuse light
+    float diffuse_light_value = 0.7;
+    vec3 light_direction = normalize(light_pos - fragment_pos_transferred);
+    vec3 diffuse = diffuse_light_value * max(dot(normal_transferred, light_direction), 0.0) * light_color;
+
+    // Specular light
+    float specular_light_value = 0.5;
+    vec3 viewing_dir = normalize(viewing_pos - fragment_pos_transferred);
+    vec3 reflection_dir = reflect(-light_direction, normal_transferred);
+    vec3 specular = specular_light_value * pow(max(dot(viewing_dir, reflection_dir), 0.0), shininess) * light_color;
+
+    vec3 result = (ambient + diffuse + specular) * vec3(texture(texture_uniform, texture_coord_transferred));
+    final_color = vec4(result, 1.0);
 }

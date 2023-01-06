@@ -16,7 +16,7 @@ public:
     unsigned int cubemap_ID;
 
     static inline std::vector<float> vertices = { // Cube but defined face by face (on the contrary of Cube::vertices)
-        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f, // Face z=-1 has normal in direction
         -1.0f, -1.0f, -1.0f,
         1.0f, -1.0f, -1.0f,
         1.0f, -1.0f, -1.0f,
