@@ -16,7 +16,7 @@ uniform float shininess;
 void main() {
     // Ambient light
     float ambient_light_value = 0.5;
-    vec3 ambient = ambient_light_value * light_color;
+    vec3 ambient = ambient_light_value * (light_color + vec3(0.1))/2; // Ambient light is half white and half the color of the sun, to avoid all the ambient light turning to orange during sunrise and sunset
 
     // Diffuse light
     float diffuse_light_value = 0.7;

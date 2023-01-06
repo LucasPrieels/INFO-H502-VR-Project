@@ -64,6 +64,25 @@ public:
         model = glm::translate(model, light_pos);
         model = glm::scale(model, glm::vec3(2.0f));
 
+        // Make the sun orange during sunrise and sunset
+        float limit_angle_pos = M_PI/15; // When the angle of the sun wrt to the ground is smaller than this, it will become orange-ish (more orange as the angle is close to 0)
+        float limit_angle_neg = -M_PI/40; // Same but when the sun is below ground (we don't want the ambient light to appear orange too long before the sun rises)
+        if (angle_rot > limit_angle_neg && angle_rot < 0){ // Morning -> make the sunlight more orange, with the sun below the ground
+            light_color = glm::mix(glm::vec3(1.0f, 0.623f, 0.020f), glm::vec3(1.0f), angle_rot/limit_angle_neg);
+        }
+        else if (angle_rot < limit_angle_pos && angle_rot >= 0){ // Morning -> make the sunlight more orange, with the sun above the ground
+            light_color = glm::mix(glm::vec3(1.0f, 0.623f, 0.020f), glm::vec3(1.0f), angle_rot/limit_angle_pos);
+        }
+        else if (angle_rot-M_PI > -limit_angle_pos && angle_rot-M_PI <= 0){ // Evening -> make the sunlight more orange, with the sun above the ground
+            light_color = glm::mix(glm::vec3(1.0f, 0.623f, 0.020f), glm::vec3(1.0f), abs(angle_rot-M_PI)/limit_angle_pos);
+        }
+        else if (angle_rot-M_PI < -limit_angle_neg && angle_rot-M_PI > 0){ // Evening -> make the sunlight more orange, with the sun below the ground
+            light_color = glm::mix(glm::vec3(1.0f, 0.623f, 0.020f), glm::vec3(1.0f), (angle_rot-M_PI)/abs(limit_angle_neg));
+        }
+        else{
+            light_color = glm::vec3(1.0f); // Day or night light
+        }
+
         shader.use();
         shader.set_uniform("light_color", light_color);
         draw({model}, view, projection, shader, -1, 36, GL_TRIANGLES);

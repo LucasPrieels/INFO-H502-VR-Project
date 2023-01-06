@@ -88,7 +88,7 @@ int main(int argc, char* argv[]){
     Window::loadWindow(window);
 
     // Light source properties
-    glm::vec3 light_color(1.0f, 1.0f, 1.0f);
+    glm::vec3 original_light_color(1.0f, 1.0f, 1.0f); // Color of the sun light originally (becomes more orange during sunrise and sunset)
     float distance_sun_to_origin = 80.0f;
 
     // Load all possible block textures
@@ -105,7 +105,7 @@ int main(int argc, char* argv[]){
     Axis axis(path_string);
     Target target(path_string);
     Cubemap cubemap(path_string);
-    Sun sun(path_string, light_color, distance_sun_to_origin);
+    Sun sun(path_string, original_light_color, distance_sun_to_origin);
 
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST); // Enable depth testing to know which triangles are more in front
