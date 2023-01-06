@@ -100,6 +100,29 @@ private:
                 Cube cube(i, altitude, j, textures[0].texture_ID); // Create a new cube at this position, the altitude being on the y-axis
                 cubes.push_back(cube);
                 models.push_back(cube.model); // Add cube model (4x4 matrix) to the list of models
+
+                // Add 4 trees on the map at (-7,-12), (-28, 8), (31, -32), and (12, 28) (only if they are in range of the map, i.e. between -num_cubes_side/2 and num_cubes_side/2)
+                if ((i == -7 && j == -12) || (i == -28 && j == 8) || (i == 31 && j == -32) || (i == 12 && j == 28)) {
+                    // Add 6 spruce blocks on top of each other
+                    for (int k = 1; k <= 6; k++) {
+                        Cube cube(i, altitude + k, j, textures[3].texture_ID);
+                        cubes.push_back(cube);
+                        models.push_back(cube.model); // Add cube model (4x4 matrix) to the list of models
+                    }
+
+                    // Add leaf blocks: 4 on the altitude+4 level, 7 on the altitude+5 and altitude+6 levels, and 5 on the altitude+7 level
+                    for (int k = 4; k <= 7; k++){
+                        std::vector<std::pair<int, int>> offsets;
+                        if (k == 4) offsets = {{-1,0}, {1,0}, {0,-1}, {0,1}};
+                        if (k == 5 || k == 6) offsets = {{-1,0}, {1,0}, {0,-1}, {0,1}, {-1,-1}, {-1,1}, {1,-1}, {1,1}};
+                        if (k == 7) offsets = {{-1,0}, {1,0}, {0,-1}, {0,1}, {0,0}};
+                        for (std::pair<int, int> offset: offsets) {
+                            Cube cube(i + offset.first, altitude + k, j + offset.second, textures[5].texture_ID);
+                            cubes.push_back(cube);
+                            models.push_back(cube.model); // Add cube model (4x4 matrix) to the list of models
+                        }
+                    }
+                }
             }
         }
     }

@@ -30,8 +30,8 @@
 #define CAMERA_SPEED 6.0f // Speed of movement of camera
 
  int width = 1600, height = 1000; // Size of screen
- std::vector<std::string> files_textures = {"grass.png", "dirt.png", "gold.png", "spruce.png", "bookshelf.png"};
-std::vector<float> textures_shininess = {20.0f, 15.0f, 70.0f, 30.0f, 30.0f}; // Shininess (amount of specular light reflected) respectively for each of the textures of files_textures
+ std::vector<std::string> files_textures = {"grass.png", "dirt.png", "gold.png", "spruce.png", "bookshelf.png", "leaf.png"};
+std::vector<float> textures_shininess = {20.0f, 15.0f, 70.0f, 30.0f, 30.0f, 20.0f}; // Shininess (amount of specular light reflected) respectively for each of the textures of files_textures
 float lastFrame = 0.0f; // Time of last frame
 float delta_time = 0.0f; // Time between 2 last frames
 std::string path_string = PATH;

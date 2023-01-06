@@ -50,6 +50,7 @@ public:
          else if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) currently_selected_block = 3;
          else if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS) currently_selected_block = 4;
          else if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS) currently_selected_block = 5;
+         else if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS) currently_selected_block = 6;
 
          return currently_selected_block;
     }
