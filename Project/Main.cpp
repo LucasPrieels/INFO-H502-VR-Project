@@ -30,8 +30,8 @@
 #define CAMERA_SPEED 6.0f // Speed of movement of camera
 
  int width = 1600, height = 1000; // Size of screen
- std::vector<std::string> files_textures = {"grass.png", "dirt.png", "gold.png", "spruce.png", "bookshelf.png", "leaf.png"};
-std::vector<float> textures_shininess = {20.0f, 15.0f, 70.0f, 30.0f, 30.0f, 20.0f}; // Shininess (amount of specular light reflected) respectively for each of the textures of files_textures
+ std::vector<std::string> files_textures = {"grass.png", "dirt.png", "gold.png", "spruce.png", "bookshelf.png", "leaf.png", "glass.png"};
+std::vector<float> textures_shininess = {20.0f, 15.0f, 70.0f, 30.0f, 30.0f, 19.0f, 50.0f}; // Shininess (amount of specular light reflected) respectively for each of the textures of files_textures
 float lastFrame = 0.0f; // Time of last frame
 float delta_time = 0.0f; // Time between 2 last frames
 std::string path_string = PATH;
@@ -70,7 +70,8 @@ void check_for_input(GLFWwindow* window, Camera* camera, Map* map){
     else if (Input_listener::right_click){ // Can't have both a left and a right click on the same frame
         glm::vec4 unprojected = camera->unproject_2D_coord();
         float depth = unprojected.w;
-        if (depth < MAX_DISTANCE_REMOVE) map->add_cube(glm::vec3(unprojected), texture_num_selected); // Add block (with the selected texture) corresponding to this position
+        if (depth < MAX_DISTANCE_REMOVE) map->add_cube(glm::vec3(unprojected), texture_num_selected, camera->camera_pos); // Add block (with the selected texture) corresponding to this position
+        // Give the camera position to "add_cube" for the function to check whether the added cube is not too close to the camera
         Input_listener::right_click = false;
     }
     // Mouse movement
@@ -99,12 +100,12 @@ int main(int argc, char* argv[]){
     }
 
     // Create all relevant objects
+    Cubemap cubemap(path_string);
     Map map(NUM_CUBES_SIDE, path_string, textures);
     Input_listener::staticConstructor(window);
     Camera camera(CAMERA_SPEED);
     Axis axis(path_string);
     Target target(path_string);
-    Cubemap cubemap(path_string);
     Sun sun(path_string, original_light_color, distance_sun_to_origin);
 
     glfwSwapInterval(1);

@@ -30,5 +30,5 @@ void main() {
     vec3 specular = specular_light_value * pow(max(dot(viewing_dir, reflection_dir), 0.0), shininess) * light_color;
 
     vec3 result = (ambient + diffuse + specular) * vec3(texture(texture_uniform, texture_coord_transferred));
-    final_color = vec4(result, 1.0);
+    final_color = vec4(result, texture(texture_uniform, texture_coord_transferred).a);
 }

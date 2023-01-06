@@ -36,9 +36,14 @@ public:
             for (Cube cube: cubes){ // Look for all cubes having this texture and put them in vector models_to_draw
                 if (cube.texture_ID == texture.texture_ID) models_to_draw.push_back(cube.model);
             }
-            shader.set_uniform("texture_uniform", 0); // Bound texture will be put at index 0 so we write as uniform
+            shader.set_uniform("texture_uniform", 0); // Bound texture will be put at index 0, so we write as uniform
             shader.set_uniform("shininess", texture.shininess);
+            glEnable(GL_CULL_FACE); // Improves computation power and allows to have leaves blocks without flickering
+            glEnable(GL_BLEND); // Allows blending of semi-transparent objects
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             draw(models_to_draw, view, projection, shader, texture.texture_ID, 36, GL_TRIANGLES);
+            glDisable(GL_BLEND);
+            glDisable(GL_CULL_FACE);
         }
     }
 
@@ -51,14 +56,14 @@ public:
         }
     }
 
-    void add_cube(glm::vec3 pos, int texture_num) { // Add the cube corresponding to clicked position "pos"
+    void add_cube(glm::vec3 pos, int texture_num, glm::vec3 position_camera) { // Add the cube corresponding to clicked position "pos"
         for (int index = 0; index < cubes.size(); index++) {
             if (cubes[index].part(pos)){ // Check if position is less than half a block away from center of cube
                 // The new cube will be placed alongside cubes[index], but not at the same position, rather just besides it
                 int x_new_cube = cubes[index].x;
                 int y_new_cube = cubes[index].y;
                 int z_new_cube = cubes[index].z;
-                // The direction in which the clicked position is the furtest away from cubes[index] is the direction in which we need to increment coordinate of cubes[index]
+                // The direction in which the clicked position is the furthest away from cubes[index] is the direction in which we need to increment coordinate of cubes[index]
                 if (pos.x - cubes[index].x > 0.49) x_new_cube++;
                 else if (pos.x - cubes[index].x < -0.49) x_new_cube--;
                 else if (pos.y - cubes[index].y > 0.49) y_new_cube++;
@@ -66,6 +71,7 @@ public:
                 else if (pos.z - cubes[index].z > 0.49) z_new_cube++;
                 else if (pos.z - cubes[index].z < -0.49) z_new_cube--;
                 Cube new_cube = Cube(x_new_cube, y_new_cube, z_new_cube, textures[texture_num].texture_ID);
+                if (new_cube.valid_camera_position(position_camera)) continue; // If the cube is too close to the camera we don't place it, otherwise the camera can't move anymore
                 cubes.push_back(new_cube);
                 models.push_back(new_cube.model);
                 break; // If we already added the new cube alongside a cube, we won't place it alongside another one

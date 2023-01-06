@@ -99,7 +99,6 @@ public:
     }
 
     void draw_skybox(glm::mat4 view, glm::mat4 projection, float current_time, int day_duration){
-        glDepthMask(GL_FALSE); // Don't compute depth, to make sure the skybox is put on the outside of the view
 
         float time_of_day = (int)round(1000*current_time)%day_duration; // In ms, 0 is start of morning
         // Depending on the time of day, the blend factor blending day and night skies will be different
@@ -127,8 +126,10 @@ public:
 
         shader.use();
         shader.set_uniform("blend_factor", blend_factor); // Set correct blending
+
+        glDepthFunc(GL_LEQUAL); // In the Skybox shader we set z component = w component for the depth to be 1 (maximal), so we want to keep samples when they are equal to the max
         draw({glm::mat4(0.0f)}, view_rotated, projection, shader, cubemap_ID, 36, GL_TRIANGLES); // Print 6 vertices for each of the 6 cube faces
-        glDepthMask(GL_TRUE);
+        glDepthFunc(GL_LESS);
     }
 private:
     Shader shader;
