@@ -13,7 +13,6 @@
 class Cube{
 public:
     int x, y, z; // Coordinates of cube
-    glm::mat4 model; // Model matrix, taking into account its position
     int texture_ID; // Texture to use for the block
 
     static inline std::vector<float> vertices = {
@@ -70,10 +69,6 @@ public:
         this->x = x;
         this->y = y;
         this->z = z;
-
-        // Generate model matrix corresonding to this position
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(x, y, z)); // Translates the cubes at the given positions
 
         this->texture_ID = texture_ID;
     }

@@ -55,14 +55,10 @@ public:
         this->distance_to_origin = distance_to_origin; // Set the distance the sun is from the origin of axis
     }
 
-    void draw_sun(glm::mat4 view, glm::mat4 projection, float time_of_day, float day_duration){
+    void draw_sun(glm::mat4 view, glm::mat4 projection, float time_of_day, float day_duration, glm::vec3 camera_position){
         // Apply a rotation on the view to make the sun rotate depending on the time of day
         float angle_rot = glm::radians((time_of_day*1000/day_duration-0.05)*360); // -0.05 because the morning is 10% of the duration of the whole day and we want the sun to appear on the horizon at the middle of the morning
-        light_pos = distance_to_origin * glm::vec3(0.0f, sin(angle_rot), -cos(angle_rot));
-
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, light_pos);
-        model = glm::scale(model, glm::vec3(2.0f));
+        light_pos = distance_to_origin * glm::vec3(0.0f, sin(angle_rot), -cos(angle_rot)) + camera_position;
 
         // Make the sun orange during sunrise and sunset
         float limit_angle_pos = M_PI/15; // When the angle of the sun wrt to the ground is smaller than this, it will become orange-ish (more orange as the angle is close to 0)
@@ -85,7 +81,7 @@ public:
 
         shader.use();
         shader.set_uniform("light_color", light_color);
-        draw({model}, view, projection, shader, -1, 36, GL_TRIANGLES);
+        draw({light_pos}, view, projection, shader, -1, 36, GL_TRIANGLES, false);
     }
 
 private:

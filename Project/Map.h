@@ -35,45 +35,42 @@ public:
         shader.set_uniform("texture_uniform", 0); // Bound texture will be put at index 0, so we write as uniform
 
         // First draw only opaque objects (to make sure we see them through non-opaque ones)
-        int nb_cubes = 0;
         for (Texture texture: textures){
             if (!texture.opaque) continue; // Skip non-opaque objects
-            std::vector<glm::mat4> models_to_draw;
-            for (Cube cube: cubes){ // Look for all cubes having this texture and put them in vector models_to_draw
-                if (cube.texture_ID == texture.texture_ID) models_to_draw.push_back(cube.model);
+            std::vector<glm::vec3> translations_to_draw;
+            for (Cube cube: cubes){ // Look for all cubes having this texture and put them in vector translations_to_draw
+                if (cube.texture_ID == texture.texture_ID) translations_to_draw.push_back(glm::vec3(cube.x, cube.y, cube.z));
             }
             shader.set_uniform("shininess", texture.shininess);
             glEnable(GL_CULL_FACE); // Improves computation power and allows to have leaves blocks without flickering
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            draw(models_to_draw, view, projection, shader, texture.texture_ID, 36, GL_TRIANGLES);
+            draw(translations_to_draw, view, projection, shader, texture.texture_ID, 36, GL_TRIANGLES, true);
             glDisable(GL_CULL_FACE);
-            nb_cubes += models_to_draw.size();
         }
 
         // Then draw non-opaque objects starting with the furthest away
-        std::vector<std::pair<float, glm::mat4>> models_to_draw;
+        std::vector<std::pair<float, glm::vec3>> translations_to_draw;
         std::vector<std::pair<float, Texture>> textures_to_draw;
         for (Texture texture: textures) {
             if (texture.opaque) continue; // Skip opaque objects
             for (Cube cube: cubes) { // Look for all cubes having this texture and put them in vector models_to_draw
                 if (cube.texture_ID == texture.texture_ID){
                     float distance = glm::length(camera_pos-glm::vec3(cube.x, cube.y, cube.z));
-                    models_to_draw.push_back(std::make_pair(distance, cube.model));
+                    translations_to_draw.push_back(std::make_pair(distance, glm::vec3(cube.x, cube.y, cube.z)));
                     textures_to_draw.push_back(std::make_pair(distance, texture));
                 }
             }
         }
 
-        std::sort(models_to_draw.begin(), models_to_draw.end(), sort_by_first_val_mat4);
+        std::sort(translations_to_draw.begin(), translations_to_draw.end(), sort_by_first_val_vec3);
         std::sort(textures_to_draw.begin(), textures_to_draw.end(), sort_by_first_val_texture);
 
         glEnable(GL_CULL_FACE); // Improves computation power and allows to have leaves blocks without flickering
         glEnable(GL_BLEND); // Allows blending of semi-transparent objects
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        std::cout << nb_cubes << " " << models_to_draw.size() << " " << cubes.size() << std::endl;
-        for (int i = models_to_draw.size()-1; i >= 0; i--){
+        for (int i = translations_to_draw.size()-1; i >= 0; i--){
             shader.set_uniform("shininess", textures_to_draw[i].second.shininess);
-            draw({models_to_draw[i].second}, view, projection, shader, textures_to_draw[i].second.texture_ID, 36, GL_TRIANGLES);
+            draw({translations_to_draw[i].second}, view, projection, shader, textures_to_draw[i].second.texture_ID, 36, GL_TRIANGLES, true);
         }
         glDisable(GL_BLEND);
         glDisable(GL_CULL_FACE);
@@ -83,7 +80,6 @@ public:
         for (int index = 0; index < cubes.size(); index++) {
             if (cubes[index].part(pos)){ // Check if position is less than half a block away from center of cube
                 cubes.erase(cubes.begin() + index);
-                models.erase(models.begin() + index);
             }
         }
     }
@@ -105,7 +101,6 @@ public:
                 Cube new_cube = Cube(x_new_cube, y_new_cube, z_new_cube, textures[texture_num].texture_ID);
                 if (new_cube.valid_camera_position(position_camera)) continue; // If the cube is too close to the camera we don't place it, otherwise the camera can't move anymore
                 cubes.push_back(new_cube);
-                models.push_back(new_cube.model);
                 break; // If we already added the new cube alongside a cube, we won't place it alongside another one
             }
         }
@@ -118,7 +113,6 @@ public:
 
 private:
     std::vector<Cube> cubes; // List of the cubes in the map
-    std::vector<glm::mat4> models; // List of model matrices of each block
     Shader shader; // Shader used to draw blocks
     std::vector<Texture> textures;
     std::string path_to_current_folder;
@@ -127,17 +121,15 @@ private:
         for (int i = -num_cubes_side/2; i < num_cubes_side/2; i++){
             for (int j = -num_cubes_side/2; j < num_cubes_side/2; j++){
                 // Custom altitude function
-                int altitude = round(cos((2*(float)i+15)/num_cubes_side*M_PI)+cos(((float)j+12)/num_cubes_side*4*M_PI)+3);
+                int altitude = round(cos((2*(float)i+15)/80*M_PI)+cos(((float)j+12)/80*4*M_PI)+3);
 
                 for (int k = 0; k < altitude; k++){ // Create dirt blocks until altitude-1
                     Cube cube(i, k, j, textures[1].texture_ID); // Create a new cube at this position, the altitude being on the y-axis
                     cubes.push_back(cube);
-                    models.push_back(cube.model); // Add cube model (4x4 matrix) to the list of models
                 }
                 // Then create a grass block at altitude
                 Cube cube(i, altitude, j, textures[0].texture_ID); // Create a new cube at this position, the altitude being on the y-axis
                 cubes.push_back(cube);
-                models.push_back(cube.model); // Add cube model (4x4 matrix) to the list of models
 
                 // Add 4 trees on the map at (-7,-12), (-28, 8), (31, -32), and (12, 28) (only if they are in range of the map, i.e. between -num_cubes_side/2 and num_cubes_side/2)
                 if ((i == -7 && j == -12) || (i == -28 && j == 8) || (i == 31 && j == -32) || (i == 12 && j == 28)) {
@@ -145,7 +137,6 @@ private:
                     for (int k = 1; k <= 6; k++) {
                         Cube cube(i, altitude + k, j, textures[3].texture_ID);
                         cubes.push_back(cube);
-                        models.push_back(cube.model); // Add cube model (4x4 matrix) to the list of models
                     }
 
                     // Add leaf blocks: 4 on the altitude+4 level, 8 on the altitude+5 and altitude+6 levels, and 5 on the altitude+7 level
@@ -157,7 +148,6 @@ private:
                         for (std::pair<int, int> offset: offsets) {
                             Cube cube(i + offset.first, altitude + k, j + offset.second, textures[5].texture_ID);
                             cubes.push_back(cube);
-                            models.push_back(cube.model); // Add cube model (4x4 matrix) to the list of models
                         }
                     }
                 }
@@ -165,7 +155,7 @@ private:
         }
     }
 
-    static bool sort_by_first_val_mat4(std::pair<float, glm::mat4> &a, std::pair<float, glm::mat4> &b){
+    static bool sort_by_first_val_vec3(std::pair<float, glm::vec3> &a, std::pair<float, glm::vec3> &b){
         return (a.first < b.first);
     }
 

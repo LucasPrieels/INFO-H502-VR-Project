@@ -22,12 +22,13 @@ public:
         VAO = generate_VAO();
     }
 
-    void draw(std::vector<glm::mat4> models, glm::mat4 view, glm::mat4 projection, Shader shader, int texture, int num_vertices, int type_primitive){
+    void draw(std::vector<glm::vec3> translations, glm::mat4 view, glm::mat4 projection, Shader shader, int texture, int num_vertices, int type_primitive, bool instanced) {
         // Draw the object using its VAO
-        // Models is a vector because we can draw many objects at different positions at onces
+        // Translations is a vector because we can draw many objects at different positions at once
         // Num_vertices is the number of vertices to draw per object (36 for a cube for example)
         // Type_primitive can for example be GL_TRIANGLES or GL_LINES
         // Texture is -1 if don't want to use a texture for this drawable object
+        // Instanced states whether we want to use drawElementsInstanced/drawArraysInstanced (with the translation as input) or not (with model as uniform), in which case we always have translations.size()==1
 
         // Bind shader
         shader.use();
@@ -41,13 +42,33 @@ public:
         shader.set_uniform("view", view);
         shader.set_uniform("projection", projection);
 
-        for (int i = 0; i < models.size(); i++){
+        if (translations.size() == 0) return; // Nothing to print
+        if (instanced) {
+            unsigned int instanceVBO;
+            glGenBuffers(1, &instanceVBO);
+            glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+            glBufferData(GL_ARRAY_BUFFER, translations.size() * sizeof(glm::vec3), &translations[0], GL_STATIC_DRAW);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+            glEnableVertexAttribArray(3);
+            glBindBuffer(GL_ARRAY_BUFFER, instanceVBO); // this attribute comes from a different vertex buffer
+            glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void *) 0); // last 2 3 are because translations is a vec3
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glVertexAttribDivisor(3, 1); // tell OpenGL this is an instanced vertex attribute.
+
             // Set model uniforms in shader
-            shader.set_uniform("model", models[i]);
+            if (use_EBO) glDrawElementsInstanced(type_primitive, num_vertices, GL_UNSIGNED_INT, 0, translations.size());
+            else glDrawArraysInstanced(type_primitive, 0, num_vertices, translations.size());
+            glBindVertexArray(0);
+        }
+        else{
+            // Set model uniforms in shader
+            glm::mat4 model(1.0f);
+            model = glm::translate(model, translations[0]); // For instanced==false we always have translations.size()==1
+            shader.set_uniform("model", model);
             if (use_EBO) glDrawElements(type_primitive, num_vertices, GL_UNSIGNED_INT, 0);
             else glDrawArrays(type_primitive, 0, num_vertices);
         }
-        glBindVertexArray(0);
     }
 
 private:

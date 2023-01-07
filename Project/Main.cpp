@@ -23,7 +23,7 @@
 #define PATH "../../Project/" // Path to go from where the program is run to current folder
 #define MOUSE_SENSITIVITY 0.05 // Sensitivity of yaw and pitch wrt mouse movements
 #define MAX_DISTANCE_REMOVE 15 // We only remove clicked blocks up to this distance
-#define NUM_CUBES_SIDE 80 // We create a NUM_CUBES_SIDE x NUM_CUBES_SIDE area of cubes
+#define NUM_CUBES_SIDE 200 // We create a NUM_CUBES_SIDE x NUM_CUBES_SIDE area of cubes
 #define DAY_DURATION 200000 // Nb of milliseconds in an in-game day
 #define NEAR 0.1f
 #define FAR 100.0f // Near and far values used for perspective projection
@@ -90,7 +90,7 @@ int main(int argc, char* argv[]){
 
     // Light source properties
     glm::vec3 original_light_color(1.0f, 1.0f, 1.0f); // Color of the sun light originally (becomes more orange during sunrise and sunset)
-    float distance_sun_to_origin = 80.0f;
+    float distance_sun_to_origin = 99.0f;
 
     // Load all possible block textures
     std::vector<Texture> textures;
@@ -129,7 +129,7 @@ int main(int argc, char* argv[]){
         // Draw all Drawable objects
         cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION); // current_time used to blend day color and night texture during morning and evening
         axis.draw_axis(view, projection);
-        sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION);
+        sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, camera.camera_pos); // Give the camera position to draw the sun at distance 99 of the camera
         map.draw_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw ligh effectively
         // Draw cubes after sun and axis because some cubes are transparent so they should be drawn after the opaque objects
         target.draw_axis(); // Target drawn the latest to be in front of the rest (despite being drawn with depth mask at false)
