@@ -28,33 +28,41 @@ public:
         // Num_vertices is the number of vertices to draw per object (36 for a cube for example)
         // Type_primitive can for example be GL_TRIANGLES or GL_LINES
         // Texture is -1 if don't want to use a texture for this drawable object
-        // Instanced states whether we want to use drawElementsInstanced/drawArraysInstanced (with the translation as input) or not (with model as uniform), in which case we always have translations.size()==1
+        // Instanced states whether we want to use drawElementsInstanced/drawArraysInstanced (receiving model as input) or not (receiving model as uniform), in which case we always have translations.size()==1
 
+        if (translations.size() == 0) return; // Nothing to draw
         // Bind shader
         shader.use();
 
-        // Bind texture if needed (if texture == -1 it means we don't want to use one)
-        if (shader.vertex_shader_code == "vertex_shader_skybox.txt") glBindTexture(GL_TEXTURE_CUBE_MAP, texture); // To draw a skybox we use GL_TEXTURE_CUBE_MAP instead of GL_TEXTURE_2D
-        if (texture >= 0) glBindTexture(GL_TEXTURE_2D, texture);
         glBindVertexArray(VAO);
+        // Bind texture if needed (if texture == -1 it means we don't want to use one)
+        if (shader.vertex_shader_path.substr(shader.vertex_shader_path.size()-24, 24) == "vertex_shader_skybox.txt"){
+            glBindTexture(GL_TEXTURE_CUBE_MAP, texture); // To draw a skybox we use GL_TEXTURE_CUBE_MAP instead of GL_TEXTURE_2D
+        }
+        else if (texture >= 0) glBindTexture(GL_TEXTURE_2D, texture);
 
         // Set uniforms in shader
         shader.set_uniform("view", view);
         shader.set_uniform("projection", projection);
 
-        if (translations.size() == 0) return; // Nothing to print
         if (instanced) {
-            unsigned int instanceVBO;
-            glGenBuffers(1, &instanceVBO);
-            glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+            if (translations.size() == 1){ // Only used "instanced" if there are at least 2 objects to write otherwise it can sometimes freeze
+                glm::mat4 model(1.0f);
+                model = glm::translate(model, translations[0]);
+                shader.set_uniform("model", model);
+                if (use_EBO) glDrawElements(type_primitive, num_vertices, GL_UNSIGNED_INT, 0);
+                else glDrawArrays(type_primitive, 0, num_vertices);
+                shader.set_uniform("model", glm::mat4(1.0f));
+                return;
+            }
+            unsigned int VBO_instanced;
+            glGenBuffers(1, &VBO_instanced);
+            glBindBuffer(GL_ARRAY_BUFFER, VBO_instanced);
             glBufferData(GL_ARRAY_BUFFER, translations.size() * sizeof(glm::vec3), &translations[0], GL_STATIC_DRAW);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-            glEnableVertexAttribArray(3);
-            glBindBuffer(GL_ARRAY_BUFFER, instanceVBO); // this attribute comes from a different vertex buffer
-            glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void *) 0); // last 2 3 are because translations is a vec3
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glVertexAttribDivisor(3, 1); // tell OpenGL this is an instanced vertex attribute.
+            glEnableVertexAttribArray(3); // Add a new attribute (after positions, texture, and normals)
+            glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void *) 0); // The new attribute is a vec3, so size is 3
+            glVertexAttribDivisor(3, 1);
 
             // Set model uniforms in shader
             if (use_EBO) glDrawElementsInstanced(type_primitive, num_vertices, GL_UNSIGNED_INT, 0, translations.size());

@@ -237,8 +237,8 @@ glfw: 3rdParty/glfw/src/CMakeFiles/glfw.dir/rule
 # Target rules for target Project/CMakeFiles/Project_v1.dir
 
 # All Build rule for target.
-Project/CMakeFiles/Project_v1.dir/all: CMakeFiles/glad.dir/all
 Project/CMakeFiles/Project_v1.dir/all: 3rdParty/glfw/src/CMakeFiles/glfw.dir/all
+Project/CMakeFiles/Project_v1.dir/all: CMakeFiles/glad.dir/all
 	$(MAKE) $(MAKESILENT) -f Project/CMakeFiles/Project_v1.dir/build.make Project/CMakeFiles/Project_v1.dir/depend
 	$(MAKE) $(MAKESILENT) -f Project/CMakeFiles/Project_v1.dir/build.make Project/CMakeFiles/Project_v1.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/cmake-build-debug/CMakeFiles" --progress-num=1,2 "Built target Project_v1"

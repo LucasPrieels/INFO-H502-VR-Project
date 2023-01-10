@@ -52,6 +52,7 @@ public:
          else if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS) currently_selected_block = 5;
          else if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS) currently_selected_block = 6;
          else if (glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS) currently_selected_block = 7;
+         else if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) currently_selected_block = 0; // Special value for mirror blocks
 
          return currently_selected_block;
     }

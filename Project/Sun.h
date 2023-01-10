@@ -10,21 +10,21 @@
 
 class Sun: public Drawable{
 public:
-    static inline std::vector<float> vertices = {
-            -0.5f, 0.5f, 0.5f,
-            0.5f, 0.5f, 0.5f,
-            -0.5f, 0.5f, 0.5f,
-            -0.5f, -0.5f, 0.5f,
-            0.5f, -0.5f, 0.5f,
-            0.5f, 0.5f, 0.5f,
-            -0.5f, 0.5f, 0.5f,
-            -0.5f, 0.5f, -0.5f,
-            -0.5f, -0.5f, -0.5f,
-            0.5f, -0.5f, -0.5f,
-            0.5f, 0.5f, -0.5f,
-            -0.5f, 0.5f, -0.5f,
-            -0.5f, 0.5f, -0.5f,
-            0.5f, 0.5f, -0.5f
+    static inline std::vector<float> vertices = { // Large cube
+            -2.0f, 2.0f, 2.0f,
+            2.0f, 2.0f, 2.0f,
+            -2.0f, 2.0f, 2.0f,
+            -2.0f, -2.0f, 2.0f,
+            2.0f, -2.0f, 2.0f,
+            2.0f, 2.0f, 2.0f,
+            -2.0f, 2.0f, 2.0f,
+            -2.0f, 2.0f, -2.0f,
+            -2.0f, -2.0f, -2.0f,
+            2.0f, -2.0f, -2.0f,
+            2.0f, 2.0f, -2.0f,
+            -2.0f, 2.0f, -2.0f,
+            -2.0f, 2.0f, -2.0f,
+            2.0f, 2.0f, -2.0f
     };
 
     static inline std::vector<unsigned int> vertices_indices = {
@@ -48,7 +48,6 @@ public:
             Drawable(Sun::vertices, true, Sun::vertices_indices,{3}),
             shader(path_to_current_folder + "vertex_shader_light_source.txt", path_to_current_folder + "fragment_shader_light_source.txt")
     {
-
         // Init shader
         shader.use();
         this->light_color = light_color;
@@ -64,16 +63,16 @@ public:
         float limit_angle_pos = M_PI/15; // When the angle of the sun wrt to the ground is smaller than this, it will become orange-ish (more orange as the angle is close to 0)
         float limit_angle_neg = -M_PI/40; // Same but when the sun is below ground (we don't want the ambient light to appear orange too long before the sun rises)
         if (angle_rot > limit_angle_neg && angle_rot < 0){ // Morning -> make the sunlight more orange, with the sun below the ground
-            light_color = glm::mix(glm::vec3(1.0f, 0.623f, 0.020f), glm::vec3(1.0f), angle_rot/limit_angle_neg);
+            light_color = glm::mix(glm::vec3(1.0f, 0.5f, 0.020f), glm::vec3(1.0f), angle_rot/limit_angle_neg);
         }
         else if (angle_rot < limit_angle_pos && angle_rot >= 0){ // Morning -> make the sunlight more orange, with the sun above the ground
-            light_color = glm::mix(glm::vec3(1.0f, 0.623f, 0.020f), glm::vec3(1.0f), angle_rot/limit_angle_pos);
+            light_color = glm::mix(glm::vec3(1.0f, 0.5, 0.020f), glm::vec3(1.0f), angle_rot/limit_angle_pos);
         }
         else if (angle_rot-M_PI > -limit_angle_pos && angle_rot-M_PI <= 0){ // Evening -> make the sunlight more orange, with the sun above the ground
-            light_color = glm::mix(glm::vec3(1.0f, 0.623f, 0.020f), glm::vec3(1.0f), abs(angle_rot-M_PI)/limit_angle_pos);
+            light_color = glm::mix(glm::vec3(1.0f, 0.5, 0.020f), glm::vec3(1.0f), abs(angle_rot-M_PI)/limit_angle_pos);
         }
         else if (angle_rot-M_PI < -limit_angle_neg && angle_rot-M_PI > 0){ // Evening -> make the sunlight more orange, with the sun below the ground
-            light_color = glm::mix(glm::vec3(1.0f, 0.623f, 0.020f), glm::vec3(1.0f), (angle_rot-M_PI)/abs(limit_angle_neg));
+            light_color = glm::mix(glm::vec3(1.0f, 0.5, 0.020f), glm::vec3(1.0f), (angle_rot-M_PI)/abs(limit_angle_neg));
         }
         else{
             light_color = glm::vec3(1.0f); // Day or night light

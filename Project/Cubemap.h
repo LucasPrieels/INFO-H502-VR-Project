@@ -119,7 +119,7 @@ public:
 
         // Calculate angle of rotation of the sky depending on the time of day
         glm::mat4 rotation = glm::mat4(1.0f);
-        rotation = glm::rotate(rotation, glm::radians(time_of_day/day_duration*360), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotate sky to make 360 degrees in a day
+        rotation = glm::rotate(rotation, glm::radians(time_of_day/day_duration*360.0f), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotate sky to make 360 degrees in a day
 
         // Apply the rotation on the view to make the sky rotate
         glm::mat4 view_rotated = glm::mat4(glm::mat3(view))*rotation;

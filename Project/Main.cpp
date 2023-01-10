@@ -23,7 +23,7 @@
 #define PATH "../../Project/" // Path to go from where the program is run to current folder
 #define MOUSE_SENSITIVITY 0.05 // Sensitivity of yaw and pitch wrt mouse movements
 #define MAX_DISTANCE_REMOVE 15 // We only remove clicked blocks up to this distance
-#define NUM_CUBES_SIDE 200 // We create a NUM_CUBES_SIDE x NUM_CUBES_SIDE area of cubes
+#define NUM_CUBES_SIDE 100 // We create a NUM_CUBES_SIDE x NUM_CUBES_SIDE area of cubes
 #define DAY_DURATION 200000 // Nb of milliseconds in an in-game day
 #define NEAR 0.1f
 #define FAR 100.0f // Near and far values used for perspective projection
@@ -90,19 +90,17 @@ int main(int argc, char* argv[]){
 
     // Light source properties
     glm::vec3 original_light_color(1.0f, 1.0f, 1.0f); // Color of the sun light originally (becomes more orange during sunrise and sunset)
-    float distance_sun_to_origin = 99.0f;
+    float distance_sun_to_origin = 99.0f; // Because above 100.0f objects are hidden by perspective projection
 
     // Load all possible block textures
-    std::vector<Texture> textures;
     for (int i = 0; i < files_textures.size(); i++){
         bool opaque = !(files_textures[i] == "leaf.png" || files_textures[i] == "glass.png"); // Whether this texture is completely opaque or not. Only non-opaque textures are leaves and glass
-        Texture texture(path_string + "Textures/" + files_textures[i], textures_shininess[i], opaque);
-        textures.push_back(texture);
+        Texture texture(path_string + "Textures/" + files_textures[i], textures_shininess[i], opaque, glm::vec3(0.0f), glm::vec3(0.0f)); // Last 2 arguments are not used for non-mirror textures
     }
 
     // Create all relevant objects
     Cubemap cubemap(path_string);
-    Map map(NUM_CUBES_SIDE, path_string, textures);
+    Map map(NUM_CUBES_SIDE, path_string);
     Input_listener::staticConstructor(window);
     Camera camera(CAMERA_SPEED);
     Axis axis(path_string);
@@ -118,8 +116,39 @@ int main(int argc, char* argv[]){
         frame_nb++;
         std::cout << "FPS: " << fps() << std::endl;
 
-        glClearColor(0.5f, 0.5f, 0.5f, 1.0f); // Set color to use when clearing
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
+        // First passes on all the framebuffers to generate the mirror images
+        for (Texture texture: Texture::textures){
+            if (!texture.mirror) continue; // If the texture is not mirror we don't have to compute the view
+
+            glBindFramebuffer(GL_FRAMEBUFFER, texture.framebuffer);
+            glClearColor(0.5f, 0.5f, 0.5f, 1.0f); // Set color to use when clearing
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
+
+            // Calculate view and projection matrices
+            glm::vec3 pos = texture.position;
+            glm::vec3 front = texture.direction;
+            glm::vec3 up;
+            if (glm::length(front-glm::vec3(0.0f, 1.0f,  0.0f)) < 0.01f || glm::length(front-glm::vec3(0.0f, -1.0f,  0.0f)) < 0.01f) up = glm::vec3(0.0f, 0.0f, 1.0f);
+            else up = glm::vec3(0.0f, 1.0f, 0.0f);
+            glm::mat4 view = glm::lookAt(pos, pos+front, up); // View: move world view on camera space
+            // CameraFront is the direction from camera to object, so cameraPos+cameraFront is one of the points we are looking it
+            glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1.0f, Window::near, Window::far); // Projection: project 3D view on 2D
+
+            // Draw all Drawable objects
+            glViewport(0, 0, 500, 500);
+            cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION);
+            axis.draw_axis(view, projection);
+            sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, pos);
+            map.draw_cubes(view, projection, sun, pos); // Give pos and not the camera position otherwise the specular components changes when the camera moves !!
+            Mirror::draw_mirrors(view, projection, sun, pos);
+            glViewport(0, 0, Window::width, Window::height);
+            // Don't write target
+        }
+
+        // Last pass is to show on the screen
+        glBindFramebuffer(GL_FRAMEBUFFER, 0); // Back to default FBO
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Calculate view and projection matrices
         glm::mat4 view = glm::lookAt(camera.camera_pos, camera.camera_pos+camera.camera_front, camera.movement_up); // View: move world view on camera space
@@ -133,12 +162,20 @@ int main(int argc, char* argv[]){
         map.draw_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw ligh effectively
         // Draw cubes after sun and axis because some cubes are transparent so they should be drawn after the opaque objects
         target.draw_axis(); // Target drawn the latest to be in front of the rest (despite being drawn with depth mask at false)
+        Mirror::draw_mirrors(view, projection, sun, camera.camera_pos);
 
         // Checks for inputs signaled by Input_listener (button clicked, mouse clicked or mouse moved)
         check_for_input(window, &camera, &map);
 
         glfwPollEvents(); // Checks if an event has been triggered, and if needed calls the corresponding callback
         glfwSwapBuffers(window); // Shows rendering buffer on the screen
+
+        // Check for potential errors
+        GLenum err = glGetError();
+        while(err != GL_NO_ERROR){
+            std::cout << "### Error: 0x" << std::hex << err << std::endl;
+            err = glGetError();
+        }
     }
 
     glfwTerminate(); // Clean GLFW resources

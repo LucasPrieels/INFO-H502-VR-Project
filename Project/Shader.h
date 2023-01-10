@@ -13,6 +13,7 @@
 class Shader{
 public:
     std::string vertex_shader_code, fragment_shader_code;
+    std::string vertex_shader_path, fragment_shader_path;
 
     Shader(std::string vertex_shader_path, std::string fragment_shader_path){
         // Read then compile content of shader files
@@ -23,6 +24,9 @@ public:
         GLuint vertex_shader = compileShader(vertex_shader_code, GL_VERTEX_SHADER);
         GLuint fragment_shader = compileShader(fragment_shader_code, GL_FRAGMENT_SHADER);
         program = compileProgram(vertex_shader, fragment_shader);
+
+        this->vertex_shader_path = vertex_shader_path;
+        this->fragment_shader_path = fragment_shader_path;
     }
 
     // Set mat4 uniform "name_uniform" with value given
