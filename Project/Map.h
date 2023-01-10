@@ -27,7 +27,7 @@ public:
         init_map(num_cubes_side); // Init cubes vector
     }
 
-    void draw_cubes(glm::mat4 view, glm::mat4 projection, Sun sun, glm::vec3 camera_pos){
+    void draw_opaque_cubes(glm::mat4 view, glm::mat4 projection, Sun sun, glm::vec3 camera_pos){
         shader.use();
         shader.set_uniform("light_color", sun.light_color);
         shader.set_uniform("light_pos", sun.light_pos);
@@ -35,11 +35,12 @@ public:
         shader.set_uniform("texture_uniform", 0); // Bound texture will be put at index 0, so we write as uniform
 
         // First draw only opaque objects (to make sure we see them through non-opaque ones)
-        for (Texture texture: Texture::textures){
+        for (Texture texture: Texture::textures) {
             if (!texture.opaque || texture.mirror) continue; // Skip non-opaque and mirror objects
             std::vector<glm::vec3> translations_to_draw;
-            for (Cube cube: cubes){ // Look for all cubes having this texture and put them in vector translations_to_draw
-                if (cube.texture_ID == texture.texture_ID) translations_to_draw.push_back(glm::vec3(cube.x, cube.y, cube.z));
+            for (Cube cube: cubes) { // Look for all cubes having this texture and put them in vector translations_to_draw
+                if (cube.texture_ID == texture.texture_ID)
+                    translations_to_draw.push_back(glm::vec3(cube.x, cube.y, cube.z));
             }
             shader.set_uniform("shininess", texture.shininess);
             glEnable(GL_CULL_FACE); // Improves computation power and allows to have leaves blocks without flickering
@@ -47,7 +48,9 @@ public:
             draw(translations_to_draw, view, projection, shader, texture.texture_ID, 36, GL_TRIANGLES, true);
             glDisable(GL_CULL_FACE);
         }
+    }
 
+    void draw_non_opaque_cubes(glm::mat4 view, glm::mat4 projection, Sun sun, glm::vec3 camera_pos){
         // Then draw non-opaque objects starting with the furthest away
         std::vector<std::pair<float, glm::vec3>> translations_to_draw;
         std::vector<std::pair<float, Texture>> textures_to_draw;
@@ -79,6 +82,7 @@ public:
     void check_remove_cube(glm::vec3 pos) { // Check if the clicked position "pos" corresponds to a cube to remove
         for (int index = 0; index < cubes.size(); index++) {
             if (cubes[index].part(pos)){ // Check if position is less than half a block away from center of cube
+                cubes[index].destroy_mirrors_cube();
                 cubes.erase(cubes.begin() + index);
             }
         }
@@ -115,7 +119,7 @@ public:
                     else if (y_variation < 0) vertices = Mirror::vertices_y_minus;
                     else if (z_variation > 0) vertices = Mirror::vertices_z_plus;
                     else if (z_variation < 0) vertices = Mirror::vertices_z_minus;
-                    Mirror(path_to_current_folder, mirror_position, mirror_orientation, vertices);
+                    cubes[index].mirrors.push_back(Mirror(path_to_current_folder, mirror_position, mirror_orientation, vertices));
                     break; // Since we add a mirror we don't add a cube more
                 }
                 Cube new_cube = Cube(x_new_cube, y_new_cube, z_new_cube, Texture::textures[texture_num].texture_ID);

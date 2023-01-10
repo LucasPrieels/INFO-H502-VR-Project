@@ -34,7 +34,7 @@ public:
             glGenFramebuffers(1, (unsigned int*)&framebuffer);
             glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 500, 500, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL); // 1000 is the dimensions of the taken image that will be put on the mirror cube sides
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1000, 1000, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL); // 1000 is the dimensions of the taken image that will be put on the mirror cube sides
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glBindTexture(GL_TEXTURE_2D, 0);
@@ -43,7 +43,7 @@ public:
             unsigned int rbo;
             glGenRenderbuffers(1, &rbo);
             glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 500, 500);
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1000, 1000);
             glBindRenderbuffer(GL_RENDERBUFFER, 0);
             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
             if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) std::cout << "Error: framebuffer is not complete" << std::endl;

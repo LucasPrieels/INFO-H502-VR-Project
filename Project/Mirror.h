@@ -9,6 +9,7 @@
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Sun.h"
 
 class Mirror: Drawable{
 public:
@@ -70,7 +71,7 @@ public:
 
     Mirror(std::string path_to_current_folder, glm::vec3 position, glm::vec3 orientation, std::vector<float> vertices): // Vertices is one of the static vertices possibilities shown above
         Drawable(vertices, true, Mirror::vertices_indices, {3, 2, 3}),
-        texture("mirror", 60.0f, true, position, orientation), // Mirror blocks have a shininess of 60
+        texture("mirror", 5.0f, true, position, orientation), // Mirror blocks have a shininess of 60
         shader(path_to_current_folder + "vertex_shader_texture.txt", path_to_current_folder + "fragment_shader_texture.txt")
     {
         this->position = position;

@@ -60,8 +60,8 @@ public:
         light_pos = distance_to_origin * glm::vec3(0.0f, sin(angle_rot), -cos(angle_rot)) + camera_position;
 
         // Make the sun orange during sunrise and sunset
-        float limit_angle_pos = M_PI/15; // When the angle of the sun wrt to the ground is smaller than this, it will become orange-ish (more orange as the angle is close to 0)
-        float limit_angle_neg = -M_PI/40; // Same but when the sun is below ground (we don't want the ambient light to appear orange too long before the sun rises)
+        float limit_angle_pos = M_PI/12; // When the angle of the sun wrt to the ground is smaller than this, it will become orange-ish (more orange as the angle is close to 0)
+        float limit_angle_neg = -M_PI/20; // Same but when the sun is below ground (we don't want the ambient light to appear orange too long before the sun rises)
         if (angle_rot > limit_angle_neg && angle_rot < 0){ // Morning -> make the sunlight more orange, with the sun below the ground
             light_color = glm::mix(glm::vec3(1.0f, 0.5f, 0.020f), glm::vec3(1.0f), angle_rot/limit_angle_neg);
         }

@@ -31,7 +31,7 @@
 
  int width = 1600, height = 1000; // Size of screen
  std::vector<std::string> files_textures = {"grass.png", "dirt.png", "gold.png", "spruce.png", "bookshelf.png", "leaf.png", "glass.png"};
-std::vector<float> textures_shininess = {20.0f, 15.0f, 70.0f, 30.0f, 30.0f, 19.0f, 50.0f}; // Shininess (amount of specular light reflected) respectively for each of the textures of files_textures
+std::vector<float> textures_shininess = {60.0f, 75.0f, 4.0f, 50.0f, 50.0f, 40.0f, 10.0f}; // Shininess (amount of specular light reflected) respectively for each of the textures of files_textures
 float lastFrame = 0.0f; // Time of last frame
 float delta_time = 0.0f; // Time between 2 last frames
 std::string path_string = PATH;
@@ -125,22 +125,27 @@ int main(int argc, char* argv[]){
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
 
             // Calculate view and projection matrices
-            glm::vec3 pos = texture.position;
-            glm::vec3 front = texture.direction;
+            glm::vec3 mirror_position = texture.position;
+            glm::vec3 incident = glm::normalize(mirror_position-camera.camera_pos);
+            glm::vec3 normal_mirror = texture.direction;
+            glm::vec3 reflected = glm::reflect(incident, normal_mirror);
             glm::vec3 up;
-            if (glm::length(front-glm::vec3(0.0f, 1.0f,  0.0f)) < 0.01f || glm::length(front-glm::vec3(0.0f, -1.0f,  0.0f)) < 0.01f) up = glm::vec3(0.0f, 0.0f, 1.0f);
+            if (length(normal_mirror-glm::vec3(0.0f, 1.0f, 0.0f)) < 0.01f) up = glm::vec3(0.0f, 0.0f, 1.0f); // If mirror is on the ground, up is in this direction to make the image in the mirror in the correct direction
+            else  if (length(normal_mirror-glm::vec3(0.0f, -1.0f, 0.0f)) < 0.01f) up = glm::vec3(0.0f, 0.0f, 1.0f);
             else up = glm::vec3(0.0f, 1.0f, 0.0f);
-            glm::mat4 view = glm::lookAt(pos, pos+front, up); // View: move world view on camera space
+            glm::mat4 view = glm::lookAt(mirror_position, mirror_position+reflected, up); // View: move world view on camera space
             // CameraFront is the direction from camera to object, so cameraPos+cameraFront is one of the points we are looking it
-            glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1.0f, Window::near, Window::far); // Projection: project 3D view on 2D
+            float fovAngleRad = 2.0f * atanf ((1.0f/2.0f) / glm::length(mirror_position-camera.camera_pos));
+            glm::mat4 projection = glm::perspective(fovAngleRad, 1.0f, Window::near, Window::far); // Projection: project 3D view on 2D
 
             // Draw all Drawable objects
-            glViewport(0, 0, 500, 500);
+            glViewport(0, 0, 1000, 1000);
             cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION);
             axis.draw_axis(view, projection);
-            sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, pos);
-            map.draw_cubes(view, projection, sun, pos); // Give pos and not the camera position otherwise the specular components changes when the camera moves !!
-            Mirror::draw_mirrors(view, projection, sun, pos);
+            sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, mirror_position);
+            map.draw_opaque_cubes(view, projection, sun, mirror_position); // Give pos and not the camera position otherwise the specular components changes when the camera moves !!
+            Mirror::draw_mirrors(view, projection, sun, mirror_position);
+            map.draw_non_opaque_cubes(view, projection, sun, mirror_position);
             glViewport(0, 0, Window::width, Window::height);
             // Don't write target
         }
@@ -159,10 +164,10 @@ int main(int argc, char* argv[]){
         cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION); // current_time used to blend day color and night texture during morning and evening
         axis.draw_axis(view, projection);
         sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, camera.camera_pos); // Give the camera position to draw the sun at distance 99 of the camera
-        map.draw_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw ligh effectively
-        // Draw cubes after sun and axis because some cubes are transparent so they should be drawn after the opaque objects
-        target.draw_axis(); // Target drawn the latest to be in front of the rest (despite being drawn with depth mask at false)
+        map.draw_opaque_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw ligh effectively
         Mirror::draw_mirrors(view, projection, sun, camera.camera_pos);
+        map.draw_non_opaque_cubes(view, projection, sun, camera.camera_pos); // Draw transparant cubes last
+        target.draw_axis(); // Target drawn the latest to be in front of the rest (despite being drawn with depth mask at false)
 
         // Checks for inputs signaled by Input_listener (button clicked, mouse clicked or mouse moved)
         check_for_input(window, &camera, &map);

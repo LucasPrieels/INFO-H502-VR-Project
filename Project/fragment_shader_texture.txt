@@ -26,7 +26,7 @@ void main() {
     // Specular light
     float specular_light_value = 0.7;
     vec3 viewing_dir = normalize(viewing_pos - fragment_pos_transferred);
-    vec3 reflection_dir = reflect(-light_direction, normal_transferred);
+    vec3 reflection_dir = normalize(reflect(-light_direction, normal_transferred));
     vec3 specular = specular_light_value * pow(max(dot(viewing_dir, reflection_dir), 0.0), shininess) * light_color;
 
     vec3 result = (ambient + diffuse + specular) * vec3(texture(texture_uniform, texture_coord_transferred));

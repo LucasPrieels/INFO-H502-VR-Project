@@ -1609,6 +1609,8 @@ glm/gtc/matrix_transform.hpp
 -
 glm/gtc/type_ptr.hpp
 -
+Mirror.h
+/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Mirror.h
 
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Cubemap.h
 iostream
@@ -1757,6 +1759,8 @@ glm/gtc/matrix_transform.hpp
 -
 glm/gtc/type_ptr.hpp
 -
+Sun.h
+/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Sun.h
 
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Shader.h
 iostream
