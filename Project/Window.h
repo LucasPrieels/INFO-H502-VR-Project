@@ -20,7 +20,7 @@ class Window{
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
         // Create window and check it is working
-        GLFWwindow* window = glfwCreateWindow(width, height, "VR Project", nullptr, nullptr); // Seems that the window doesn't take the specified size TODO
+        GLFWwindow* window = glfwCreateWindow(width, height, "VR Project", nullptr, nullptr);
         if (window == NULL){
             glfwTerminate();
             throw std::runtime_error("Failed to create GLFW window\n");

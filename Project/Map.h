@@ -19,6 +19,8 @@
 
 class Map: public Drawable{
 public:
+    std::vector<Cube> cubes; // List of the cubes in the map
+
     Map(int num_cubes_side, std::string path_to_current_folder):
         Drawable(Cube::vertices, true, Cube::vertices_indices,{3, 2, 3}),
         shader(path_to_current_folder + "vertex_shader_texture.txt", path_to_current_folder + "fragment_shader_texture.txt")
@@ -27,12 +29,15 @@ public:
         init_map(num_cubes_side); // Init cubes vector
     }
 
-    void draw_opaque_cubes(glm::mat4 view, glm::mat4 projection, Sun sun, glm::vec3 camera_pos){
+    void draw_opaque_cubes(glm::mat4 view, glm::mat4 projection, Sun sun, glm::vec3 camera_pos){ // Always called first
         shader.use();
         shader.set_uniform("light_color", sun.light_color);
         shader.set_uniform("light_pos", sun.light_pos);
         shader.set_uniform("viewing_pos", camera_pos);
         shader.set_uniform("texture_uniform", 0); // Bound texture will be put at index 0, so we write as uniform
+        shader.set_uniform("shadow_texture_uniform", 1);
+        shader.set_uniform("view_light", sun.view_light);
+        shader.set_uniform("projection_light", sun.projection_light);
 
         // First draw only opaque objects (to make sure we see them through non-opaque ones)
         for (Texture texture: Texture::textures) {
@@ -136,7 +141,6 @@ public:
     }
 
 private:
-    std::vector<Cube> cubes; // List of the cubes in the map
     Shader shader; // Shader used to draw blocks
     std::string path_to_current_folder;
 
@@ -144,7 +148,7 @@ private:
         for (int i = -num_cubes_side/2; i < num_cubes_side/2; i++){
             for (int j = -num_cubes_side/2; j < num_cubes_side/2; j++){
                 // Custom altitude function
-                int altitude = round(cos((2*(float)i+15)/80*M_PI)+cos(((float)j+12)/80*4*M_PI)+3);
+                int altitude = round(cos((2*(float)i+15)/80*M_PI)+cos(((float)j+12)/80*4*M_PI)+4);
 
                 for (int k = 0; k < altitude; k++){ // Create dirt blocks until altitude-1
                     Cube cube(i, k, j, Texture::textures[1].texture_ID); // Create a new cube at this position, the altitude being on the y-axis

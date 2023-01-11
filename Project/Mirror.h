@@ -10,6 +10,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Sun.h"
+#include "Texture.h"
 
 class Mirror: Drawable{
 public:
@@ -17,6 +18,7 @@ public:
     Texture texture;
     Shader shader;
 
+    static inline int resolution = 1000; // Default value of mirrors resolution
     static inline std::vector<Mirror> mirrors;
 
     static inline std::vector<float> vertices_x_plus = { // Vertices for a mirror facing the X+ direction
@@ -71,7 +73,7 @@ public:
 
     Mirror(std::string path_to_current_folder, glm::vec3 position, glm::vec3 orientation, std::vector<float> vertices): // Vertices is one of the static vertices possibilities shown above
         Drawable(vertices, true, Mirror::vertices_indices, {3, 2, 3}),
-        texture("mirror", 5.0f, true, position, orientation), // Mirror blocks have a shininess of 60
+        texture("mirror", 5.0f, true, position, orientation, Mirror::resolution), // Mirror blocks have a shininess of 60
         shader(path_to_current_folder + "vertex_shader_texture.txt", path_to_current_folder + "fragment_shader_texture.txt")
     {
         this->position = position;
@@ -85,6 +87,7 @@ public:
         shader.set_uniform("viewing_pos", camera_pos);
         shader.set_uniform("texture_uniform", 0); // Bound texture will be put at index 0, so we write as uniform
         shader.set_uniform("shininess", texture.shininess);
+        shader.set_uniform("shadow_texture_uniform", 1);
         draw({position}, view, projection, shader, texture.texture_ID, 6, GL_TRIANGLES, true);
     }
 

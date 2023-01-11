@@ -19,15 +19,18 @@
 #include "Window.h"
 #include "Target.h"
 #include "Sun.h"
+#include "Shadow.h"
 
 #define PATH "../../Project/" // Path to go from where the program is run to current folder
 #define MOUSE_SENSITIVITY 0.05 // Sensitivity of yaw and pitch wrt mouse movements
 #define MAX_DISTANCE_REMOVE 15 // We only remove clicked blocks up to this distance
 #define NUM_CUBES_SIDE 100 // We create a NUM_CUBES_SIDE x NUM_CUBES_SIDE area of cubes
-#define DAY_DURATION 200000 // Nb of milliseconds in an in-game day
+#define DAY_DURATION 50000 // Nb of milliseconds in an in-game day
 #define NEAR 0.1f
 #define FAR 100.0f // Near and far values used for perspective projection
 #define CAMERA_SPEED 6.0f // Speed of movement of camera
+#define MIRROR_RESOL 1000 // Resolution of mirrors
+#define SHADOW_DEPTH_SIZE 4096 // Size of the depth map frame (larger means more rays)
 
  int width = 1600, height = 1000; // Size of screen
  std::vector<std::string> files_textures = {"grass.png", "dirt.png", "gold.png", "spruce.png", "bookshelf.png", "leaf.png", "glass.png"};
@@ -95,7 +98,7 @@ int main(int argc, char* argv[]){
     // Load all possible block textures
     for (int i = 0; i < files_textures.size(); i++){
         bool opaque = !(files_textures[i] == "leaf.png" || files_textures[i] == "glass.png"); // Whether this texture is completely opaque or not. Only non-opaque textures are leaves and glass
-        Texture texture(path_string + "Textures/" + files_textures[i], textures_shininess[i], opaque, glm::vec3(0.0f), glm::vec3(0.0f)); // Last 2 arguments are not used for non-mirror textures
+        Texture texture(path_string + "Textures/" + files_textures[i], textures_shininess[i], opaque, glm::vec3(0.0f), glm::vec3(0.0f), Mirror::resolution); // Previous-to-last 2 arguments are not used for non-mirror textures
     }
 
     // Create all relevant objects
@@ -106,17 +109,39 @@ int main(int argc, char* argv[]){
     Axis axis(path_string);
     Target target(path_string);
     Sun sun(path_string, original_light_color, distance_sun_to_origin);
+    Mirror::resolution = MIRROR_RESOL; // Set mirror resolutions
 
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST); // Enable depth testing to know which triangles are more in front
-    
+
+    Shadow::init_depth_map_framebuffer(SHADOW_DEPTH_SIZE, SHADOW_DEPTH_SIZE);
+    Shader shadow_shader(path_string + "vertex_shader_shadow.txt", path_string + "fragment_shader_shadow.txt");
+    glm::mat4 projection_light = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, 50.0f, 150.0f); // Need larger frustum otherwise shadows won't be computed far from the sun, aspect is 1 since depth map is 1024x1024
+    shadow_shader.use();
+    shadow_shader.set_uniform("projection", projection_light);
+    sun.projection_light = projection_light;
+
     // Render loop
     int frame_nb = 0;
     while (!glfwWindowShouldClose(window)){
         frame_nb++;
         std::cout << "FPS: " << fps() << std::endl;
 
-        // First passes on all the framebuffers to generate the mirror images
+        // First pass is for computing the shadows
+        glm::mat4 view_light = glm::lookAt(sun.light_pos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // View from the sun towards the center of the map
+        shadow_shader.use();
+        shadow_shader.set_uniform("view", view_light);
+        sun.view_light = view_light;
+
+        glViewport(0, 0, Shadow::shadow_width, Shadow::shadow_height);
+        glBindFramebuffer(GL_FRAMEBUFFER, Shadow::depth_map_framebuffer);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        Shadow::draw_objects_with_shadow(map.cubes, projection_light, view_light, shadow_shader);
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glViewport(0, 0, Window::width, Window::height);
+
+        // Passes on all the framebuffers to generate the mirror images
         for (Texture texture: Texture::textures){
             if (!texture.mirror) continue; // If the texture is not mirror we don't have to compute the view
 
@@ -135,10 +160,10 @@ int main(int argc, char* argv[]){
             else up = glm::vec3(0.0f, 1.0f, 0.0f);
             glm::mat4 view = glm::lookAt(mirror_position, mirror_position+reflected, up); // View: move world view on camera space
             // CameraFront is the direction from camera to object, so cameraPos+cameraFront is one of the points we are looking it
-            float fovAngleRad = 2.0f * atanf ((1.0f/2.0f) / glm::length(mirror_position-camera.camera_pos));
-            glm::mat4 projection = glm::perspective(fovAngleRad, 1.0f, Window::near, Window::far); // Projection: project 3D view on 2D
+            float fov = 2.0f * atanf ((1.0f/2.0f)/glm::length(mirror_position-camera.camera_pos)); // Triangle formed by camera position, mirror center and mirror top, mirror size being 1
+            glm::mat4 projection = glm::perspective(fov, 1.0f, Window::near, Window::far); // Projection: project 3D view on 2D
 
-            // Draw all Drawable objects
+            // Draw Drawable objects that should be reflected in mirrors
             glViewport(0, 0, 1000, 1000);
             cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION);
             axis.draw_axis(view, projection);
@@ -147,7 +172,6 @@ int main(int argc, char* argv[]){
             Mirror::draw_mirrors(view, projection, sun, mirror_position);
             map.draw_non_opaque_cubes(view, projection, sun, mirror_position);
             glViewport(0, 0, Window::width, Window::height);
-            // Don't write target
         }
 
         // Last pass is to show on the screen
@@ -164,7 +188,10 @@ int main(int argc, char* argv[]){
         cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION); // current_time used to blend day color and night texture during morning and evening
         axis.draw_axis(view, projection);
         sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, camera.camera_pos); // Give the camera position to draw the sun at distance 99 of the camera
-        map.draw_opaque_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw ligh effectively
+        glActiveTexture(GL_TEXTURE1); // Put the depth map in texture unit 1
+        glBindTexture(GL_TEXTURE_2D, Shadow::depth_map);
+        glActiveTexture(GL_TEXTURE0); // Go back to texture unit 0
+        map.draw_opaque_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw light effectively
         Mirror::draw_mirrors(view, projection, sun, camera.camera_pos);
         map.draw_non_opaque_cubes(view, projection, sun, camera.camera_pos); // Draw transparant cubes last
         target.draw_axis(); // Target drawn the latest to be in front of the rest (despite being drawn with depth mask at false)

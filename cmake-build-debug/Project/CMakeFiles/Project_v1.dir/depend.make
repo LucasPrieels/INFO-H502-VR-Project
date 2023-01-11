@@ -222,6 +222,7 @@ Project/CMakeFiles/Project_v1.dir/Main.cpp.o: \
  ../Project/Map.h \
  ../Project/Mirror.h \
  ../Project/Shader.h \
+ ../Project/Shadow.h \
  ../Project/Sun.h \
  ../Project/Target.h \
  ../Project/Texture.h \

@@ -5,14 +5,15 @@ precision mediump float;
 in vec2 texture_coord_transferred;
 in vec3 fragment_pos_transferred;
 in vec3 normal_transferred;
+in vec3 fragment_pos_light_space_transferred;
 out vec4 final_color;
 
 uniform sampler2D texture_uniform;
+uniform sampler2D shadow_texture_uniform;
 uniform vec3 light_color;
 uniform vec3 light_pos;
 uniform vec3 viewing_pos;
 uniform float shininess;
-
 void main() {
     // Ambient light
     float ambient_light_value = 0.5;
@@ -20,7 +21,7 @@ void main() {
 
     // Diffuse light
     float diffuse_light_value = 0.8;
-    vec3 light_direction = normalize(light_pos - fragment_pos_transferred);
+    vec3 light_direction = normalize(light_pos); // It was previously normalize(light_pos-fragment_pos_transferred) but replaced to have a directional light
     vec3 diffuse = diffuse_light_value * max(dot(normal_transferred, light_direction), 0.0) * light_color;
 
     // Specular light
@@ -29,6 +30,15 @@ void main() {
     vec3 reflection_dir = normalize(reflect(-light_direction, normal_transferred));
     vec3 specular = specular_light_value * pow(max(dot(viewing_dir, reflection_dir), 0.0), shininess) * light_color;
 
-    vec3 result = (ambient + diffuse + specular) * vec3(texture(texture_uniform, texture_coord_transferred));
+    // Shadow (multiplies the diffuse and specular components)
+    vec3 fragment_pos_light_space = fragment_pos_light_space_transferred * 0.5 + 0.5; // fragment_pos_light_space is in range [-1,1] while texture argument should be [0,1]
+    float depth_without_obstacle = fragment_pos_light_space.z; // Distance between the light source and the considered fragment
+    float depth_with_obstacle = texture(shadow_texture_uniform, fragment_pos_light_space.xy).r; // Taking the ray between the light source and the considered fragment, depth with the closest obstacle (which might not be the fragment if there is shadow)
+    float shadow = 0.0;
+    if (depth_without_obstacle - 0.02 > depth_with_obstacle) shadow = 1.0; // If there is an obstacle (taking some margin), there is shadow
+    if (fragment_pos_light_space.z > 1.0) shadow = 0.0; // Outside the frustum nothing should be in shadow
+
+    // Overall result
+    vec3 result = (ambient + (1.0-shadow) * (diffuse + specular)) * vec3(texture(texture_uniform, texture_coord_transferred));
     final_color = vec4(result, texture(texture_uniform, texture_coord_transferred).a);
 }

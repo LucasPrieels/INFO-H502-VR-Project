@@ -10,16 +10,28 @@ layout (location = 3) in vec3 translation;
 out vec2 texture_coord_transferred; // Transferred from vertex shader to fragment shader
 out vec3 fragment_pos_transferred;
 out vec3 normal_transferred;
+out vec3 fragment_pos_light_space_transferred;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 view_light;
+uniform mat4 projection_light;
 
 void main(){
-	if (abs(model[3][0]) + abs(model[3][1]) + abs(model[3][2]) < 0.01) gl_Position = projection*view*vec4(position+translation, 1.0);
+	if (abs(model[3][0]) + abs(model[3][1]) + abs(model[3][2]) < 0.01){
+	    gl_Position = projection*view*vec4(position+translation, 1.0);
+        fragment_pos_transferred = position+translation;
+	}
 	// If there is a translation in "model", we use this uniform. Otherwise, we use "translation" input INSTEAD (never both)
-	else gl_Position = projection*view*model*vec4(position, 1.0);
+	else{
+	    gl_Position = projection*view*model*vec4(position, 1.0);
+        fragment_pos_transferred = vec3(model * vec4(position, 1.0));
+	}
     texture_coord_transferred = texture_coordinate;
-    fragment_pos_transferred = vec3(vec4(position+translation, 1.0));
-    normal_transferred = normal;
+    normal_transferred = normal; // No rotation or scaling so normal is constant
+
+    // Compute the fragment position in the light space
+    vec4 fragment_pos_light_space_vec4 = projection_light*view_light*vec4(fragment_pos_transferred, 1.0);
+    fragment_pos_light_space_transferred = fragment_pos_light_space_vec4.xyz/fragment_pos_light_space_vec4.w; // Transform in clip space ourselves since OpenGL only does it for gl_position
 }

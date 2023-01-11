@@ -35,11 +35,11 @@ public:
         shader.use();
 
         glBindVertexArray(VAO);
-        // Bind texture if needed (if texture == -1 it means we don't want to use one)
+        // Bind correct texture if needed (if texture == -1 it means we don't want to use one)
         if (shader.vertex_shader_path.substr(shader.vertex_shader_path.size()-24, 24) == "vertex_shader_skybox.txt"){
             glBindTexture(GL_TEXTURE_CUBE_MAP, texture); // To draw a skybox we use GL_TEXTURE_CUBE_MAP instead of GL_TEXTURE_2D
         }
-        else if (texture >= 0) glBindTexture(GL_TEXTURE_2D, texture);
+        else if (texture >= 0) glBindTexture(GL_TEXTURE_2D, texture); // Bound to texture unit 0 by default
 
         // Set uniforms in shader
         shader.set_uniform("view", view);
@@ -60,9 +60,9 @@ public:
             glBindBuffer(GL_ARRAY_BUFFER, VBO_instanced);
             glBufferData(GL_ARRAY_BUFFER, translations.size() * sizeof(glm::vec3), &translations[0], GL_STATIC_DRAW);
 
-            glEnableVertexAttribArray(3); // Add a new attribute (after positions, texture, and normals)
-            glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void *) 0); // The new attribute is a vec3, so size is 3
-            glVertexAttribDivisor(3, 1);
+            glEnableVertexAttribArray(position_attributes.size()); // Add a new attribute (after positions, texture, and normals in the case of cubes)
+            glVertexAttribPointer(position_attributes.size(), 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void *) 0); // The new attribute is a vec3, so size is 3
+            glVertexAttribDivisor(position_attributes.size(), 1);
 
             // Set model uniforms in shader
             if (use_EBO) glDrawElementsInstanced(type_primitive, num_vertices, GL_UNSIGNED_INT, 0, translations.size());

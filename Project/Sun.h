@@ -43,6 +43,7 @@ public:
     };
 
     glm::vec3 light_color, light_pos;
+    glm::mat4 view_light, projection_light;
 
     Sun(std::string path_to_current_folder, glm::vec3 light_color, float distance_to_origin):
             Drawable(Sun::vertices, true, Sun::vertices_indices,{3}),
