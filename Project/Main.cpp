@@ -25,7 +25,7 @@
 #define MOUSE_SENSITIVITY 0.05 // Sensitivity of yaw and pitch wrt mouse movements
 #define MAX_DISTANCE_REMOVE 15 // We only remove clicked blocks up to this distance
 #define NUM_CUBES_SIDE 100 // We create a NUM_CUBES_SIDE x NUM_CUBES_SIDE area of cubes
-#define DAY_DURATION 50000 // Nb of milliseconds in an in-game day
+#define DAY_DURATION 200000 // Nb of milliseconds in an in-game day
 #define NEAR 0.1f
 #define FAR 100.0f // Near and far values used for perspective projection
 #define CAMERA_SPEED 6.0f // Speed of movement of camera
