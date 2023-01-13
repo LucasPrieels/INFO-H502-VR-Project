@@ -704,28 +704,47 @@ Project/CMakeFiles/Project_v1.dir/Main.cpp.o: /Users/victorgrandjean/Documents/P
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/cstdarg \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/vector \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__split_buffer \
-  /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/stb_image.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include/emmintrin.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include/xmmintrin.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include/mmintrin.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include/mm_malloc.h \
+  /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Map.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/array \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/map \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__functional/is_transparent.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__node_handle \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/optional \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__tree \
+  /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Drawable.h \
   /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Shader.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/fstream \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/filesystem \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/stack \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/deque \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/iomanip \
+  /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Texture.h \
+  /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/stb_image.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include/emmintrin.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include/xmmintrin.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include/mmintrin.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include/mm_malloc.h \
+  /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Cube.h \
+  /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Mirror.h \
+  /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Sun.h \
   /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Input_listener.h \
   /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Camera.h \
-  /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Texture.h \
+  /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Window.h \
   /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Cubemap.h \
-  /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Cube.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/array \
   /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Axis.h \
-  /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Window.h
+  /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Target.h \
+  /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Shadow.h
 
+
+/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Shadow.h:
 
 /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Cubemap.h:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include/mm_malloc.h:
+
+/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Sun.h:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include/mmintrin.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/iomanip:
 
@@ -735,9 +754,11 @@ Project/CMakeFiles/Project_v1.dir/Main.cpp.o: /Users/victorgrandjean/Documents/P
 
 /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Shader.h:
 
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include/mm_malloc.h:
+/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Drawable.h:
 
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include/mmintrin.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__tree:
+
+/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Map.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/cstdarg:
 
@@ -750,6 +771,8 @@ Project/CMakeFiles/Project_v1.dir/Main.cpp.o: /Users/victorgrandjean/Documents/P
 /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glm/glm/gtc/type_precision.inl:
 
 /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glm/glm/gtc/type_precision.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__functional/is_transparent.h:
 
 /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glm/glm/gtx/string_cast.hpp:
 
@@ -820,6 +843,8 @@ Project/CMakeFiles/Project_v1.dir/Main.cpp.o: /Users/victorgrandjean/Documents/P
 /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glm/glm/detail/func_common.inl:
 
 /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glm/glm/detail/_vectorize.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/optional:
 
 /Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/3rdParty/glm/glm/detail/func_exponential.inl:
 
@@ -1423,6 +1448,8 @@ Project/CMakeFiles/Project_v1.dir/Main.cpp.o: /Users/victorgrandjean/Documents/P
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/sys/_pthread/_pthread_mutex_t.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/map:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/sys/_pthread/_pthread_condattr_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__iterator/move_iterator.h:
@@ -1539,6 +1566,8 @@ Project/CMakeFiles/Project_v1.dir/Main.cpp.o: /Users/victorgrandjean/Documents/P
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/cstring:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__node_handle:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/concepts:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__iterator/incrementable_traits.h:
@@ -1612,6 +1641,8 @@ Project/CMakeFiles/Project_v1.dir/Main.cpp.o: /Users/victorgrandjean/Documents/P
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/math.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/machine/endian.h:
+
+/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Target.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/_types/_intmax_t.h:
 
@@ -1938,6 +1969,8 @@ Project/CMakeFiles/Project_v1.dir/Main.cpp.o: /Users/victorgrandjean/Documents/P
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include/limits.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/locale.h:
+
+/Users/victorgrandjean/Documents/Pro/MA2/info_VR_code/info-h502_202223/INFO-H502-VR-Project/Project/Mirror.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/sys/_types/_fd_set.h:
 

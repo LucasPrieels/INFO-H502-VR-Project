@@ -17,53 +17,54 @@ public:
     glm::vec3 position; // Coordinates of the mirror
     Texture texture;
     Shader shader;
+    Shader shader_border;
 
     static inline int resolution = 1000; // Default value of mirrors resolution
     static inline std::vector<Mirror> mirrors;
 
     static inline std::vector<float> vertices_x_plus = { // Vertices for a mirror facing the X+ direction
             // First 3 are 3D positions, next 2 are texture positions, final 3 are normal vector components
-            -0.49f, -0.49f, 0.49f,     1.0f, 0.0f,     1.0f, 0.0f, 0.0f,
-            -0.49f, 0.49f, 0.49f,      1.0f, 1.0f,     1.0f, 0.0f, 0.0f,
-            -0.49f, -0.49f, -0.49f,    0.0f, 0.0f,     1.0f, 0.0f, 0.0f,
-            -0.49f, 0.49f, -0.49f,     0.0f, 1.0f,     1.0f, 0.0f, 0.0f
+            -0.45f, -0.45f, 0.45f,     1.0f, 0.0f,     1.0f, 0.0f, 0.0f,
+            -0.45f, 0.45f, 0.45f,      1.0f, 1.0f,     1.0f, 0.0f, 0.0f,
+            -0.45f, -0.45f, -0.45f,    0.0f, 0.0f,     1.0f, 0.0f, 0.0f,
+            -0.45f, 0.45f, -0.45f,     0.0f, 1.0f,     1.0f, 0.0f, 0.0f
     };
 
     static inline std::vector<float> vertices_x_minus = { // Vertices for a mirror facing the X- direction
             // First 3 are 3D positions, next 2 are texture positions, final 3 are normal vector components
-            0.49f, -0.49f, -0.49f,     1.0f, 0.0f,     -1.0f, 0.0f, 0.0f,
-            0.49f, 0.49f, -0.49f,      1.0f, 1.0f,     -1.0f, 0.0f, 0.0f,
-            0.49f, -0.49f, 0.49f,      0.0f, 0.0f,     -1.0f, 0.0f, 0.0f,
-            0.49f, 0.49f, 0.49f,       0.0f, 1.0f,     -1.0f, 0.0f, 0.0f
+            0.45f, -0.45f, -0.45f,     1.0f, 0.0f,     -1.0f, 0.0f, 0.0f,
+            0.45f, 0.45f, -0.45f,      1.0f, 1.0f,     -1.0f, 0.0f, 0.0f,
+            0.45f, -0.45f, 0.45f,      0.0f, 0.0f,     -1.0f, 0.0f, 0.0f,
+            0.45f, 0.45f, 0.45f,       0.0f, 1.0f,     -1.0f, 0.0f, 0.0f
     };
 
     static inline std::vector<float> vertices_y_minus = { // Vertices for a mirror facing the Y- direction
             // First 3 are 3D positions, next 2 are texture positions, final 3 are normal vector components
-            -0.49f, 0.49f, -0.49f,     1.0f, 0.0f,     0.0f, -1.0f, 0.0f,
-            -0.49f, 0.49f, 0.49f,      1.0f, 1.0f,     0.0f, -1.0f, 0.0f,
-            0.49f, 0.49f, -0.49f,      0.0f, 0.0f,     0.0f, -1.0f, 0.0f,
-            0.49f, 0.49f, 0.49f,       0.0f, 1.0f,     0.0f, -1.0f, 0.0f
+            -0.45f, 0.45f, -0.45f,     1.0f, 0.0f,     0.0f, -1.0f, 0.0f,
+            -0.45f, 0.45f, 0.45f,      1.0f, 1.0f,     0.0f, -1.0f, 0.0f,
+            0.45f, 0.45f, -0.45f,      0.0f, 0.0f,     0.0f, -1.0f, 0.0f,
+            0.45f, 0.45f, 0.45f,       0.0f, 1.0f,     0.0f, -1.0f, 0.0f
     };
     static inline std::vector<float> vertices_y_plus = { // Vertices for a mirror facing the Y+ direction
             // First 3 are 3D positions, next 2 are texture positions, final 3 are normal vector components
-            -0.49f, -0.49f, 0.49f,     0.0f, 1.0f,     0.0f, 1.0f, 0.0f,
-            -0.49f, -0.49f, -0.49f,    0.0f, 0.0f,     0.0f, 1.0f, 0.0f,
-            0.49f, -0.49f, 0.49f,      1.0f, 1.0f,     0.0f, 1.0f, 0.0f,
-            0.49f, -0.49f, -0.49f,     1.0f, 0.0f,     0.0f, 1.0f, 0.0f
+            -0.45f, -0.45f, 0.45f,     0.0f, 1.0f,     0.0f, 1.0f, 0.0f,
+            -0.45f, -0.45f, -0.45f,    0.0f, 0.0f,     0.0f, 1.0f, 0.0f,
+            0.45f, -0.45f, 0.45f,      1.0f, 1.0f,     0.0f, 1.0f, 0.0f,
+            0.45f, -0.45f, -0.45f,     1.0f, 0.0f,     0.0f, 1.0f, 0.0f
     };
     static inline std::vector<float> vertices_z_minus = { // Vertices for a mirror facing the Z- direction
             // First 3 are 3D positions, next 2 are texture positions, final 3 are normal vector components
-            0.49f, -0.49f, 0.49f,      1.0f, 0.0f,     0.0f, 0.0f, -1.0f,
-            0.49f, 0.49f, 0.49f,       1.0f, 1.0f,     0.0f, 0.0f, -1.0f,
-            -0.49f, -0.49f, 0.49f,     0.0f, 0.0f,     0.0f, 0.0f, -1.0f,
-            -0.49f, 0.49f, 0.49f,      0.0f, 1.0f,     0.0f, 0.0f, -1.0f
+            0.45f, -0.45f, 0.45f,      1.0f, 0.0f,     0.0f, 0.0f, -1.0f,
+            0.45f, 0.45f, 0.45f,       1.0f, 1.0f,     0.0f, 0.0f, -1.0f,
+            -0.45f, -0.45f, 0.45f,     0.0f, 0.0f,     0.0f, 0.0f, -1.0f,
+            -0.45f, 0.45f, 0.45f,      0.0f, 1.0f,     0.0f, 0.0f, -1.0f
     };
     static inline std::vector<float> vertices_z_plus = { // Vertices for a mirror facing the Z+ direction
             // First 3 are 3D positions, next 2 are texture positions, final 3 are normal vector components
-            -0.49f, -0.49f, -0.49f,    1.0f, 0.0f,     0.0f, 0.0f, 1.0f, // Invert x-component of texture to create the symmetry effect
-            -0.49f, 0.49f, -0.49f,     1.0f, 1.0f,     0.0f, 0.0f, 1.0f,
-            0.49f, -0.49f, -0.49f,     0.0f, 0.0f,     0.0f, 0.0f, 1.0f,
-            0.49f, 0.49f, -0.49f,      0.0f, 1.0f,     0.0f, 0.0f, 1.0f
+            -0.45f, -0.45f, -0.45f,    1.0f, 0.0f,     0.0f, 0.0f, 1.0f, // Invert x-component of texture to create the symmetry effect
+            -0.45f, 0.45f, -0.45f,     1.0f, 1.0f,     0.0f, 0.0f, 1.0f,
+            0.45f, -0.45f, -0.45f,     0.0f, 0.0f,     0.0f, 0.0f, 1.0f,
+            0.45f, 0.45f, -0.45f,      0.0f, 1.0f,     0.0f, 0.0f, 1.0f
     };
 
     static inline std::vector<unsigned int> vertices_indices = {
@@ -74,10 +75,13 @@ public:
     Mirror(std::string path_to_current_folder, glm::vec3 position, glm::vec3 orientation, std::vector<float> vertices): // Vertices is one of the static vertices possibilities shown above
         Drawable(vertices, true, Mirror::vertices_indices, {3, 2, 3}),
         texture("mirror", 5.0f, true, position, orientation, Mirror::resolution), // Mirror blocks have a shininess of 60
-        shader(path_to_current_folder + "vertex_shader_texture.txt", path_to_current_folder + "fragment_shader_texture.txt")
+        shader(path_to_current_folder + "vertex_shader_texture.txt", path_to_current_folder + "fragment_shader_texture.txt"),
+        shader_border(path_to_current_folder + "vertex_shader_color.txt", path_to_current_folder + "fragment_shader_color.txt")
+        
     {
         this->position = position;
         Mirror::mirrors.push_back(*this);
+        
     }
 
     void draw_mirror(glm::mat4 view, glm::mat4 projection, Sun sun, glm::vec3 camera_pos){
@@ -88,15 +92,39 @@ public:
         shader.set_uniform("texture_uniform", 0); // Bound texture will be put at index 0, so we write as uniform
         shader.set_uniform("shininess", texture.shininess);
         shader.set_uniform("shadow_texture_uniform", 1);
-        draw({position}, view, projection, shader, texture.texture_ID, 6, GL_TRIANGLES, true);
+        draw({position}, view, projection, shader, texture.texture_ID, 6, GL_TRIANGLES, true, false);
+        
     }
 
     static void draw_mirrors(glm::mat4 view, glm::mat4 projection, Sun sun, glm::vec3 camera_pos){
         glEnable(GL_CULL_FACE); // Improves computation power and allows to have leaves blocks without flickering
         for (Mirror mirror: Mirror::mirrors){
             mirror.draw_mirror(view, projection, sun, camera_pos);
+            
+
         }
         glDisable(GL_CULL_FACE);
+    }
+
+    static void draw_borders(glm::mat4 view, glm::mat4 projection, Sun sun, glm::vec3 camera_pos){
+                glEnable(GL_CULL_FACE); // Improves computation power and allows to have leaves blocks without flickering
+        for (Mirror mirror: Mirror::mirrors){
+           mirror.draw_border(view, projection, sun, camera_pos);
+            
+        }
+        glDisable(GL_CULL_FACE);
+    }
+
+    void draw_border(glm::mat4 view, glm::mat4 projection, Sun sun, glm::vec3 camera_pos){
+        
+        shader.use();
+        shader.set_uniform("light_color", sun.light_color);
+        shader.set_uniform("light_pos", sun.light_pos);
+        shader.set_uniform("viewing_pos", camera_pos);
+        shader.set_uniform("texture_uniform", 0); // Bound texture will be put at index 0, so we write as uniform
+        shader.set_uniform("shininess", texture.shininess);
+        shader.set_uniform("shadow_texture_uniform", 1);
+        draw({position}, view, projection, shader, 3, 6, GL_TRIANGLES, true, true);
     }
 };
 #endif

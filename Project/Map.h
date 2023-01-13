@@ -50,7 +50,7 @@ public:
             shader.set_uniform("shininess", texture.shininess);
             glEnable(GL_CULL_FACE); // Improves computation power and allows to have leaves blocks without flickering
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            draw(translations_to_draw, view, projection, shader, texture.texture_ID, 36, GL_TRIANGLES, true);
+            draw(translations_to_draw, view, projection, shader, texture.texture_ID, 36, GL_TRIANGLES, true, false);
             glDisable(GL_CULL_FACE);
         }
     }
@@ -78,7 +78,7 @@ public:
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         for (int i = translations_to_draw.size()-1; i >= 0; i--){
             shader.set_uniform("shininess", textures_to_draw[i].second.shininess);
-            draw({translations_to_draw[i].second}, view, projection, shader, textures_to_draw[i].second.texture_ID, 36, GL_TRIANGLES, true);
+            draw({translations_to_draw[i].second}, view, projection, shader, textures_to_draw[i].second.texture_ID, 36, GL_TRIANGLES, true, false);
         }
         glDisable(GL_BLEND);
         glDisable(GL_CULL_FACE);

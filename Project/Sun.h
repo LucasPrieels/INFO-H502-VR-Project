@@ -81,7 +81,7 @@ public:
 
         shader.use();
         shader.set_uniform("light_color", light_color);
-        draw({light_pos}, view, projection, shader, -1, 36, GL_TRIANGLES, false);
+        draw({light_pos}, view, projection, shader, -1, 36, GL_TRIANGLES, false, false);
     }
 
 private:

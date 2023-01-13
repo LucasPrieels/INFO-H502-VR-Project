@@ -45,7 +45,7 @@ public:
         std::vector<glm::vec3> translation_cubes;
         for (Cube c: cubes) translation_cubes.push_back(glm::vec3(c.x, c.y, c.z));
 
-        drawable.draw(translation_cubes, view_light, projection_light, shadow_shader, 1, 36, GL_TRIANGLES, true);
+        drawable.draw(translation_cubes, view_light, projection_light, shadow_shader, 1, 36, GL_TRIANGLES, true, false);
     }
 };
 #endif

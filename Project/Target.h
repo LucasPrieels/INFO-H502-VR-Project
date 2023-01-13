@@ -10,24 +10,26 @@
 class Target: public Drawable{
     public:
     static inline std::vector<float> vertices = { // Target in the middle of the camera (already in the camera space, view and projection are identity)
-            0.0f, -0.05f, 0.0f, 1.0f, 1.0f, 1.0f,
-            0.0f, 0.05f, 0.0f, 1.0f, 1.0f, 1.0f,
-            -0.05f*(float)Window::height/(float)Window::width, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-            0.05f*(float)Window::height/(float)Window::width, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f
+            0.0f, -0.05f, 0.0f,
+            0.0f, 0.05f, 0.0f, 
+            -0.05f*(float)Window::height/(float)Window::width, 0.0f, 0.0f, 
+            0.05f*(float)Window::height/(float)Window::width, 0.0f, 0.0f, 
     };
 
     Target(std::string path_to_current_folder):
-    Drawable(Target::vertices, false, {},{3, 3}),
+    Drawable(Target::vertices, false, {},{3}),
     shader(path_to_current_folder + "vertex_shader_color.txt", path_to_current_folder + "fragment_shader_color.txt")
     { // Create a 3-axis system at (0,0,0) in the map
         // Init shader
         shader.use();
+        shader.set_uniform("imposed_color", glm::vec3(1.0f, 1.0, 1.0));
+
     }
 
     void draw_axis(){
         // All 3 matrices are glm::mat4(1.0f) because we want the target to stay in the middle of the screen
         glDepthMask(GL_FALSE); // Needed otherwise when we click the detected depth is 0 (because the target is in front of all other objects)
-        draw({glm::vec3(0.0f)}, glm::mat4{1.0f}, glm::mat4{1.0f}, shader, -1, 4, GL_LINES, false); // -1 because we don't want a texture
+        draw({glm::vec3(0.0f)}, glm::mat4{1.0f}, glm::mat4{1.0f}, shader, -1, 4, GL_LINES, false, false); // -1 because we don't want a texture
         glDepthMask(GL_TRUE);
     }
 

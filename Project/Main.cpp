@@ -113,7 +113,9 @@ int main(int argc, char* argv[]){
 
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST); // Enable depth testing to know which triangles are more in front
-
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
     Shadow::init_depth_map_framebuffer(SHADOW_DEPTH_SIZE, SHADOW_DEPTH_SIZE);
     Shader shadow_shader(path_string + "vertex_shader_shadow.txt", path_string + "fragment_shader_shadow.txt");
     glm::mat4 projection_light = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, 50.0f, 150.0f); // Need larger frustum otherwise shadows won't be computed far from the sun, aspect is 1 since depth map is 1024x1024
@@ -135,7 +137,8 @@ int main(int argc, char* argv[]){
 
         glViewport(0, 0, Shadow::shadow_width, Shadow::shadow_height);
         glBindFramebuffer(GL_FRAMEBUFFER, Shadow::depth_map_framebuffer);
-        glClear(GL_DEPTH_BUFFER_BIT);
+        glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        glStencilMask(0x00);
         Shadow::draw_objects_with_shadow(map.cubes, projection_light, view_light, shadow_shader);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -147,7 +150,7 @@ int main(int argc, char* argv[]){
 
             glBindFramebuffer(GL_FRAMEBUFFER, texture.framebuffer);
             glClearColor(0.5f, 0.5f, 0.5f, 1.0f); // Set color to use when clearing
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT ); // Clear color and depth buffers
 
             // Calculate view and projection matrices
             glm::vec3 mirror_position = texture.position;
@@ -177,7 +180,7 @@ int main(int argc, char* argv[]){
         // Last pass is to show on the screen
         glBindFramebuffer(GL_FRAMEBUFFER, 0); // Back to default FBO
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         // Calculate view and projection matrices
         glm::mat4 view = glm::lookAt(camera.camera_pos, camera.camera_pos+camera.camera_front, camera.movement_up); // View: move world view on camera space
@@ -185,6 +188,7 @@ int main(int argc, char* argv[]){
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width/(float)height, Window::near, Window::far); // Projection: project 3D view on 2D
 
         // Draw all Drawable objects
+        
         cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION); // current_time used to blend day color and night texture during morning and evening
         axis.draw_axis(view, projection);
         sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, camera.camera_pos); // Give the camera position to draw the sun at distance 99 of the camera
@@ -192,7 +196,14 @@ int main(int argc, char* argv[]){
         glBindTexture(GL_TEXTURE_2D, Shadow::depth_map);
         glActiveTexture(GL_TEXTURE0); // Go back to texture unit 0
         map.draw_opaque_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw light effectively
+        glStencilFunc(GL_ALWAYS, 1, 0xFF);
+        glStencilMask(0x00);
         Mirror::draw_mirrors(view, projection, sun, camera.camera_pos);
+        glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+        glStencilMask(0x00);
+        Mirror::draw_borders(view, projection, sun, camera.camera_pos);
+        glStencilMask(0xFF);
+        glStencilFunc(GL_ALWAYS, 1, 0xFF);  
         map.draw_non_opaque_cubes(view, projection, sun, camera.camera_pos); // Draw transparant cubes last
         target.draw_axis(); // Target drawn the latest to be in front of the rest (despite being drawn with depth mask at false)
 

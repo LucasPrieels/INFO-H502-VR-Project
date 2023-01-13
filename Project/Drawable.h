@@ -22,7 +22,7 @@ public:
         VAO = generate_VAO();
     }
 
-    void draw(std::vector<glm::vec3> translations, glm::mat4 view, glm::mat4 projection, Shader shader, int texture, int num_vertices, int type_primitive, bool instanced) {
+    void draw(std::vector<glm::vec3> translations, glm::mat4 view, glm::mat4 projection, Shader shader, int texture, int num_vertices, int type_primitive, bool instanced, bool border) {
         // Draw the object using its VAO
         // Translations is a vector because we can draw many objects at different positions at once
         // Num_vertices is the number of vertices to draw per object (36 for a cube for example)
@@ -49,6 +49,10 @@ public:
             if (translations.size() == 1){ // Only used "instanced" if there are at least 2 objects to write otherwise it can sometimes freeze
                 glm::mat4 model(1.0f);
                 model = glm::translate(model, translations[0]);
+                if (border){
+                    model = glm::scale(model, glm::vec3(1.1f));
+                }
+
                 shader.set_uniform("model", model);
                 if (use_EBO) glDrawElements(type_primitive, num_vertices, GL_UNSIGNED_INT, 0);
                 else glDrawArrays(type_primitive, 0, num_vertices);
@@ -73,6 +77,7 @@ public:
             // Set model uniforms in shader
             glm::mat4 model(1.0f);
             model = glm::translate(model, translations[0]); // For instanced==false we always have translations.size()==1
+            if (border) model = glm::scale(model, glm::vec3(1.1f));
             shader.set_uniform("model", model);
             if (use_EBO) glDrawElements(type_primitive, num_vertices, GL_UNSIGNED_INT, 0);
             else glDrawArrays(type_primitive, 0, num_vertices);

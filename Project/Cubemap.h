@@ -128,7 +128,7 @@ public:
         shader.set_uniform("blend_factor", blend_factor); // Set correct blending
 
         glDepthFunc(GL_LEQUAL); // In the Skybox shader we set z component = w component for the depth to be 1 (maximal), so we want to keep samples when they are equal to the max
-        draw({glm::vec3(0.0f)}, view_rotated, projection, shader, cubemap_ID, 36, GL_TRIANGLES, false); // Print 6 vertices for each of the 6 cube faces
+        draw({glm::vec3(0.0f)}, view_rotated, projection, shader, cubemap_ID, 36, GL_TRIANGLES, false, false); // Print 6 vertices for each of the 6 cube faces
         glDepthFunc(GL_LESS);
     }
 private:
