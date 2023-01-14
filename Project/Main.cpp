@@ -200,11 +200,11 @@ int main(int argc, char* argv[]){
         Mirror::draw_mirrors(view, projection, sun, camera.camera_pos);
         glStencilFunc(GL_NOTEQUAL, 1, 0xFF); //draw only fragments where mirror is not 
         glStencilMask(0x00);    //prevents from writing in stencil buffer
-        glDisable(GL_DEPTH_TEST); // to be sure that the border will not be hidden 
+       
         Mirror::draw_borders(view, projection, sun, camera.camera_pos); //draw upscaled versions of the mirrors to draw the border
         glStencilMask(0xFF); 
         glStencilFunc(GL_ALWAYS, 0, 0xFF); 
-        glEnable(GL_DEPTH_TEST);
+
         map.draw_non_opaque_cubes(view, projection, sun, camera.camera_pos); // Draw transparant cubes last
         target.draw_axis(); // Target drawn the latest to be in front of the rest (despite being drawn with depth mask at false)
 

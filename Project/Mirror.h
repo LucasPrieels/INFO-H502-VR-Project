@@ -17,6 +17,7 @@ public:
     glm::vec3 position; // Coordinates of the mirror
     Texture texture;
     Shader shader;
+    unsigned int norm;
  
 
     static inline int resolution = 1000; // Default value of mirrors resolution
@@ -24,47 +25,47 @@ public:
 
     static inline std::vector<float> vertices_x_plus = { // Vertices for a mirror facing the X+ direction
             // First 3 are 3D positions, next 2 are texture positions, final 3 are normal vector components
-            -0.45f, -0.45f, 0.45f,     1.0f, 0.0f,     1.0f, 0.0f, 0.0f,
-            -0.45f, 0.45f, 0.45f,      1.0f, 1.0f,     1.0f, 0.0f, 0.0f,
-            -0.45f, -0.45f, -0.45f,    0.0f, 0.0f,     1.0f, 0.0f, 0.0f,
-            -0.45f, 0.45f, -0.45f,     0.0f, 1.0f,     1.0f, 0.0f, 0.0f
+            -0.495f, -0.45f, 0.45f,     1.0f, 0.0f,     1.0f, 0.0f, 0.0f,
+            -0.495f, 0.45f, 0.45f,      1.0f, 1.0f,     1.0f, 0.0f, 0.0f,
+            -0.495f, -0.45f, -0.45f,    0.0f, 0.0f,     1.0f, 0.0f, 0.0f,
+            -0.495f, 0.45f, -0.45f,     0.0f, 1.0f,     1.0f, 0.0f, 0.0f
     };
 
     static inline std::vector<float> vertices_x_minus = { // Vertices for a mirror facing the X- direction
             // First 3 are 3D positions, next 2 are texture positions, final 3 are normal vector components
-            0.45f, -0.45f, -0.45f,     1.0f, 0.0f,     -1.0f, 0.0f, 0.0f,
-            0.45f, 0.45f, -0.45f,      1.0f, 1.0f,     -1.0f, 0.0f, 0.0f,
-            0.45f, -0.45f, 0.45f,      0.0f, 0.0f,     -1.0f, 0.0f, 0.0f,
-            0.45f, 0.45f, 0.45f,       0.0f, 1.0f,     -1.0f, 0.0f, 0.0f
+            0.495f, -0.45f, -0.45f,     1.0f, 0.0f,     -1.0f, 0.0f, 0.0f,
+            0.495f, 0.45f, -0.45f,      1.0f, 1.0f,     -1.0f, 0.0f, 0.0f,
+            0.495f, -0.45f, 0.45f,      0.0f, 0.0f,     -1.0f, 0.0f, 0.0f,
+            0.495f, 0.45f, 0.45f,       0.0f, 1.0f,     -1.0f, 0.0f, 0.0f
     };
 
     static inline std::vector<float> vertices_y_minus = { // Vertices for a mirror facing the Y- direction
             // First 3 are 3D positions, next 2 are texture positions, final 3 are normal vector components
-            -0.45f, 0.45f, -0.45f,     1.0f, 0.0f,     0.0f, -1.0f, 0.0f,
-            -0.45f, 0.45f, 0.45f,      1.0f, 1.0f,     0.0f, -1.0f, 0.0f,
-            0.45f, 0.45f, -0.45f,      0.0f, 0.0f,     0.0f, -1.0f, 0.0f,
-            0.45f, 0.45f, 0.45f,       0.0f, 1.0f,     0.0f, -1.0f, 0.0f
+            -0.45f, 0.495f, -0.45f,     1.0f, 0.0f,     0.0f, -1.0f, 0.0f,
+            -0.45f, 0.495f, 0.45f,      1.0f, 1.0f,     0.0f, -1.0f, 0.0f,
+            0.45f, 0.495f, -0.45f,      0.0f, 0.0f,     0.0f, -1.0f, 0.0f,
+            0.45f, 0.495f, 0.45f,       0.0f, 1.0f,     0.0f, -1.0f, 0.0f
     };
     static inline std::vector<float> vertices_y_plus = { // Vertices for a mirror facing the Y+ direction
             // First 3 are 3D positions, next 2 are texture positions, final 3 are normal vector components
-            -0.45f, -0.45f, 0.45f,     0.0f, 1.0f,     0.0f, 1.0f, 0.0f,
-            -0.45f, -0.45f, -0.45f,    0.0f, 0.0f,     0.0f, 1.0f, 0.0f,
-            0.45f, -0.45f, 0.45f,      1.0f, 1.0f,     0.0f, 1.0f, 0.0f,
-            0.45f, -0.45f, -0.45f,     1.0f, 0.0f,     0.0f, 1.0f, 0.0f
+            -0.45f, -0.495f, 0.45f,     0.0f, 1.0f,     0.0f, 1.0f, 0.0f,
+            -0.45f, -0.495f, -0.45f,    0.0f, 0.0f,     0.0f, 1.0f, 0.0f,
+            0.45f, -0.495f, 0.45f,      1.0f, 1.0f,     0.0f, 1.0f, 0.0f,
+            0.45f, -0.495f, -0.45f,     1.0f, 0.0f,     0.0f, 1.0f, 0.0f
     };
     static inline std::vector<float> vertices_z_minus = { // Vertices for a mirror facing the Z- direction
             // First 3 are 3D positions, next 2 are texture positions, final 3 are normal vector components
-            0.45f, -0.45f, 0.45f,      1.0f, 0.0f,     0.0f, 0.0f, -1.0f,
-            0.45f, 0.45f, 0.45f,       1.0f, 1.0f,     0.0f, 0.0f, -1.0f,
-            -0.45f, -0.45f, 0.45f,     0.0f, 0.0f,     0.0f, 0.0f, -1.0f,
-            -0.45f, 0.45f, 0.45f,      0.0f, 1.0f,     0.0f, 0.0f, -1.0f
+            0.45f, -0.45f, 0.495f,      1.0f, 0.0f,     0.0f, 0.0f, -1.0f,
+            0.45f, 0.45f, 0.495f,       1.0f, 1.0f,     0.0f, 0.0f, -1.0f,
+            -0.45f, -0.45f, 0.495f,     0.0f, 0.0f,     0.0f, 0.0f, -1.0f,
+            -0.45f, 0.45f, 0.495f,      0.0f, 1.0f,     0.0f, 0.0f, -1.0f
     };
     static inline std::vector<float> vertices_z_plus = { // Vertices for a mirror facing the Z+ direction
             // First 3 are 3D positions, next 2 are texture positions, final 3 are normal vector components
-            -0.45f, -0.45f, -0.45f,    1.0f, 0.0f,     0.0f, 0.0f, 1.0f, // Invert x-component of texture to create the symmetry effect
-            -0.45f, 0.45f, -0.45f,     1.0f, 1.0f,     0.0f, 0.0f, 1.0f,
-            0.45f, -0.45f, -0.45f,     0.0f, 0.0f,     0.0f, 0.0f, 1.0f,
-            0.45f, 0.45f, -0.45f,      0.0f, 1.0f,     0.0f, 0.0f, 1.0f
+            -0.45f, -0.45f, -0.495f,    1.0f, 0.0f,     0.0f, 0.0f, 1.0f, // Invert x-component of texture to create the symmetry effect
+            -0.45f, 0.45f, -0.495f,     1.0f, 1.0f,     0.0f, 0.0f, 1.0f,
+            0.45f, -0.45f, -0.495f,     0.0f, 0.0f,     0.0f, 0.0f, 1.0f,
+            0.45f, 0.45f, -0.495f,      0.0f, 1.0f,     0.0f, 0.0f, 1.0f
     };
 
     static inline std::vector<unsigned int> vertices_indices = {
@@ -108,7 +109,9 @@ public:
 
     static void draw_borders(glm::mat4 view, glm::mat4 projection, Sun sun, glm::vec3 camera_pos){
                 glEnable(GL_CULL_FACE); // Improves computation power and allows to have leaves blocks without flickering
+        
         for (Mirror mirror: Mirror::mirrors){
+            
            mirror.draw_border(view, projection, sun, camera_pos);
             
         }

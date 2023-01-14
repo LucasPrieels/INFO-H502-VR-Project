@@ -49,14 +49,21 @@ public:
             if (translations.size() == 1){ // Only used "instanced" if there are at least 2 objects to write otherwise it can sometimes freeze
                 glm::mat4 model(1.0f);
                 model = glm::translate(model, translations[0]);
-                if (border){
-                    model = glm::scale(model, glm::vec3(1.1f));
+                if(border){
+                    if (vertices[5] != 0){
+                        model = glm::scale(model, glm::vec3(1.0f, 1.1f, 1.1f));
+                    }
+                    else if (vertices[6] != 0){
+                        model = glm::scale(model, glm::vec3(1.1f, 1.0f, 1.1f));
+                    }
+                    else if (vertices[7] != 0){
+                        model = glm::scale(model, glm::vec3(1.1f, 1.1f, 1.0f));
+                    }
                 }
-
                 shader.set_uniform("model", model);
                 if (use_EBO) glDrawElements(type_primitive, num_vertices, GL_UNSIGNED_INT, 0);
                 else glDrawArrays(type_primitive, 0, num_vertices);
-                shader.set_uniform("model", glm::mat4(1.0f));
+                shader.set_uniform("model", glm::mat4(1.1));
                 return;
             }
             unsigned int VBO_instanced;
@@ -77,7 +84,17 @@ public:
             // Set model uniforms in shader
             glm::mat4 model(1.0f);
             model = glm::translate(model, translations[0]); // For instanced==false we always have translations.size()==1
-            if (border) model = glm::scale(model, glm::vec3(1.1f));
+            if(border){
+                    if (vertices[5] != 0){
+                        model = glm::scale(model, glm::vec3(1.0f, 1.1f, 1.1f));
+                    }
+                    else if (vertices[6] != 0){
+                        model = glm::scale(model, glm::vec3(1.1f, 1.0f, 1.1f));
+                    }
+                    else if (vertices[7] != 0){
+                        model = glm::scale(model, glm::vec3(1.1f, 1.1f, 1.0f));
+                    }
+                }
             shader.set_uniform("model", model);
             if (use_EBO) glDrawElements(type_primitive, num_vertices, GL_UNSIGNED_INT, 0);
             else glDrawArrays(type_primitive, 0, num_vertices);

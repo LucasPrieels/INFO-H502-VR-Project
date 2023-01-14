@@ -94,7 +94,7 @@ public:
     }
 
     bool part(glm::vec3 pos){ // Checks if position "pos" is inside the cube, meaning it's less than half a cube away from the center of the cube
-        return abs(this->x - pos.x) <= 0.6 && abs(this->y - pos.y) <= 0.6 && abs(this->z - pos.z) <= 0.6;
+        return abs(this->x - pos.x) <= 0.51 && abs(this->y - pos.y) <= 0.51 && abs(this->z - pos.z) <= 0.51;
     }
 
     bool valid_camera_position(glm::vec3 pos){ // Checks if camera position "pos" is too close to this cube
