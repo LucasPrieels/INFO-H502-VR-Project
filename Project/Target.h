@@ -22,7 +22,7 @@ class Target: public Drawable{
     { // Create a 3-axis system at (0,0,0) in the map
         // Init shader
         shader.use();
-        shader.set_uniform("imposed_color", glm::vec3(1.0f, 1.0, 1.0));
+        shader.set_uniform("color", glm::vec3(1.0f, 1.0, 1.0));
 
     }
 

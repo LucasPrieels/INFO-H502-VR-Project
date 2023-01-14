@@ -85,11 +85,15 @@ public:
     }
 
     void check_remove_cube(glm::vec3 pos) { // Check if the clicked position "pos" corresponds to a cube to remove
+        std::cout << "check remove cube pos " <<pos.x <<  " " << pos.y << " " << pos.z << std::endl;
         for (int index = 0; index < cubes.size(); index++) {
+            
             if (cubes[index].part(pos)){ // Check if position is less than half a block away from center of cube
+                std::cout << "erase mirror " <<cubes[index].x <<  " " << cubes[index].y << " " << cubes[index].z  << std::endl;
                 cubes[index].destroy_mirrors_cube();
                 cubes.erase(cubes.begin() + index);
             }
+
         }
     }
 

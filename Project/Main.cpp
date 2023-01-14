@@ -179,7 +179,7 @@ int main(int argc, char* argv[]){
         // Last pass is to show on the screen
         glBindFramebuffer(GL_FRAMEBUFFER, 0); // Back to default FBO
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);// | GL_STENCIL_BUFFER_BIT);
 
         // Calculate view and projection matrices
         glm::mat4 view = glm::lookAt(camera.camera_pos, camera.camera_pos+camera.camera_front, camera.movement_up); // View: move world view on camera space
