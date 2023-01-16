@@ -56,6 +56,15 @@ public:
     }
 
     void draw_non_opaque_cubes(glm::mat4 view, glm::mat4 projection, Sun sun, glm::vec3 camera_pos){
+        shader.use();
+        shader.set_uniform("light_color", sun.light_color);
+        shader.set_uniform("light_pos", sun.light_pos);
+        shader.set_uniform("viewing_pos", camera_pos);
+        shader.set_uniform("texture_uniform", 0); // Bound texture will be put at index 0, so we write as uniform
+        shader.set_uniform("shadow_texture_uniform", 1);
+        shader.set_uniform("view_light", sun.view_light);
+        shader.set_uniform("projection_light", sun.projection_light);
+
         // Then draw non-opaque objects starting with the furthest away
         std::vector<std::pair<float, glm::vec3>> translations_to_draw;
         std::vector<std::pair<float, Texture>> textures_to_draw;

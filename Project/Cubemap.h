@@ -68,13 +68,14 @@ public:
             "Textures/skybox/night_back.png"
     };
 
-    Cubemap(std::string path_to_current_folder):
+    Cubemap(std::string path_to_current_folder, bool sunny):
         Drawable(Cubemap::vertices, false, {},{3}),
         shader(path_to_current_folder + "vertex_shader_skybox.txt", path_to_current_folder + "fragment_shader_skybox.txt")
     {
         // Init shader
         shader.use();
-        shader.set_uniform("color_day", glm::vec3(0.05f, 0.4f, 0.9f)); // Set color to use for the sky during the day
+        if (sunny) shader.set_uniform("color_day", glm::vec3(0.05f, 0.4f, 0.9f)); // Set color to use for the sky during the day
+        else shader.set_uniform("color_day", glm::vec3(0.35, 0.35, 0.35f)); // Grey clouds
         shader.set_uniform("skybox_night", 0); // Set texture to use for the sky during the night
 
         glGenTextures(1, &cubemap_ID);

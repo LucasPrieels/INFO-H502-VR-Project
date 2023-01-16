@@ -17,8 +17,6 @@ public:
     glm::vec3 position; // Coordinates of the mirror
     Texture texture;
     Shader shader;
-    unsigned int norm;
- 
 
     static inline int resolution = 1000; // Default value of mirrors resolution
     static inline std::vector<Mirror> mirrors;
@@ -101,25 +99,19 @@ public:
         glEnable(GL_CULL_FACE); // Improves computation power and allows to have leaves blocks without flickering
         for (Mirror mirror: Mirror::mirrors){
             mirror.draw_mirror(view, projection, sun, camera_pos);
-            
-
         }
         glDisable(GL_CULL_FACE);
     }
 
     static void draw_borders(glm::mat4 view, glm::mat4 projection, Sun sun, glm::vec3 camera_pos){
-                glEnable(GL_CULL_FACE); // Improves computation power and allows to have leaves blocks without flickering
-        
+        glEnable(GL_CULL_FACE); // Improves computation power and allows to have leaves blocks without flickering
         for (Mirror mirror: Mirror::mirrors){
-            
            mirror.draw_border(view, projection, sun, camera_pos);
-            
         }
         glDisable(GL_CULL_FACE);
     }
 
     void draw_border(glm::mat4 view, glm::mat4 projection, Sun sun, glm::vec3 camera_pos){
-        
         shader.use();
         shader.set_uniform("light_color", sun.light_color);
         shader.set_uniform("light_pos", sun.light_pos);

@@ -1,5 +1,5 @@
-#ifndef CUBE_H
-#define CUBE_H
+#ifndef PARTICLES_H
+#define PARTICLES_H
 
 #include <iostream>
 #include <glad/glad.h>
@@ -9,98 +9,76 @@
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "Mirror.h"
 
-class Cube{
+class Particles: Drawable{
 public:
-    int x, y, z; // Coordinates of cube
-    int texture_ID; // Texture to use for the block
-    std::vector<Mirror> mirrors; // List of mirrors attached to this block (so that when the block is destroyed the mirrors are as well)
+    static inline std::vector<glm::vec3> particle_positions;
+    static inline float particle_speed;
 
     static inline std::vector<float> vertices = {
-            // First 3 are 3D positions, next 2 are texture positions, final 3 are normal vector components
-            // Front face (z = 0.5)
-            -0.5f, -0.5f, 0.5f,     0.0f, 1.0f,     0.0f, 0.0f, 1.0f,
-            -0.5f, 0.5f, 0.5f,      0.0f, 0.5f,     0.0f, 0.0f, 1.0f,
-            0.5f, -0.5f, 0.5f,      0.5f, 1.0f,     0.0f, 0.0f, 1.0f,
-            0.5f, 0.5f, 0.5f,       0.5f, 0.5f,     0.0f, 0.0f, 1.0f,
-            // Right face (x = 0.5)
-            0.5f, -0.5f, 0.5f,      0.0f, 1.0f,     1.0f, 0.0f, 0.0f,
-            0.5f, 0.5f, 0.5f,       0.0f, 0.5f,     1.0f, 0.0f, 0.0f,
-            0.5f, -0.5f, -0.5f,     0.5f, 1.0f,     1.0f, 0.0f, 0.0f,
-            0.5f, 0.5f, -0.5f,      0.5f, 0.5f,     1.0f, 0.0f, 0.0f,
-            // Back face (z = -0.5)
-            0.5f, -0.5f, -0.5f,     0.0f, 1.0f,     0.0f, 0.0f, -1.0f,
-            0.5f, 0.5f, -0.5f,      0.0f, 0.5f,     0.0f, 0.0f, -1.0f,
-            -0.5f, -0.5f, -0.5f,    0.5f, 1.0f,     0.0f, 0.0f, -1.0f,
-            -0.5f, 0.5f, -0.5f,     0.5f, 0.5f,     0.0f, 0.0f, -1.0f,
-            // Left face (x = -0.5)
-            -0.5f, -0.5f, -0.5f,    0.0f, 1.0f,     -1.0f, 0.0f, 0.0f,
-            -0.5f, 0.5f, -0.5f,     0.0f, 0.5f,     -1.0f, 0.0f, 0.0f,
-            -0.5f, -0.5f, 0.5f,     0.5f, 1.0f,     -1.0f, 0.0f, 0.0f,
-            -0.5f, 0.5f, 0.5f,      0.5f, 0.5f,     -1.0f, 0.0f, 0.0f,
-            // Up face (y = 0.5)
-            -0.5f, 0.5f, 0.5f,      0.5f, 1.0f,     0.0f, 1.0f, 0.0f,
-            -0.5f, 0.5f, -0.5f,     0.5f, 0.5f,     0.0f, 1.0f, 0.0f,
-            0.5f, 0.5f, 0.5f,       1.0f, 1.0f,     0.0f, 1.0f, 0.0f,
-            0.5f, 0.5f, -0.5f,      1.0f, 0.5f,     0.0f, 1.0f, 0.0f,
-            // Down face (y = -0.5)
-            -0.5f, -0.5f, -0.5f,    0.0f, 0.5f,     0.0f, -1.0f, 0.0f,
-            -0.5f, -0.5f, 0.5f,     0.0f, 0.0f,     0.0f, -1.0f, 0.0f,
-            0.5f, -0.5f, -0.5f,     0.5f, 0.5f,     0.0f, -1.0f, 0.0f,
-            0.5f, -0.5f, 0.5f,      0.5f, 0.0f,     0.0f, -1.0f, 0.0f
+            // 2 components are 2D positions
+            -0.002f, -0.01f,
+            0.002f, 0.01f,
+            0.002f, -0.01f,
+
+            -0.002f, -0.01f,
+            -0.002f, 0.01f,
+            0.002f, 0.01f
     };
 
-    static inline std::vector<unsigned int> vertices_indices = {
-            2, 1, 0,
-            1, 2, 3,
-            6, 5, 4,
-            5, 6, 7,
-            10, 9, 8,
-            9, 10, 11,
-            14, 13, 12,
-            13, 14, 15,
-            18, 17, 16,
-            17, 18, 19,
-            22, 21, 20,
-            21, 22, 23
-    };
-
-    Cube(int x, int y, int z, int texture_ID){ // Constructor of Cube takes its coordinates as input
-        this->x = x;
-        this->y = y;
-        this->z = z;
-
-        this->texture_ID = texture_ID;
+    Particles(std::string path_to_current_folder, glm::vec3 camera_pos, float speed_rainfall, int nb_drops, int area_drops):
+        Drawable(Particles::vertices, 0, {}, {2}),
+        shader(path_to_current_folder + "vertex_shader_particles.txt", path_to_current_folder + "fragment_shader_particles.txt")
+    {
+        this->area_drops = area_drops;
+        this->particle_speed = speed_rainfall;
+        create_particles(nb_drops, camera_pos);
     }
 
-    void destroy_mirrors_cube(){
-        // Destruct the textures linked to the mirrors attached to this cube, to avoid spending time computing views for mirrors that don't exist anymore
-        for (Mirror mirror: mirrors){
-            for (int i = 0; i < Texture::textures.size(); i++) {
-                if (Texture::textures[i].texture_ID == mirror.texture.texture_ID) {
-                    for (int j = 0; j < Mirror::mirrors.size(); j++) {
-                        if (mirror.texture.texture_ID == Mirror::mirrors[j].texture.texture_ID) {
-                            Mirror::mirrors.erase(Mirror::mirrors.begin() + j);
+    void draw_particles(glm::mat4 view, glm::mat4 projection, glm::vec3 camera_pos){
+        shader.use();
+        shader.set_uniform("color", glm::vec3(0.38f, 0.85f, 0.90f));
 
-                            j--; // After removing a mirror they are all shifted one position before, so we decrement j to avoid missing one
-                        }
-                    }
-                    Texture::textures.erase(Texture::textures.begin() + i);
-                    i--;
-                }
+        glm::vec3 particle_pos = particle_positions[0];
+        // Calculate rotation to make sure the particle is always facing the user (in the y = cst plane)
+        glm::vec3 origin_vector = glm::vec3(0.0f, 0.0f, 1.0f);
+        glm::vec3 vector_towards_camera = glm::normalize(glm::vec3(camera_pos[0], 0.0f, camera_pos[2]) - glm::vec3(particle_pos[0], 0.0f, particle_pos[2]));
+        glm::mat4 rotation = glm::mat4(1.0f);
+        if (origin_vector != vector_towards_camera) rotation = glm::rotate(rotation, acos(glm::dot(origin_vector, vector_towards_camera)), glm::normalize(glm::cross(origin_vector, vector_towards_camera)));
+        // Theoretically, the rotation in "rotation" is only valid for the first drop
+        // However turning all drops of this angle gives a realistics result so it is used for all drops to save computation time
+        shader.set_uniform("rotation", rotation); // Apply rotation
+
+        draw(particle_positions, view, projection, shader, -1, 6, GL_TRIANGLES, true, false); // -1 because we don't want a texture, instanced drawing
+    }
+
+    void update_positions(float delta_time, glm::vec3 camera_pos){
+        for (int i = 0; i < particle_positions.size(); i++){
+            particle_positions[i][1] -= particle_speed*delta_time; // Decrease y component to make the rain fall
+            if (particle_positions[i][1] <= 0){
+                // The area where drops are created follows the camera
+                float x_pos = (rand()%(2*area_drops*10))/10.0f - area_drops + camera_pos[0]; // *10 in the modulo then /10 to have random numbers with random first decimal
+                float y_pos = (rand()%(20*10))/10.0f + camera_pos[1]; // Once a rain drop is on the ground level, make it appear high again with a random height to take a random time to fall back
+                float z_pos = (rand()%(2*area_drops*10))/10.0f - area_drops + camera_pos[2];
+                particle_positions[i][0] = x_pos;
+                particle_positions[i][1] = y_pos;
+                particle_positions[i][2] = z_pos;
             }
         }
     }
 
-    bool part(glm::vec3 pos){ // Checks if position "pos" is inside the cube, meaning it's less than half a cube away from the center of the cube
-        return abs(this->x - pos.x) <= 0.51 && abs(this->y - pos.y) <= 0.51 && abs(this->z - pos.z) <= 0.51;
-    }
+private:
+    Shader shader;
+    int area_drops; // Rain appears in a area_drops x area_drops zone around the user
 
-    bool valid_camera_position(glm::vec3 pos){ // Checks if camera position "pos" is too close to this cube
-        return abs(this->x - pos.x) <= 0.8 && pos.y - this->y <= 2 && this->y - pos.y <= 0.8 && abs(this->z - pos.z) <= 0.8;
-        // The user is supposed to be 2 blocks tall and 1 block wide so the middle of the user should be more than 1 block
-        // away from the middle of any block in x, y-, and z direction, 2 in y+ direction (since he is 2 blocks tall)
+    void create_particles(int num_particles, glm::vec3 camera_pos){
+        for (int i = 0; i < num_particles; i++){
+            // Only create rain in a 10x10 area around the camera. The area where drops are created follows the camera
+            float x_pos = (rand()%(2*area_drops*10))/10.0f - area_drops + camera_pos[0]; // *10 in the modulo then /10 to have random numbers with random first decimal
+            float y_pos = (rand()%(20*10))/10.0f + camera_pos[1]; // Random height to take a random time to fall back to Earth
+            float z_pos = (rand()%(2*area_drops*10))/10.0f - area_drops + camera_pos[2];
+            particle_positions.push_back(glm::vec3(x_pos, y_pos, z_pos));
+        }
     }
 };
 #endif
