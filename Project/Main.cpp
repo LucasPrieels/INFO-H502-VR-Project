@@ -35,7 +35,7 @@
 #define SPEED_RAINFALL 3 // Speed of fall of the rain drops
 #define AREA_RAIN_DROPS 15 // Rain appears in a AREA_RAIN_DROPS x AREA_RAIN_DROPS zone around the camera
 #define NUMBER_RAIN_DROPS 8000 // Number of rain drops in the defined area
-#define SUNNY true // Whether we want the weather to be sunny (sun and shadows) or rainy
+#define SUNNY false // Whether we want the weather to be sunny (sun and shadows) or rainy
 
 int width = 1600, height = 1000; // Size of screen
 std::vector<std::string> files_textures = {"grass.png", "dirt.png", "gold.png", "spruce.png", "bookshelf.png", "leaf.png", "glass.png"};
