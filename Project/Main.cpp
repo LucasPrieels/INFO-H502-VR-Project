@@ -20,8 +20,7 @@
 #include "Target.h"
 #include "Sun.h"
 #include "Shadow.h"
-#include "Model.h"
-#include "Mesh.h"
+#include "Particles.h"
 
 #define PATH "../../Project/" // Path to go from where the program is run to current folder
 #define MOUSE_SENSITIVITY 0.05 // Sensitivity of yaw and pitch wrt mouse movements
@@ -33,9 +32,13 @@
 #define CAMERA_SPEED 6.0f // Speed of movement of camera
 #define MIRROR_RESOL 1000 // Resolution of mirrors
 #define SHADOW_DEPTH_SIZE 4096 // Size of the depth map frame (larger means more rays)
+#define SPEED_RAINFALL 3 // Speed of fall of the rain drops
+#define AREA_RAIN_DROPS 15 // Rain appears in a AREA_RAIN_DROPS x AREA_RAIN_DROPS zone around the camera
+#define NUMBER_RAIN_DROPS 8000 // Number of rain drops in the defined area
+#define SUNNY true // Whether we want the weather to be sunny (sun and shadows) or rainy
 
- int width = 1600, height = 1000; // Size of screen
- std::vector<std::string> files_textures = {"grass.png", "dirt.png", "gold.png", "spruce.png", "bookshelf.png", "leaf.png", "glass.png"};
+int width = 1600, height = 1000; // Size of screen
+std::vector<std::string> files_textures = {"grass.png", "dirt.png", "gold.png", "spruce.png", "bookshelf.png", "leaf.png", "glass.png"};
 std::vector<float> textures_shininess = {60.0f, 75.0f, 4.0f, 50.0f, 50.0f, 40.0f, 10.0f}; // Shininess (amount of specular light reflected) respectively for each of the textures of files_textures
 float lastFrame = 0.0f; // Time of last frame
 float delta_time = 0.0f; // Time between 2 last frames
@@ -104,7 +107,7 @@ int main(int argc, char* argv[]){
     }
 
     // Create all relevant objects
-    Cubemap cubemap(path_string);
+    Cubemap cubemap(path_string, SUNNY);
     Map map(NUM_CUBES_SIDE, path_string);
     Input_listener::staticConstructor(window);
     Camera camera(CAMERA_SPEED);
@@ -112,7 +115,8 @@ int main(int argc, char* argv[]){
     Target target(path_string);
     Sun sun(path_string, original_light_color, distance_sun_to_origin);
     Mirror::resolution = MIRROR_RESOL; // Set mirror resolutions
-    Model backpack(path_string + "backpack/backpack.obj");
+    Particles particles(path_string, camera.camera_pos, SPEED_RAINFALL, NUMBER_RAIN_DROPS, AREA_RAIN_DROPS);
+
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST); // Enable depth testing to know which triangles are more in front
     glEnable(GL_STENCIL_TEST); //Enable stencil testing to draw the borders of the mirrors
@@ -169,12 +173,24 @@ int main(int argc, char* argv[]){
 
             // Draw Drawable objects that should be reflected in mirrors
             glViewport(0, 0, 1000, 1000);
-            cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION);
-            axis.draw_axis(view, projection);
-            sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, mirror_position);
-            map.draw_opaque_cubes(view, projection, sun, mirror_position); // Give pos and not the camera position otherwise the specular components changes when the camera moves !!
-            Mirror::draw_mirrors(view, projection, sun, mirror_position);
-            map.draw_non_opaque_cubes(view, projection, sun, mirror_position);
+            cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION); // current_time used to blend day color and night texture during morning and evening
+            //axis.draw_axis(view, projection);
+            if (SUNNY) sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, camera.camera_pos); // Give the camera position to draw the sun at distance 99 of the camera
+            // Draw opaque cubes
+            map.draw_opaque_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw light effectively
+            // Draw mirrors and their borders
+            glStencilFunc(GL_ALWAYS, 1, 0xFF); //all fragments of the mirrors should pass the test
+            glStencilMask(0xFF); //allow writing in the stencil buffer
+            Mirror::draw_mirrors(view, projection, sun, camera.camera_pos);
+            glStencilFunc(GL_NOTEQUAL, 1, 0xFF); //draw only fragments where mirror is not
+            glStencilMask(0x00);    //prevents from writing in stencil buffer
+            Mirror::draw_borders(view, projection, sun, camera.camera_pos); //draw upscaled versions of the mirrors to draw the border
+            glStencilMask(0xFF);
+            glStencilFunc(GL_ALWAYS, 0, 0xFF);
+            // Draw particles of rain
+            if (!SUNNY) particles.draw_particles(view, projection, camera.camera_pos);
+            // Draw non opaque cubes
+            map.draw_non_opaque_cubes(view, projection, sun, camera.camera_pos); // Draw transparant cubes last
             glViewport(0, 0, Window::width, Window::height);
         }
 
@@ -183,30 +199,35 @@ int main(int argc, char* argv[]){
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);// | GL_STENCIL_BUFFER_BIT);
 
+        // Update particles of rain positions
+        particles.update_positions(delta_time, camera.camera_pos);
+
         // Calculate view and projection matrices
         glm::mat4 view = glm::lookAt(camera.camera_pos, camera.camera_pos+camera.camera_front, camera.movement_up); // View: move world view on camera space
         // CameraFront is the direction from camera to object, so cameraPos+cameraFront is one of the points we are looking it
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width/(float)height, Window::near, Window::far); // Projection: project 3D view on 2D
 
         // Draw all Drawable objects
-        
         cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION); // current_time used to blend day color and night texture during morning and evening
-        axis.draw_axis(view, projection);
-        sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, camera.camera_pos); // Give the camera position to draw the sun at distance 99 of the camera
-        glActiveTexture(GL_TEXTURE1); // Put the depth map in texture unit 1
+        //axis.draw_axis(view, projection);
+        if (SUNNY) sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, camera.camera_pos); // Give the camera position to draw the sun at distance 99 of the camera
+        // Draw opaque cubes
+        glActiveTexture(GL_TEXTURE1); // Put the depth map of shadows in texture unit 1
         glBindTexture(GL_TEXTURE_2D, Shadow::depth_map);
         glActiveTexture(GL_TEXTURE0); // Go back to texture unit 0
         map.draw_opaque_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw light effectively
+        // Draw mirrors and their borders
         glStencilFunc(GL_ALWAYS, 1, 0xFF); //all fragments of the mirrors should pass the test
         glStencilMask(0xFF); //allow writing in the stencil buffer
         Mirror::draw_mirrors(view, projection, sun, camera.camera_pos);
-        glStencilFunc(GL_NOTEQUAL, 1, 0xFF); //draw only fragments where mirror is not 
-        glStencilMask(0x00);    //prevent writing in stencil buffer
+        glStencilFunc(GL_NOTEQUAL, 1, 0xFF); //draw only fragments where mirror is not
+        glStencilMask(0x00);    //prevents from writing in stencil buffer
         Mirror::draw_borders(view, projection, sun, camera.camera_pos); //draw upscaled versions of the mirrors to draw the border
-        glStencilMask(0xFF); 
-        glStencilFunc(GL_ALWAYS, 0, 0xFF); 
-        
-
+        glStencilMask(0xFF);
+        glStencilFunc(GL_ALWAYS, 0, 0xFF);
+        // Draw particles of rain
+        if (!SUNNY) particles.draw_particles(view, projection, camera.camera_pos);
+        // Draw non opaque cubes
         map.draw_non_opaque_cubes(view, projection, sun, camera.camera_pos); // Draw transparant cubes last
         target.draw_axis(); // Target drawn the latest to be in front of the rest (despite being drawn with depth mask at false)
 

@@ -379,10 +379,13 @@
 		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Map.h">
 			<Option target="Project_v1"/>
 		</Unit>
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Mesh.h">
+			<Option target="Project_v1"/>
+		</Unit>
 		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Mirror.h">
 			<Option target="Project_v1"/>
 		</Unit>
-		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Particles.h">
+		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Model.h">
 			<Option target="Project_v1"/>
 		</Unit>
 		<Unit filename="/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Shader.h">
