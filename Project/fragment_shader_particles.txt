@@ -1,0 +1,10 @@
+#version 330 core
+
+precision mediump float;
+
+in vec3 color_transferred;
+out vec4 final_color;
+
+void main() {
+	final_color = vec4(color_transferred, 1.0);
+}
