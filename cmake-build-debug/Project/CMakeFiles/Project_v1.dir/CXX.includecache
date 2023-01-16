@@ -1709,6 +1709,8 @@ Sun.h
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Sun.h
 Shadow.h
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Shadow.h
+Particles.h
+/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Particles.h
 
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Map.h
 iostream
@@ -1765,6 +1767,24 @@ Sun.h
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Sun.h
 Texture.h
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Texture.h
+
+/Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Particles.h
+iostream
+-
+glad/glad.h
+-
+GLFW/glfw3.h
+-
+glm/glm.hpp
+-
+array
+-
+vector
+-
+glm/gtc/matrix_transform.hpp
+-
+glm/gtc/type_ptr.hpp
+-
 
 /Users/lucas/Documents/ULB/MA2/INFO-H502 Virtual reality/INFO-H502 VR Project/Project/Shader.h
 iostream
