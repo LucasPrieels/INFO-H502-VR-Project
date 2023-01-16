@@ -20,6 +20,8 @@
 #include "Target.h"
 #include "Sun.h"
 #include "Shadow.h"
+#include "Model.h"
+#include "Mesh.h"
 
 #define PATH "../../Project/" // Path to go from where the program is run to current folder
 #define MOUSE_SENSITIVITY 0.05 // Sensitivity of yaw and pitch wrt mouse movements
@@ -110,7 +112,7 @@ int main(int argc, char* argv[]){
     Target target(path_string);
     Sun sun(path_string, original_light_color, distance_sun_to_origin);
     Mirror::resolution = MIRROR_RESOL; // Set mirror resolutions
-
+    Model backpack(path_string + "backpack/backpack.obj");
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST); // Enable depth testing to know which triangles are more in front
     glEnable(GL_STENCIL_TEST); //Enable stencil testing to draw the borders of the mirrors
@@ -199,11 +201,11 @@ int main(int argc, char* argv[]){
         glStencilMask(0xFF); //allow writing in the stencil buffer
         Mirror::draw_mirrors(view, projection, sun, camera.camera_pos);
         glStencilFunc(GL_NOTEQUAL, 1, 0xFF); //draw only fragments where mirror is not 
-        glStencilMask(0x00);    //prevents from writing in stencil buffer
-       
+        glStencilMask(0x00);    //prevent writing in stencil buffer
         Mirror::draw_borders(view, projection, sun, camera.camera_pos); //draw upscaled versions of the mirrors to draw the border
         glStencilMask(0xFF); 
         glStencilFunc(GL_ALWAYS, 0, 0xFF); 
+        
 
         map.draw_non_opaque_cubes(view, projection, sun, camera.camera_pos); // Draw transparant cubes last
         target.draw_axis(); // Target drawn the latest to be in front of the rest (despite being drawn with depth mask at false)

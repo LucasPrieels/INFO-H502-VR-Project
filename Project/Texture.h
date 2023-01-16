@@ -82,6 +82,8 @@ public:
         // Each time we create a new texture we add it to the list of textures
         Texture::textures.push_back(*this);
     }
+
+
 };
 
 #endif
