@@ -7,13 +7,13 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp> // for to_string
 #include "Shader.h"
-#include "Drawable.h"
 #include  "Mesh.h"
 #include  "Mirror.h"
-#include <stb_image.h>
-#include <assimp/Importer.hpp>
+
+
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <assimp/Importer.hpp>
 
 class Model{
 
@@ -25,7 +25,11 @@ public:
                 
         }
 
-       
+       void draw(Shader &shader){
+        for(unsigned int i = 0; i < meshes.size(); i++){
+            meshes[i].drawMesh(shader);
+        }
+    }
 
 private:
     std::string path;
@@ -78,7 +82,7 @@ private:
             }
             if(!skip){ //if texture hasn't been already loaded, load it
                 Text texture;
-                texture.Texture_ID = TextureFromFile(string.C_Str(), this->file_directory); //stb_image library function that loads a texture and return its id
+                // texture.Texture_ID = TextureFromFile(string.C_Str(), this->file_directory); //stb_image library function that loads a texture and return its id
                 texture.type = type_name;
                 texture.path = string.C_Str();
                 textures.push_back(texture);
@@ -167,11 +171,7 @@ private:
     return textureID;
     }
 
-    void draw(Shader &shader){
-        for(unsigned int i = 0; i < meshes.size(); i++){
-            meshes[i].drawMesh(shader);
-        }
-    }
+    
 
 
 

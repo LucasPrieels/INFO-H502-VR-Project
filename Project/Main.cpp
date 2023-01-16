@@ -21,6 +21,7 @@
 #include "Sun.h"
 #include "Shadow.h"
 #include "Particles.h"
+#include "Model.h"
 
 #define PATH "../../Project/" // Path to go from where the program is run to current folder
 #define MOUSE_SENSITIVITY 0.05 // Sensitivity of yaw and pitch wrt mouse movements
@@ -116,7 +117,8 @@ int main(int argc, char* argv[]){
     Sun sun(path_string, original_light_color, distance_sun_to_origin);
     Mirror::resolution = MIRROR_RESOL; // Set mirror resolutions
     Particles particles(path_string, camera.camera_pos, SPEED_RAINFALL, NUMBER_RAIN_DROPS, AREA_RAIN_DROPS);
-
+    Model ourModel(path_string + "backpack/backpack.obj");
+    Shader shaderModel(path_string + "vertex_shader_model.txt", path_string + "fragment_shader_model.txt");
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST); // Enable depth testing to know which triangles are more in front
     glEnable(GL_STENCIL_TEST); //Enable stencil testing to draw the borders of the mirrors
@@ -230,7 +232,12 @@ int main(int argc, char* argv[]){
         // Draw non opaque cubes
         map.draw_non_opaque_cubes(view, projection, sun, camera.camera_pos); // Draw transparant cubes last
         target.draw_axis(); // Target drawn the latest to be in front of the rest (despite being drawn with depth mask at false)
-
+        shaderModel.use();
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+        shaderModel.set_uniform("model", model);
+        ourModel.draw(shaderModel);
         // Checks for inputs signaled by Input_listener (button clicked, mouse clicked or mouse moved)
         check_for_input(window, &camera, &map);
 
