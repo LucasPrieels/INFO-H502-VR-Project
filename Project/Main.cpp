@@ -106,7 +106,7 @@ int main(int argc, char* argv[]){
         bool opaque = !(files_textures[i] == "leaf.png" || files_textures[i] == "glass.png"); // Whether this texture is completely opaque or not. Only non-opaque textures are leaves and glass
         Texture texture(path_string + "Textures/" + files_textures[i], textures_shininess[i], opaque, glm::vec3(0.0f), glm::vec3(0.0f), Mirror::resolution); // Previous-to-last 2 arguments are not used for non-mirror textures
     }
-
+    stbi_set_flip_vertically_on_load(true); //flip les textures verticalement pour les modèles importés
     // Create all relevant objects
     Cubemap cubemap(path_string, SUNNY);
     Map map(NUM_CUBES_SIDE, path_string);
@@ -211,7 +211,7 @@ int main(int argc, char* argv[]){
 
         // Draw all Drawable objects
         cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION); // current_time used to blend day color and night texture during morning and evening
-        //axis.draw_axis(view, projection);
+        axis.draw_axis(view, projection);
         if (SUNNY) sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, camera.camera_pos); // Give the camera position to draw the sun at distance 99 of the camera
         // Draw opaque cubes
         glActiveTexture(GL_TEXTURE1); // Put the depth map of shadows in texture unit 1
@@ -231,13 +231,16 @@ int main(int argc, char* argv[]){
         if (!SUNNY) particles.draw_particles(view, projection, camera.camera_pos);
         // Draw non opaque cubes
         map.draw_non_opaque_cubes(view, projection, sun, camera.camera_pos); // Draw transparant cubes last
-        target.draw_axis(); // Target drawn the latest to be in front of the rest (despite being drawn with depth mask at false)
         shaderModel.use();
+        shaderModel.set_uniform("view", view);
+        shaderModel.set_uniform("projection", projection);
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(7.0f, 7.0f, -5.0f));
         model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
         shaderModel.set_uniform("model", model);
         ourModel.draw(shaderModel);
+        target.draw_axis(); // Target drawn the latest to be in front of the rest (despite being drawn with depth mask at false)
+        
         // Checks for inputs signaled by Input_listener (button clicked, mouse clicked or mouse moved)
         check_for_input(window, &camera, &map);
 

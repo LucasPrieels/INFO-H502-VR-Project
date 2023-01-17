@@ -8,19 +8,28 @@
 #include <glm/gtx/string_cast.hpp> // for to_string
 #include "Shader.h"
 #include "Mesh.h"
-#include "Mirror.h"
-
 
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
+#include "AssimpGLMHelpers.h"
 
+
+unsigned int TextureFromFile(const char *path, const std::string &directory);
+
+struct Bone{
+    int id; //index in boneMatrix
+    glm::mat4 offset; //transformation from model space to bone space
+};
 class Model{
 
 public:
+    std::vector<Mesh> meshes;
+    std::string file_directory;
+    std::vector<Text> textures_loaded;
+
 
         Model(std::string path_to_current_folder){
-            this->path = path_to_current_folder;
             loadModel(path_to_current_folder);
 
         }
@@ -33,12 +42,17 @@ public:
 
 private:
     std::string path;
-    std::vector<Mesh> meshes;
-    std::string file_directory;
-    std::vector<Text> textures_loaded;
+    std::map<std::string, Bone> m_BoneMap;
+    int m_bone_counter = 0;   //incremented when read a new bone
 
+    auto& GetBoneMap(){
+        return m_BoneMap;
+    }
+    int& GetBoneCouter(){
+        return m_bone_counter;
+    }
 
-    void loadModel(std::string path){
+    void loadModel(std::string const &path){
         Assimp::Importer importer;
         const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals | aiProcess_OptimizeMeshes);
         //Assimp load the model and deal with the different formats specifications
@@ -51,7 +65,7 @@ private:
                 std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
                 return;
             }
-            file_directory = path.substr(0, path.find_last_of('/')); //find directory path
+            file_directory = path.substr(0, path.find_last_of('/')); //find directory from the filepath
 
             processNode(scene->mRootNode, scene); //pass the first node = root node to processNode funtion
         }
@@ -59,7 +73,7 @@ private:
     void processNode(aiNode *node, const aiScene *scene){ //recursive function until all nodes are processed
         //process all the node's meshes
         for (unsigned int i = 0; i < node->mNumMeshes; i++){ //check each of the mesh indices and retrieve the corresponding mesh by indexing the scene mMeshes array
-            aiMesh *mesh = scene->mMeshes[node->mMeshes[i]]; //retrieve all the meshes of each node
+            aiMesh* mesh = scene->mMeshes[node->mMeshes[i]]; //retrieve all the meshes of each node
             meshes.push_back(processMesh(mesh, scene)); //processMesh return a Mesh object
         }
 
@@ -86,12 +100,18 @@ private:
                 texture.type = type_name;
                 texture.path = string.C_Str();
                 textures.push_back(texture);
+
                 textures_loaded.push_back(texture);
             }
         }
         return textures;
 
     }
+    // void setVertexBoneDataToDefault(std::vec3<float>& vertex){
+    //         for(int i = 0; i < MAX_BONE_WEIGHTS; i++){
+    //             vertex[]
+    //         }
+    // }
 
     Mesh processMesh(aiMesh *mesh, const aiScene *scene){
         std::vector<unsigned int> indices;
@@ -112,9 +132,44 @@ private:
                 vertices.push_back(mesh->mTextureCoords[0][i].x);
                 vertices.push_back(mesh->mTextureCoords[0][i].y);
             }
-            else
+            else{
             vertices.push_back(0.0f);
             vertices.push_back(0.0f);
+            }
+
+            for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex){
+                int boneID = -1;
+                std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
+                if(m_BoneMap.find(boneName) == m_BoneMap.end()){
+                    Bone newBone;
+                    newBone.id = m_bone_counter;
+                    newBone.offset = AssimpGLMHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);
+                    m_BoneMap[boneName] = newBone;
+                    boneID = m_bone_counter; 
+                    m_bone_counter++;
+
+                }
+                else {
+                    boneID = m_BoneMap[boneName].id;
+                }
+                auto weights = mesh->mBones[boneIndex]->mWeights;
+                int numWeights = mesh->mBones[boneIndex]->mNumWeights;
+
+                for (int weightIndex = 0; weightIndex < numWeights; weightIndex++){
+                    int vertexID = weights[weightIndex].mVertexId;
+                    float weight = weights[weightIndex].mWeight;
+
+                    for (int i = 0; i<  MAX_BONE_WEIGHTS; ++i){
+                        vertices.push_back(boneID);
+                    }
+                    for (int i = 0; i<  MAX_BONE_WEIGHTS; ++i){
+                        vertices.push_back(weight);
+                    }
+                }
+            }
+
+
+
         }
 
         for (unsigned int i = 0; i < mesh->mNumFaces; i++){ //as have asked aiProcess_Triangulate => know that each primitive is a triangle
@@ -133,9 +188,10 @@ private:
             textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
         }
 
-        return Mesh(path, vertices, indices, textures);
+        return Mesh(vertices, indices, textures);
     }
 
+};
 
 
     unsigned int TextureFromFile(const char *path, const std::string &directory){
@@ -154,12 +210,16 @@ private:
             else if(nrComponents==4) format = GL_RGBA;
             glBindTexture(GL_TEXTURE_2D, textureID);
             glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
 
+            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
             stbi_image_free(data);
         }
         else
@@ -175,6 +235,6 @@ private:
 
 
 
-};
+
 
 #endif

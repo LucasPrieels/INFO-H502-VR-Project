@@ -2,15 +2,35 @@
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoords;
-
-out vec2 TexCoords;
+layout (location = 5) in ivec4 bone_ids;  //ids of the model's bones to read the boneMatrix
+layout (location =6) = in vec4 weights;   //weights of each bone if one moves
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+const int MAX_BONES_NBR = 100; 
+const int MAX_BONE_WEIGHT = 4;
+
+uniform  mat4 boneMatrix[MAX_BONES_NBR];
+
+out vec2 TexCoords;
+
 void main()
-{
+{   
+    vec4 positionBone = vec4(0.0f);
+    for (int i = 0; i < MAX_BONE_WEIGHT ; i++){
+        if(bone_ids[i] == -1) continue;
+
+        if(bone_ids[i] >= MAX_BONES_NBR){
+            position = vec4(aPos,1.0f);
+            break;
+        }
+
+        position += boneMatrix[bone_ids[i]] * vec4(aPos, 1.0f) * weights[i];
+        vec3 normal_local = mat3(finalBonesMatrices[bone_ids[i]]) * aNormal;
+    }
+
     TexCoords = aTexCoords;    
-    gl_Position = projection * view * model * vec4(aPos, 1.0);
+    gl_Position = projection * view * model * position;
 }
