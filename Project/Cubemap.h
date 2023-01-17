@@ -68,14 +68,12 @@ public:
             "Textures/skybox/night_back.png"
     };
 
-    Cubemap(std::string path_to_current_folder, bool sunny):
+    Cubemap(std::string path_to_current_folder):
         Drawable(Cubemap::vertices, false, {},{3}),
         shader(path_to_current_folder + "vertex_shader_skybox.txt", path_to_current_folder + "fragment_shader_skybox.txt")
     {
         // Init shader
         shader.use();
-        if (sunny) shader.set_uniform("color_day", glm::vec3(0.05f, 0.4f, 0.9f)); // Set color to use for the sky during the day
-        else shader.set_uniform("color_day", glm::vec3(0.35, 0.35, 0.35f)); // Grey clouds
         shader.set_uniform("skybox_night", 0); // Set texture to use for the sky during the night
 
         glGenTextures(1, &cubemap_ID);
@@ -99,7 +97,10 @@ public:
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     }
 
-    void draw_skybox(glm::mat4 view, glm::mat4 projection, float current_time, int day_duration){
+    void draw_skybox(glm::mat4 view, glm::mat4 projection, float current_time, int day_duration, bool sunny){
+        shader.use();
+        if (sunny) shader.set_uniform("color_day", glm::vec3(0.05f, 0.4f, 0.9f)); // Set color to use for the sky during the day
+        else shader.set_uniform("color_day", glm::vec3(0.35, 0.35, 0.35f)); // Grey clouds
 
         float time_of_day = (int)round(1000*current_time)%day_duration; // In ms, 0 is start of morning
         // Depending on the time of day, the blend factor blending day and night skies will be different

@@ -38,14 +38,5 @@ public:
         glReadBuffer(GL_NONE);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
-
-    static void draw_objects_with_shadow(std::vector<Cube> cubes, glm::mat4 projection_light, glm::mat4 view_light, Shader shadow_shader){
-        // Draw all Drawable objects that should have a shadow, i.e. blocks (mirrors, sun, target, axis etc should not have shadows)
-        Drawable drawable(Cube::vertices, true, Cube::vertices_indices, {3}); // Create VAO
-        std::vector<glm::vec3> translation_cubes;
-        for (Cube c: cubes) translation_cubes.push_back(glm::vec3(c.x, c.y, c.z));
-
-        drawable.draw(translation_cubes, view_light, projection_light, shadow_shader, 1, 36, GL_TRIANGLES, true, false);
-    }
 };
 #endif

@@ -35,7 +35,7 @@ void main() {
     float depth_without_obstacle = fragment_pos_light_space.z; // Distance between the light source and the considered fragment
     float depth_with_obstacle = texture(shadow_texture_uniform, fragment_pos_light_space.xy).r; // Taking the ray between the light source and the considered fragment, depth with the closest obstacle (which might not be the fragment if there is shadow)
     float shadow = 0.0;
-    if (depth_without_obstacle - 0.02 > depth_with_obstacle) shadow = 1.0; // If there is an obstacle (taking some margin), there is shadow
+    if (depth_without_obstacle - 0.005 > depth_with_obstacle) shadow = 1.0; // If there is an obstacle (taking some margin), there is shadow
     if (fragment_pos_light_space.z > 1.0) shadow = 0.0; // Outside the frustum nothing should be in shadow
 
     // Overall result

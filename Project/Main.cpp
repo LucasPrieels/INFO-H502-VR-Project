@@ -32,11 +32,10 @@
 #define FAR 100.0f // Near and far values used for perspective projection
 #define CAMERA_SPEED 6.0f // Speed of movement of camera
 #define MIRROR_RESOL 1000 // Resolution of mirrors
-#define SHADOW_DEPTH_SIZE 4096 // Size of the depth map frame (larger means more rays)
+#define SHADOW_DEPTH_SIZE 16384 // Size of the depth map frame (larger means more rays)
 #define SPEED_RAINFALL 3 // Speed of fall of the rain drops
 #define AREA_RAIN_DROPS 15 // Rain appears in a AREA_RAIN_DROPS x AREA_RAIN_DROPS zone around the camera
 #define NUMBER_RAIN_DROPS 8000 // Number of rain drops in the defined area
-#define SUNNY true // Whether we want the weather to be sunny (sun and shadows) or rainy
 
 int width = 1600, height = 1000; // Size of screen
 std::vector<std::string> files_textures = {"grass.png", "dirt.png", "gold.png", "spruce.png", "bookshelf.png", "leaf.png", "glass.png"};
@@ -44,6 +43,8 @@ std::vector<float> textures_shininess = {60.0f, 75.0f, 4.0f, 50.0f, 50.0f, 40.0f
 float lastFrame = 0.0f; // Time of last frame
 float delta_time = 0.0f; // Time between 2 last frames
 std::string path_string = PATH;
+bool SUNNY = true; // Whether we want the weather to be sunny (sun and shadows) or rainy
+float time_last_toggle_weather = 0.0f; // We can only press the weather toggle once per second to avoid toggling twice if pressing for too long
 
 double fps(){
     // Calculates and prints FPS
@@ -57,6 +58,13 @@ double fps(){
 void check_for_input(GLFWwindow* window, Camera* camera, Map* map){
     // Key pressing for movement
     std::vector<std::string> directions = Input_listener::process_movement_input(window); // Returns the list of directions linked to keys pressed by user (if ESC is pressed, directly asks OpenGL to close)
+    for (int i = 0; i < directions.size(); i++) if (directions[i] == "weather"){
+        directions.erase(directions.begin() + i); // Remove it to avoid counting it in next loop
+        if (glfwGetTime() - time_last_toggle_weather > 1.0f){ // We can only press the weather toggle once per second to avoid toggling twice if pressing for too long
+            SUNNY = !SUNNY; // Toggle the weather
+            time_last_toggle_weather = glfwGetTime();
+        }
+    }
     for (int i = 0; i < directions.size(); i++){
         glm::vec3 new_position = camera->get_new_position(directions[i], delta_time/sqrt(directions.size()));
         // Without correction /sqrt(directions.size()), we are going faster when moving in 2 directions at the same time (e.g. front and
@@ -108,7 +116,7 @@ int main(int argc, char* argv[]){
     }
     stbi_set_flip_vertically_on_load(true); //flip les textures verticalement pour les modèles importés
     // Create all relevant objects
-    Cubemap cubemap(path_string, SUNNY);
+    Cubemap cubemap(path_string);
     Map map(NUM_CUBES_SIDE, path_string);
     Input_listener::staticConstructor(window);
     Camera camera(CAMERA_SPEED);
@@ -126,7 +134,7 @@ int main(int argc, char* argv[]){
     glStencilMask(0x00); //prevent of writing in the stencil buffer
     Shadow::init_depth_map_framebuffer(SHADOW_DEPTH_SIZE, SHADOW_DEPTH_SIZE);
     Shader shadow_shader(path_string + "vertex_shader_shadow.txt", path_string + "fragment_shader_shadow.txt");
-    glm::mat4 projection_light = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, 50.0f, 150.0f); // Need larger frustum otherwise shadows won't be computed far from the sun, aspect is 1 since depth map is 1024x1024
+    glm::mat4 projection_light = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, 1.0f, 150.0f); // Need larger frustum otherwise shadows won't be computed far from the sun, aspect is 1 since depth map is 1024x1024
     shadow_shader.use();
     shadow_shader.set_uniform("projection", projection_light);
     sun.projection_light = projection_light;
@@ -146,8 +154,9 @@ int main(int argc, char* argv[]){
         glViewport(0, 0, Shadow::shadow_width, Shadow::shadow_height);
         glBindFramebuffer(GL_FRAMEBUFFER, Shadow::depth_map_framebuffer);
         glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); // clear stencil and depth buffers
-        Shadow::draw_objects_with_shadow(map.cubes, projection_light, view_light, shadow_shader);
-        // Draw NPC
+        // Draw objects that should have a shadow
+        map.draw_opaque_cubes(view_light, projection_light, sun, camera.camera_pos);
+        map.draw_non_opaque_cubes(view_light, projection_light, sun, camera.camera_pos);
         ourModel.draw(shaderModel, view_light, projection_light);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -177,7 +186,7 @@ int main(int argc, char* argv[]){
 
             // Draw Drawable objects that should be reflected in mirrors
             glViewport(0, 0, 1000, 1000);
-            cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION); // current_time used to blend day color and night texture during morning and evening
+            cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION, SUNNY); // current_time used to blend day color and night texture during morning and evening
             //axis.draw_axis(view, projection);
             if (SUNNY) sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, camera.camera_pos); // Give the camera position to draw the sun at distance 99 of the camera
             // Draw opaque cubes
@@ -214,13 +223,20 @@ int main(int argc, char* argv[]){
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width/(float)height, Window::near, Window::far); // Projection: project 3D view on 2D
 
         // Draw all Drawable objects
-        cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION); // current_time used to blend day color and night texture during morning and evening
+        cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION, SUNNY); // current_time used to blend day color and night texture during morning and evening
         //axis.draw_axis(view, projection);
-        if (SUNNY) sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, camera.camera_pos); // Give the camera position to draw the sun at distance 99 of the camera
+        if (SUNNY){
+            sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, camera.camera_pos); // Give the camera position to draw the sun at distance 99 of the camera
+            glActiveTexture(GL_TEXTURE1); // Put the depth map of shadows in texture unit 1
+            glBindTexture(GL_TEXTURE_2D, Shadow::depth_map);
+            glActiveTexture(GL_TEXTURE0); // Go back to texture unit 0
+        }
+        else{ // If not sunny we don't draw shadows
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            glActiveTexture(GL_TEXTURE0);
+        }
         // Draw opaque cubes
-        glActiveTexture(GL_TEXTURE1); // Put the depth map of shadows in texture unit 1
-        glBindTexture(GL_TEXTURE_2D, Shadow::depth_map);
-        glActiveTexture(GL_TEXTURE0); // Go back to texture unit 0
         map.draw_opaque_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw light effectively
         // Draw NPC
         ourModel.draw(shaderModel, view, projection);
@@ -236,7 +252,7 @@ int main(int argc, char* argv[]){
         // Draw particles of rain
         if (!SUNNY) particles.draw_particles(view, projection, camera.camera_pos);
         // Draw non opaque cubes
-        map.draw_non_opaque_cubes(view, projection, sun, camera.camera_pos); // Draw transparant cubes last
+        map.draw_non_opaque_cubes(view, projection, sun, camera.camera_pos); // Draw transparent cubes last
         target.draw_axis(); // Target drawn the latest to be in front of the rest (despite being drawn with depth mask at false)
         
         // Checks for inputs signaled by Input_listener (button clicked, mouse clicked or mouse moved)
