@@ -17,10 +17,12 @@
 
 unsigned int TextureFromFile(const char *path, const std::string &directory);
 
+/*
 struct Bone{
     int id; //index in boneMatrix
     glm::mat4 offset; //transformation from model space to bone space
 };
+ */
 class Model{
 
 public:
@@ -28,13 +30,14 @@ public:
     std::string file_directory;
     std::vector<Text> textures_loaded;
 
+    Model(std::string path_to_current_folder){
+        loadModel(path_to_current_folder);
+    }
 
-        Model(std::string path_to_current_folder){
-            loadModel(path_to_current_folder);
-
-        }
-
-       void draw(Shader &shader){
+    void draw(Shader &shader, glm::mat4 view, glm::mat4 projection){
+        shader.use();
+        shader.set_uniform("view", view);
+        shader.set_uniform("projection", projection);
         for(unsigned int i = 0; i < meshes.size(); i++){
             meshes[i].drawMesh(shader);
         }
@@ -42,6 +45,7 @@ public:
 
 private:
     std::string path;
+        /*
     std::map<std::string, Bone> m_BoneMap;
     int m_bone_counter = 0;   //incremented when read a new bone
 
@@ -51,24 +55,24 @@ private:
     int& GetBoneCouter(){
         return m_bone_counter;
     }
+*/
 
     void loadModel(std::string const &path){
         Assimp::Importer importer;
-        const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals | aiProcess_OptimizeMeshes);
+        const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate| aiProcess_GenNormals | aiProcess_OptimizeMeshes);
         //Assimp load the model and deal with the different formats specifications
         //ReadFile function needs a directory path, then process: transform all the model's primitive into triangles,
         //flips the text coords arounf y axis (textures are often reversed) and optimize by joining meshes into one larger
 
-        if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
-            {
-                //check if scene is null or data incomplete
-                std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
-                return;
-            }
-            file_directory = path.substr(0, path.find_last_of('/')); //find directory from the filepath
-
-            processNode(scene->mRootNode, scene); //pass the first node = root node to processNode funtion
+        if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode){
+            //check if scene is null or data incomplete
+            std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
+            return;
         }
+        file_directory = path.substr(0, path.find_last_of('/')); //find directory from the filepath
+
+        processNode(scene->mRootNode, scene); //pass the first node = root node to processNode funtion
+    }
 
     void processNode(aiNode *node, const aiScene *scene){ //recursive function until all nodes are processed
         //process all the node's meshes
@@ -81,6 +85,7 @@ private:
             processNode(node->mChildren[i], scene); //recursive call to process each of its children
         }
     }
+
     std::vector<Text> loadMaterialTextures(aiMaterial *material, aiTextureType type, std::string type_name){
         std::vector<Text> textures;
         for(unsigned int i = 0; i < material->GetTextureCount(type); i++){ //give the amount of texture in the material
@@ -137,6 +142,7 @@ private:
             vertices.push_back(0.0f);
             }
 
+            /*
             for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex){
                 int boneID = -1;
                 std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
@@ -167,9 +173,7 @@ private:
                     }
                 }
             }
-
-
-
+             */
         }
 
         for (unsigned int i = 0; i < mesh->mNumFaces; i++){ //as have asked aiProcess_Triangulate => know that each primitive is a triangle
@@ -192,7 +196,6 @@ private:
     }
 
 };
-
 
     unsigned int TextureFromFile(const char *path, const std::string &directory){
         std::string filename = std::string(path);
@@ -222,19 +225,13 @@ private:
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             stbi_image_free(data);
         }
-        else
-            {
-                std::cout << "Texture failed to load at path: " << path << std::endl;
-                stbi_image_free(data);
-            }
+        else{
+            std::cout << "Texture failed to load at path: " << path << std::endl;
+            stbi_image_free(data);
+        }
 
     return textureID;
     }
-
-
-
-
-
 
 
 #endif

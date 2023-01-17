@@ -40,6 +40,7 @@ public:
          if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) directions.push_back("right");
          if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) directions.push_back("up");
          if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) directions.push_back("down");
+         if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) directions.push_back("weather"); // Toogle the current weather
 
          return directions;
      }

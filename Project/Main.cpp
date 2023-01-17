@@ -36,7 +36,7 @@
 #define SPEED_RAINFALL 3 // Speed of fall of the rain drops
 #define AREA_RAIN_DROPS 15 // Rain appears in a AREA_RAIN_DROPS x AREA_RAIN_DROPS zone around the camera
 #define NUMBER_RAIN_DROPS 8000 // Number of rain drops in the defined area
-#define SUNNY false // Whether we want the weather to be sunny (sun and shadows) or rainy
+#define SUNNY true // Whether we want the weather to be sunny (sun and shadows) or rainy
 
 int width = 1600, height = 1000; // Size of screen
 std::vector<std::string> files_textures = {"grass.png", "dirt.png", "gold.png", "spruce.png", "bookshelf.png", "leaf.png", "glass.png"};
@@ -112,12 +112,12 @@ int main(int argc, char* argv[]){
     Map map(NUM_CUBES_SIDE, path_string);
     Input_listener::staticConstructor(window);
     Camera camera(CAMERA_SPEED);
-    Axis axis(path_string);
+    //Axis axis(path_string);
     Target target(path_string);
     Sun sun(path_string, original_light_color, distance_sun_to_origin);
     Mirror::resolution = MIRROR_RESOL; // Set mirror resolutions
     Particles particles(path_string, camera.camera_pos, SPEED_RAINFALL, NUMBER_RAIN_DROPS, AREA_RAIN_DROPS);
-    Model ourModel(path_string + "backpack/backpack.obj");
+    Model ourModel(path_string + "perso/scene.gltf");
     Shader shaderModel(path_string + "vertex_shader_model.txt", path_string + "fragment_shader_model.txt");
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST); // Enable depth testing to know which triangles are more in front
@@ -147,6 +147,8 @@ int main(int argc, char* argv[]){
         glBindFramebuffer(GL_FRAMEBUFFER, Shadow::depth_map_framebuffer);
         glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); // clear stencil and depth buffers
         Shadow::draw_objects_with_shadow(map.cubes, projection_light, view_light, shadow_shader);
+        // Draw NPC
+        ourModel.draw(shaderModel, view_light, projection_light);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glViewport(0, 0, Window::width, Window::height);
@@ -180,6 +182,8 @@ int main(int argc, char* argv[]){
             if (SUNNY) sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, camera.camera_pos); // Give the camera position to draw the sun at distance 99 of the camera
             // Draw opaque cubes
             map.draw_opaque_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw light effectively
+            // Draw NPC
+            ourModel.draw(shaderModel, view, projection);
             // Draw mirrors and their borders
             glStencilFunc(GL_ALWAYS, 1, 0xFF); //all fragments of the mirrors should pass the test
             glStencilMask(0xFF); //allow writing in the stencil buffer
@@ -211,13 +215,15 @@ int main(int argc, char* argv[]){
 
         // Draw all Drawable objects
         cubemap.draw_skybox(view, projection, glfwGetTime(), DAY_DURATION); // current_time used to blend day color and night texture during morning and evening
-        axis.draw_axis(view, projection);
+        //axis.draw_axis(view, projection);
         if (SUNNY) sun.draw_sun(view, projection, glfwGetTime(), DAY_DURATION, camera.camera_pos); // Give the camera position to draw the sun at distance 99 of the camera
         // Draw opaque cubes
         glActiveTexture(GL_TEXTURE1); // Put the depth map of shadows in texture unit 1
         glBindTexture(GL_TEXTURE_2D, Shadow::depth_map);
         glActiveTexture(GL_TEXTURE0); // Go back to texture unit 0
         map.draw_opaque_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw light effectively
+        // Draw NPC
+        ourModel.draw(shaderModel, view, projection);
         // Draw mirrors and their borders
         glStencilFunc(GL_ALWAYS, 1, 0xFF); //all fragments of the mirrors should pass the test
         glStencilMask(0xFF); //allow writing in the stencil buffer
@@ -231,14 +237,6 @@ int main(int argc, char* argv[]){
         if (!SUNNY) particles.draw_particles(view, projection, camera.camera_pos);
         // Draw non opaque cubes
         map.draw_non_opaque_cubes(view, projection, sun, camera.camera_pos); // Draw transparant cubes last
-        shaderModel.use();
-        shaderModel.set_uniform("view", view);
-        shaderModel.set_uniform("projection", projection);
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(7.0f, 7.0f, -5.0f));
-        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-        shaderModel.set_uniform("model", model);
-        ourModel.draw(shaderModel);
         target.draw_axis(); // Target drawn the latest to be in front of the rest (despite being drawn with depth mask at false)
         
         // Checks for inputs signaled by Input_listener (button clicked, mouse clicked or mouse moved)
