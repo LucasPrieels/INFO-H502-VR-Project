@@ -138,7 +138,6 @@ int main(int argc, char* argv[]){
     shadow_shader.use();
     shadow_shader.set_uniform("projection", projection_light);
     sun.projection_light = projection_light;
-
     // Render loop
     int frame_nb = 0;
     while (!glfwWindowShouldClose(window)){
