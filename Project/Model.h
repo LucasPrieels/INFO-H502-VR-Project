@@ -7,8 +7,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp> // for to_string
 #include "Shader.h"
-#include  "Mesh.h"
-#include  "Mirror.h"
+#include "Mesh.h"
+#include "Mirror.h"
 
 
 #include <assimp/scene.h>
@@ -22,7 +22,7 @@ public:
         Model(std::string path_to_current_folder){
             this->path = path_to_current_folder;
             loadModel(path_to_current_folder);
-                
+
         }
 
        void draw(Shader &shader){
@@ -42,10 +42,10 @@ private:
         Assimp::Importer importer;
         const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals | aiProcess_OptimizeMeshes);
         //Assimp load the model and deal with the different formats specifications
-        //ReadFile function needs a directory path, then process: transform all the model's primitive into triangles, 
+        //ReadFile function needs a directory path, then process: transform all the model's primitive into triangles,
         //flips the text coords arounf y axis (textures are often reversed) and optimize by joining meshes into one larger
 
-        if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) 
+        if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
             {
                 //check if scene is null or data incomplete
                 std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
@@ -54,13 +54,13 @@ private:
             file_directory = path.substr(0, path.find_last_of('/')); //find directory path
 
             processNode(scene->mRootNode, scene); //pass the first node = root node to processNode funtion
-        }  
-        
+        }
+
     void processNode(aiNode *node, const aiScene *scene){ //recursive function until all nodes are processed
         //process all the node's meshes
         for (unsigned int i = 0; i < node->mNumMeshes; i++){ //check each of the mesh indices and retrieve the corresponding mesh by indexing the scene mMeshes array
-            aiMesh *mesh = scene->mMeshes[node->mMeshes[i]]; //retrieve all the meshes of each node 
-            meshes.push_back(processMesh(mesh, scene)); //processMesh return a Mesh object 
+            aiMesh *mesh = scene->mMeshes[node->mMeshes[i]]; //retrieve all the meshes of each node
+            meshes.push_back(processMesh(mesh, scene)); //processMesh return a Mesh object
         }
 
         for (unsigned int i = 0; i < node->mNumChildren; i++){
@@ -76,13 +76,13 @@ private:
             for(unsigned int j =0; j < textures_loaded.size(); j++){
                 if(std::strcmp(textures_loaded[j].path.data(), string.C_Str()) == 0){
                     textures.push_back(textures_loaded[j]);
-                    skip = true; 
+                    skip = true;
                     break;
                 }
             }
             if(!skip){ //if texture hasn't been already loaded, load it
                 Text texture;
-                // texture.Texture_ID = TextureFromFile(string.C_Str(), this->file_directory); //stb_image library function that loads a texture and return its id
+                texture.Texture_ID = TextureFromFile(string.C_Str(), this->file_directory); //stb_image library function that loads a texture and return its id
                 texture.type = type_name;
                 texture.path = string.C_Str();
                 textures.push_back(texture);
@@ -97,9 +97,9 @@ private:
         std::vector<unsigned int> indices;
         std::vector<Text> textures;
         std::vector<float> vertices;
-        
+
         for(unsigned int i=0; i < mesh->mNumVertices; i++){ //3 parts: retrieve vertices, indices, material
-            
+
             vertices.push_back(mesh->mVertices[i].x); //Assimp's vertex position called mVertices
             vertices.push_back(mesh->mVertices[i].y);
             vertices.push_back(mesh->mVertices[i].z);
@@ -107,12 +107,12 @@ private:
             vertices.push_back(mesh->mNormals[i].x); //Normals
             vertices.push_back(mesh->mNormals[i].y);
             vertices.push_back(mesh->mNormals[i].z);
-            
-            if(mesh->mTextureCoords[0]){ //check  if mesh contains texture 
+
+            if(mesh->mTextureCoords[0]){ //check  if mesh contains texture
                 vertices.push_back(mesh->mTextureCoords[0][i].x);
                 vertices.push_back(mesh->mTextureCoords[0][i].y);
             }
-            else 
+            else
             vertices.push_back(0.0f);
             vertices.push_back(0.0f);
         }
@@ -142,10 +142,10 @@ private:
         std::string filename = std::string(path);
         filename = directory + '/' + filename;
 
-        unsigned int textureID; 
+        unsigned int textureID;
         glGenTextures(1, &textureID);
 
-        int width, height, nrComponents; 
+        int width, height, nrComponents;
         unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
         if(data){
             GLenum format;
@@ -154,7 +154,7 @@ private:
             else if(nrComponents==4) format = GL_RGBA;
             glBindTexture(GL_TEXTURE_2D, textureID);
             glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        
+
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -162,7 +162,7 @@ private:
 
             stbi_image_free(data);
         }
-        else 
+        else
             {
                 std::cout << "Texture failed to load at path: " << path << std::endl;
                 stbi_image_free(data);
@@ -171,7 +171,7 @@ private:
     return textureID;
     }
 
-    
+
 
 
 

@@ -23,7 +23,7 @@ class Mesh{
     static inline std::vector<float> vertices;
     static inline std::vector<unsigned int> vertices_indices;
     static inline std::vector<Text> textures;
-    
+
 
     Mesh(std::string path_to_current_folder, std::vector<float> vertices, std::vector<unsigned int> indices, std::vector<Text> textures){
         this->vertices_indices = indices;
@@ -79,7 +79,7 @@ class Mesh{
 
         return VAO;
     }
-    
+
 
     void drawMesh(Shader &shader){
         unsigned int diffuse_number = 1;

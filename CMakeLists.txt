@@ -6,7 +6,7 @@ project(infoh502-cpp)
 
 #set the minimal version of cmake and the minimal version of the c++ language
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
-set(CMAKE_CXX_STANDARD 14)     
+set(CMAKE_CXX_FLAGS "-std=c++17")    
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 #define some variable
@@ -26,12 +26,15 @@ option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)
 add_subdirectory(3rdParty/glfw)
 
-
+add_subdirectory(3rdParty/assimp)
 
 include_directories(3rdParty/glad/include/
                     3rdParty/glfw/include/
                     3rdParty/glm/
-                    3rdParty/stb/)
-
+                    3rdParty/stb/
+			3rdParty/assimp/include/
+			3rdParty/assimp/build/include/)
 
 add_subdirectory(Project)
+
+
