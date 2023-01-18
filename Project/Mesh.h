@@ -8,10 +8,9 @@
 #include <glm/gtx/string_cast.hpp> // for to_std::string
 #include "Shader.h"
 #include "NPC.h"
-#define MAX_BONE_INFLUENCE 4
 
 struct Tex {
-    unsigned int id;
+    unsigned int ID;
     std::string type;
     std::string path;
 };
@@ -22,7 +21,7 @@ public:
     std::vector<unsigned int> indices;
 
     Mesh(std::vector<float> vertices, std::vector<unsigned int> indices, std::vector<Tex> textures):
-        Drawable(vertices, true, indices, {3, 3, 2, 4})
+        Drawable(vertices, true, indices, {3, 3, 2})
     {
         this->textures = textures;
         this->indices = indices;
@@ -46,10 +45,11 @@ public:
             }
 
             shader.set_uniform(name_texture + number_texture, i);
-            glBindTexture(GL_TEXTURE_2D, textures[i].id);
+            glBindTexture(GL_TEXTURE_2D, textures[i].ID);
         }
 
-        draw({translation}, view, projection, shader, 0, indices.size(), GL_TRIANGLES, false, false);
+        draw({translation}, view, projection, shader, -1, indices.size(), GL_TRIANGLES, false, false);
+        // Texture are already set by the previous loop, so we can put -1 in draw
         glActiveTexture(GL_TEXTURE0);
     }
 };

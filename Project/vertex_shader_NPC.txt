@@ -1,17 +1,12 @@
 #version 330 core
 
-const int MAX_BONES = 100;
-const int MAX_BONE_INFLUENCE = 4;
-
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 normal;
 layout(location = 2) in vec2 texture_coord;
-layout(location = 3) in vec4 bone_IDs; // In practice bone IDs are int but they are passed as float to be more consistent with the other variables
 
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
-uniform mat4 bones_matrices[MAX_BONES];
 uniform mat4 view_light;
 uniform mat4 projection_light;
 
@@ -21,16 +16,9 @@ out vec3 normal_transferred;
 out vec3 fragment_pos_light_space_transferred;
 
 void main(){
-    vec4 total_position = vec4(0.0f);
-    for (int i = 0 ; i < MAX_BONE_INFLUENCE ; i++){
-        if (int(bone_IDs[i]) == -1) continue;
-        vec4 local_position = bones_matrices[int(bone_IDs[i])] * vec4(position, 1.0f);
-        total_position += local_position * 0.15; // Bone weight is assumed constant and = 0.15
-        normal_transferred = normalize(mat3(bones_matrices[int(bone_IDs[i])]) * normal);
-   }
+    gl_Position =  projection * view * model * vec4(position, 1.0);
 
-    gl_Position =  projection * view * model * total_position;
-
+    normal_transferred = normalize(normal);
 	texture_coord_transferred = texture_coord;
 	fragment_pos_transferred = vec3(model * vec4(position, 1.0));
 	// Compute the fragment position in the light space (to calculate shadows)

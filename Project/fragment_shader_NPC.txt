@@ -7,7 +7,6 @@ in vec3 fragment_pos_light_space_transferred;
 out vec4 final_color;
 
 uniform sampler2D texture_diffuse1;
-uniform sampler2D texture_specular1;
 uniform sampler2D shadow_texture_uniform;
 uniform vec3 light_pos;
 uniform vec3 light_color;
@@ -27,12 +26,8 @@ void main(){
     float specular_light_value = 0.7;
     vec3 viewing_dir = normalize(viewing_pos - fragment_pos_transferred);
     vec3 reflection_dir = normalize(reflect(-light_direction, normal_transferred));
-    vec3 specular_color = texture(texture_specular1, texture_coord_transferred).rgb;
     float shininess = 20;
     vec3 specular = specular_light_value * pow(max(dot(viewing_dir, reflection_dir), 0.0), shininess) * light_color;
-    specular.r *= specular_color.r;
-    specular.g *= specular_color.g;
-    specular.b *= specular_color.b;
 
     // Shadow (multiplies the diffuse and specular components)
     vec3 fragment_pos_light_space = fragment_pos_light_space_transferred * 0.5 + 0.5; // fragment_pos_light_space is in range [-1,1] while texture argument should be [0,1]
