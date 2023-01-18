@@ -27,12 +27,12 @@
 #define MOUSE_SENSITIVITY 0.05 // Sensitivity of yaw and pitch wrt mouse movements
 #define MAX_DISTANCE_REMOVE 15 // We only remove clicked blocks up to this distance
 #define NUM_CUBES_SIDE 100 // We create a NUM_CUBES_SIDE x NUM_CUBES_SIDE area of cubes
-#define DAY_DURATION 80000 // Nb of milliseconds in an in-game day
+#define DAY_DURATION 200000 // Nb of milliseconds in an in-game day
 #define NEAR 0.1f
 #define FAR 100.0f // Near and far values used for perspective projection
 #define CAMERA_SPEED 6.0f // Speed of movement of camera
 #define MIRROR_RESOL 1000 // Resolution of mirrors
-#define SHADOW_DEPTH_SIZE 16384 // Size of the depth map frame (larger means more rays)
+#define SHADOW_DEPTH_SIZE 8192 // Size of the depth map frame (larger means more rays). NOTE: if shadows look incorrect, try to reduce this number
 #define SPEED_RAINFALL 3 // Speed of fall of the rain drops
 #define AREA_RAIN_DROPS 15 // Rain appears in a AREA_RAIN_DROPS x AREA_RAIN_DROPS zone around the camera
 #define NUMBER_RAIN_DROPS 8000 // Number of rain drops in the defined area
