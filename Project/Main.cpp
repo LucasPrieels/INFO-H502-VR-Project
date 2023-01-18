@@ -28,7 +28,7 @@
 #define MOUSE_SENSITIVITY 0.05 // Sensitivity of yaw and pitch wrt mouse movements
 #define MAX_DISTANCE_REMOVE 15 // We only remove clicked blocks up to this distance
 #define NUM_CUBES_SIDE 100 // We create a NUM_CUBES_SIDE x NUM_CUBES_SIDE area of cubes
-#define DAY_DURATION 200000 // Nb of milliseconds in an in-game day
+#define DAY_DURATION 20000 // Nb of milliseconds in an in-game day
 #define NEAR 0.1f
 #define FAR 100.0f // Near and far values used for perspective projection
 #define CAMERA_SPEED 6.0f // Speed of movement of camera
@@ -162,7 +162,7 @@ int main(int argc, char* argv[]){
         // Draw objects that should have a shadow
         map.draw_opaque_cubes(view_light, projection_light, sun, camera.camera_pos);
         map.draw_non_opaque_cubes(view_light, projection_light, sun, camera.camera_pos);
-        NPC_model.Draw(view_light, projection_light, animation.GetFinalBoneMatrices());
+        NPC_model.Draw(view_light, projection_light, animation.GetFinalBoneMatrices(), sun, camera.camera_pos);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glViewport(0, 0, Window::width, Window::height);
@@ -199,7 +199,7 @@ int main(int argc, char* argv[]){
             // Draw opaque cubes
             map.draw_opaque_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw light effectively
             // Draw NPC
-            NPC_model.Draw(view, projection, animation.GetFinalBoneMatrices());
+            NPC_model.Draw(view, projection, animation.GetFinalBoneMatrices(), sun, camera.camera_pos);
             // Draw mirrors and their borders
             glStencilFunc(GL_ALWAYS, 1, 0xFF); //all fragments of the mirrors should pass the test
             glStencilMask(0xFF); //allow writing in the stencil buffer
@@ -249,7 +249,7 @@ int main(int argc, char* argv[]){
         map.draw_opaque_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw light effectively
         // Draw NPC
         animation.UpdateAnimation(delta_time);
-        NPC_model.Draw(view, projection, animation.GetFinalBoneMatrices());
+        NPC_model.Draw(view, projection, animation.GetFinalBoneMatrices(), sun, camera.camera_pos);
         // Draw mirrors and their borders
         glStencilFunc(GL_ALWAYS, 1, 0xFF); //all fragments of the mirrors should pass the test
         glStencilMask(0xFF); //allow writing in the stencil buffer

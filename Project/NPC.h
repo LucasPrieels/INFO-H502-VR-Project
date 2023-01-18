@@ -50,12 +50,17 @@ public:
     }
 
     // draws the model, and thus all its meshes
-    void Draw(glm::mat4 view, glm::mat4 projection, std::vector<glm::mat4> transforms){
+    void Draw(glm::mat4 view, glm::mat4 projection, std::vector<glm::mat4> bones_matrices, Sun sun, glm::vec3 camera_pos){
         shader_NPC.use();
-        for (int i = 0; i < transforms.size(); ++i) shader_NPC.set_uniform("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-        for(unsigned int i = 0; i < meshes.size(); i++) meshes[i].draw_mesh(glm::vec3(0.0f, 6.5f, -8.0f), view, projection, shader_NPC);
+        for (int i = 0; i < bones_matrices.size(); ++i) shader_NPC.set_uniform("bones_matrices[" + std::to_string(i) + "]", bones_matrices[i]);
+        shader_NPC.set_uniform("light_color", sun.light_color);
+        shader_NPC.set_uniform("light_pos", sun.light_pos);
+        shader_NPC.set_uniform("viewing_pos", camera_pos);
+        shader_NPC.set_uniform("shadow_texture_uniform", 1);
+        shader_NPC.set_uniform("view_light", sun.view_light);
+        shader_NPC.set_uniform("projection_light", sun.projection_light);
+        for (unsigned int i = 0; i < meshes.size(); i++) meshes[i].draw_mesh(glm::vec3(0.0f, 6.5f, -8.0f), view, projection, shader_NPC);
     }
-
 
 private:
     // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes std::vector.
