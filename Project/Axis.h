@@ -29,7 +29,7 @@ public:
     }
 
     void draw_axis(glm::mat4 view, glm::mat4 projection){
-        // Model is glm::mat4(1.0f) because we want to place the axis at the origin
+        // NPC is glm::mat4(1.0f) because we want to place the axis at the origin
         draw({glm::vec3(0.0f)}, view, projection, shader, -1, 6, GL_LINES, false, false); // -1 because we don't want a texture
     }
 

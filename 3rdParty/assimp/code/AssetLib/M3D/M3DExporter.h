@@ -41,7 +41,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 /** @file M3DExporter.h
-*   @brief Declares the exporter class to write a scene to a Model 3D file
+*   @brief Declares the exporter class to write a scene to a NPC 3D file
 */
 #ifndef AI_M3DEXPORTER_H_INC
 #define AI_M3DEXPORTER_H_INC

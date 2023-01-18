@@ -720,11 +720,11 @@ void FBXExporter::WriteDefinitions ()
         total_count += count;
     }
 
-    // Model / FbxNode
+    // NPC / FbxNode
     // <~~ node hierarchy
     count = int32_t(count_nodes(mScene->mRootNode, mScene->mRootNode));
     if (count) {
-        n = FBX::Node("ObjectType", "Model");
+        n = FBX::Node("ObjectType", "NPC");
         n.AddChild("Count", count);
         pt = FBX::Node("PropertyTemplate", "FbxNode");
         p = FBX::Node("Properties70");
@@ -2496,8 +2496,8 @@ void FBXExporter::WriteModelNode(
 ){
     const aiVector3D zero = {0, 0, 0};
     const aiVector3D one = {1, 1, 1};
-    FBX::Node m("Model");
-    std::string name = node->mName.C_Str() + FBX::SEPARATOR + "Model";
+    FBX::Node m("NPC");
+    std::string name = node->mName.C_Str() + FBX::SEPARATOR + "NPC";
     m.AddProperties(node_uid, std::move(name), type);
     m.AddChild("Version", int32_t(232));
     FBX::Node p("Properties70");

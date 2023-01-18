@@ -197,7 +197,7 @@ struct FBXConverter::PotentialNode {
 /// todo: make map of aiBone* to aiNode*
 /// then update convert clusters to the new format
 void FBXConverter::ConvertNodes(uint64_t id, aiNode *parent, aiNode *root_node) {
-    const std::vector<const Connection *> &conns = doc.GetConnectionsByDestinationSequenced(id, "Model");
+    const std::vector<const Connection *> &conns = doc.GetConnectionsByDestinationSequenced(id, "NPC");
 
     std::vector<PotentialNode> nodes;
     nodes.reserve(conns.size());
@@ -216,11 +216,11 @@ void FBXConverter::ConvertNodes(uint64_t id, aiNode *parent, aiNode *root_node) 
         // convert connection source object into Object base class
         const Object *const object = con->SourceObject();
         if (nullptr == object) {
-            FBXImporter::LogError("failed to convert source object for Model link");
+            FBXImporter::LogError("failed to convert source object for NPC link");
             continue;
         }
 
-        // FBX Model::Cube, Model::Bone001, etc elements
+        // FBX NPC::Cube, NPC::Bone001, etc elements
         // This detects if we can cast the object into this model structure.
         const Model *const model = dynamic_cast<const Model *>(object);
 
@@ -267,7 +267,7 @@ void FBXConverter::ConvertNodes(uint64_t id, aiNode *parent, aiNode *root_node) 
             ConvertModel(*model, nodes_chain.back().mNode, root_node, new_abs_transform);
 
             // check if there will be any child nodes
-            const std::vector<const Connection *> &child_conns = doc.GetConnectionsByDestinationSequenced(model->ID(), "Model");
+            const std::vector<const Connection *> &child_conns = doc.GetConnectionsByDestinationSequenced(model->ID(), "NPC");
 
             // if so, link the geometric transform inverse nodes
             // before we attach any child nodes
@@ -2527,11 +2527,11 @@ void FBXConverter::ConvertAnimations() {
 }
 
 std::string FBXConverter::FixNodeName(const std::string &name) {
-    // strip Model:: prefix, avoiding ambiguities (i.e. don't strip if
+    // strip NPC:: prefix, avoiding ambiguities (i.e. don't strip if
     // this causes ambiguities, well possible between empty identifiers,
-    // such as "Model::" and ""). Make sure the behaviour is consistent
+    // such as "NPC::" and ""). Make sure the behaviour is consistent
     // across multiple calls to FixNodeName().
-    if (name.substr(0, 7) == "Model::") {
+    if (name.substr(0, 7) == "NPC::") {
         std::string temp = name.substr(7);
         return temp;
     }
@@ -2720,7 +2720,7 @@ void FBXConverter::ProcessMorphAnimDatas(std::map<std::string, morphAnimData *> 
                 for (const Connection *bsConnection : bsConnections) {
                     auto geo = dynamic_cast<const Geometry *>(bsConnection->DestinationObject());
                     if (geo) {
-                        std::vector<const Connection *> geoConnections = doc.GetConnectionsBySourceSequenced(geo->ID(), "Model");
+                        std::vector<const Connection *> geoConnections = doc.GetConnectionsBySourceSequenced(geo->ID(), "NPC");
                         for (const Connection *geoConnection : geoConnections) {
                             auto model = dynamic_cast<const Model *>(geoConnection->DestinationObject());
                             if (model) {

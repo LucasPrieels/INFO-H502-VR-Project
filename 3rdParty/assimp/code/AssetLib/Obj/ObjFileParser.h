@@ -82,7 +82,7 @@ public:
     ~ObjFileParser();
     /// @brief  If you want to load in-core data.
     void setBuffer(std::vector<char> &buffer);
-    /// @brief  Model getter.
+    /// @brief  NPC getter.
     ObjFile::Model *GetModel() const;
 
     ObjFileParser(const ObjFileParser&) = delete;

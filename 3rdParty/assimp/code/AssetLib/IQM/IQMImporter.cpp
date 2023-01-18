@@ -68,7 +68,7 @@ inline void swap_block( uint32_t *block, size_t size ){
 }
 
 static const aiImporterDesc desc = {
-    "Inter-Quake Model Importer",
+    "Inter-Quake NPC Importer",
     "",
     "",
     "",
@@ -90,7 +90,7 @@ IQMImporter::IQMImporter() :
 }
 
 // ------------------------------------------------------------------------------------------------
-//  Returns true, if file is a binary Inter-Quake Model file.
+//  Returns true, if file is a binary Inter-Quake NPC file.
 bool IQMImporter::CanRead(const std::string &pFile, IOSystem *pIOHandler, bool checkSig) const {
     const std::string extension = GetExtension(pFile);
 
@@ -123,7 +123,7 @@ const aiImporterDesc *IQMImporter::GetInfo() const {
 }
 
 // ------------------------------------------------------------------------------------------------
-//  Model 3D import implementation
+//  NPC 3D import implementation
 void IQMImporter::InternReadFile(const std::string &file, aiScene *pScene, IOSystem *pIOHandler) {
     // Read file into memory
     std::unique_ptr<IOStream> pStream(pIOHandler->Open(file, "rb"));

@@ -40,7 +40,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 /** @file  FBXModel.cpp
- *  @brief Assimp::FBX::Model implementation
+ *  @brief Assimp::FBX::NPC implementation
  */
 
 #ifndef ASSIMP_BUILD_NO_FBX_IMPORTER
@@ -71,7 +71,7 @@ Model::Model(uint64_t id, const Element &element, const Document &doc, const std
         culling = ParseTokenAsString(GetRequiredToken(*Culling, 0));
     }
 
-    props = GetPropertyTable(doc, "Model.FbxNode", element, sc);
+    props = GetPropertyTable(doc, "NPC.FbxNode", element, sc);
     ResolveLinks(element, doc);
 }
 
@@ -94,7 +94,7 @@ void Model::ResolveLinks(const Element&, const Document &doc) {
 
         const Object *const ob = con->SourceObject();
         if (!ob) {
-            DOMWarning("failed to read source object for incoming Model link, ignoring", &element);
+            DOMWarning("failed to read source object for incoming NPC link, ignoring", &element);
             continue;
         }
 

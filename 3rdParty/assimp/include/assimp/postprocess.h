@@ -159,7 +159,7 @@ enum aiPostProcessSteps
     /** <hr>Generates normals for all faces of all meshes.
      *
      * This is ignored if normals are already there at the time this flag
-     * is evaluated. Model importers try to load them from the source file, so
+     * is evaluated. NPC importers try to load them from the source file, so
      * they're usually already there. Face normals are shared between all points
      * of a single face, so a single point can have multiple normals, which
      * forces the library to duplicate vertices in some cases.
@@ -173,7 +173,7 @@ enum aiPostProcessSteps
     /** <hr>Generates smooth normals for all vertices in the mesh.
     *
     * This is ignored if normals are already there at the time this flag
-    * is evaluated. Model importers try to load them from the source file, so
+    * is evaluated. NPC importers try to load them from the source file, so
     * they're usually already there.
     *
     * This flag may not be specified together with

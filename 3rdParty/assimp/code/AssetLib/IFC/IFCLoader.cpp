@@ -370,8 +370,8 @@ void SetCoordinateSpace(ConversionData &conv) {
     const Schema_2x3::IfcRepresentationContext *fav = nullptr;
     for (const Schema_2x3::IfcRepresentationContext &v : conv.proj.RepresentationContexts) {
         fav = &v;
-        // Model should be the most suitable type of context, hence ignore the others
-        if (v.ContextType && v.ContextType.Get() == "Model") {
+        // NPC should be the most suitable type of context, hence ignore the others
+        if (v.ContextType && v.ContextType.Get() == "NPC") {
             break;
         }
     }

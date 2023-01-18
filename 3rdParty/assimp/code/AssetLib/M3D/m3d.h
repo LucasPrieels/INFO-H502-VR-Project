@@ -23,7 +23,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  *
- * @brief ANSI C89 / C++11 single header importer / exporter SDK for the Model 3D (.M3D) format
+ * @brief ANSI C89 / C++11 single header importer / exporter SDK for the NPC 3D (.M3D) format
  * https://gitlab.com/bztsrc/model3d
  *
  * PNG decompressor included from (with minor modifications to make it C89 valid):
@@ -1159,7 +1159,7 @@ static M3D_FLOAT _m3d_rsq(M3D_FLOAT x) {
 #endif
 
 /**
- * Function to decode a Model 3D into in-memory format
+ * Function to decode a NPC 3D into in-memory format
  */
 m3d_t *m3d_load(unsigned char *data, m3dread_t readfilecb, m3dfree_t freecb, m3d_t *mtllib) {
     unsigned char *end, *chunk, *buff, weights[8];
@@ -1876,7 +1876,7 @@ m3d_t *m3d_load(unsigned char *data, m3dread_t readfilecb, m3dfree_t freecb, m3d
         return NULL;
     }
     if (model->nb_s > M3D_NUMBONE) {
-        M3D_LOG("Model has more bones per vertex than what importer was configured to support");
+        M3D_LOG("NPC has more bones per vertex than what importer was configured to support");
         model->errcode = M3D_ERR_TRUNC;
     }
 
@@ -3087,7 +3087,7 @@ static char *_m3d_prtbone(char *ptr, m3db_t *bone, M3D_INDEX numbone, M3D_INDEX 
 }
 
 /**
- * Function to encode an in-memory model into on storage Model 3D format
+ * Function to encode an in-memory model into on storage NPC 3D format
  */
 unsigned char *m3d_save(m3d_t *model, int quality, int flags, unsigned int *size) {
     const char *ol;
@@ -4646,40 +4646,40 @@ unsigned char *m3d_save(m3d_t *model, int quality, int flags, unsigned int *size
 namespace M3D {
 #ifdef M3D_IMPLEMENTATION
 
-class Model {
+class NPC {
 public:
     m3d_t *model;
 
 public:
-    Model() {
+    NPC() {
         this->model = (m3d_t *)malloc(sizeof(m3d_t));
         memset(this->model, 0, sizeof(m3d_t));
     }
-    Model(_unused const std::string &data, _unused m3dread_t ReadFileCB,
-            _unused m3dfree_t FreeCB, _unused M3D::Model mtllib) {
+    NPC(_unused const std::string &data, _unused m3dread_t ReadFileCB,
+            _unused m3dfree_t FreeCB, _unused M3D::NPC mtllib) {
 #ifndef M3D_NOIMPORTER
         this->model = m3d_load((unsigned char *)data.data(), ReadFileCB, FreeCB, mtllib.model);
 #else
-        Model();
+        NPC();
 #endif
     }
-    Model(_unused const std::vector<unsigned char> data, _unused m3dread_t ReadFileCB,
-            _unused m3dfree_t FreeCB, _unused M3D::Model mtllib) {
+    NPC(_unused const std::vector<unsigned char> data, _unused m3dread_t ReadFileCB,
+            _unused m3dfree_t FreeCB, _unused M3D::NPC mtllib) {
 #ifndef M3D_NOIMPORTER
         this->model = m3d_load((unsigned char *)&data[0], ReadFileCB, FreeCB, mtllib.model);
 #else
-        Model();
+        NPC();
 #endif
     }
-    Model(_unused const unsigned char *data, _unused m3dread_t ReadFileCB,
-            _unused m3dfree_t FreeCB, _unused M3D::Model mtllib) {
+    NPC(_unused const unsigned char *data, _unused m3dread_t ReadFileCB,
+            _unused m3dfree_t FreeCB, _unused M3D::NPC mtllib) {
 #ifndef M3D_NOIMPORTER
         this->model = m3d_load((unsigned char *)data, ReadFileCB, FreeCB, mtllib.model);
 #else
-        Model();
+        NPC();
 #endif
     }
-    ~Model() { m3d_free(this->model); }
+    ~NPC() { m3d_free(this->model); }
 
 public:
     m3d_t *getCStruct() { return this->model; }
@@ -4831,16 +4831,16 @@ public:
 };
 
 #else
-class Model {
+class NPC {
 public:
     m3d_t *model;
 
 public:
-    Model(const std::string &data, m3dread_t ReadFileCB, m3dfree_t FreeCB);
-    Model(const std::vector<unsigned char> data, m3dread_t ReadFileCB, m3dfree_t FreeCB);
-    Model(const unsigned char *data, m3dread_t ReadFileCB, m3dfree_t FreeCB);
-    Model();
-    ~Model();
+    NPC(const std::string &data, m3dread_t ReadFileCB, m3dfree_t FreeCB);
+    NPC(const std::vector<unsigned char> data, m3dread_t ReadFileCB, m3dfree_t FreeCB);
+    NPC(const unsigned char *data, m3dread_t ReadFileCB, m3dfree_t FreeCB);
+    NPC();
+    ~NPC();
 
 public:
     m3d_t *getCStruct();

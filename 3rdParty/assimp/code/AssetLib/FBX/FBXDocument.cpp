@@ -96,7 +96,7 @@ const Object* LazyObject::Get(bool dieOnError) {
     }
 
     // small fix for binary reading: binary fbx files don't use
-    // prefixes such as Model:: in front of their names. The
+    // prefixes such as NPC:: in front of their names. The
     // loading code expects this at many places, though!
     // so convert the binary representation (a 0x0001) to the
     // double colon notation.
@@ -167,7 +167,7 @@ const Object* LazyObject::Get(bool dieOnError) {
                 object.reset(new BlendShapeChannel(id, element, doc, name));
             }
         }
-        else if ( !strncmp( obtype, "Model", length ) ) {
+        else if ( !strncmp( obtype, "NPC", length ) ) {
             // FK and IK effectors are not supported
             if ( strcmp( classtag.c_str(), "IKEffector" ) && strcmp( classtag.c_str(), "FKEffector" ) ) {
                 object.reset( new Model( id, element, doc, name ) );
@@ -356,7 +356,7 @@ void Document::ReadObjects() {
         DOMError("no Objects dictionary found");
     }
 
-    // add a dummy entry to represent the Model::RootNode object (id 0),
+    // add a dummy entry to represent the NPC::RootNode object (id 0),
     // which is only indirectly defined in the input file
     objects[0] = new LazyObject(0L, *eobjects, *this);
 

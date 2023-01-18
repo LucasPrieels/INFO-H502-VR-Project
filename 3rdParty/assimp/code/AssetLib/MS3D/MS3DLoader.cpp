@@ -368,11 +368,11 @@ void MS3DImporter::InternReadFile( const std::string& pFile,
             if (stream.GetI4()) {
                 const size_t len = static_cast<size_t>(stream.GetI4());
                 if (len > stream.GetRemainingSize()) {
-                    throw DeadlyImportError("MS3D: Model comment is too long");
+                    throw DeadlyImportError("MS3D: NPC comment is too long");
                 }
 
                 const std::string& s = std::string(reinterpret_cast<char*>(stream.GetPtr()),len);
-                ASSIMP_LOG_DEBUG("MS3D: Model comment: ", s);
+                ASSIMP_LOG_DEBUG("MS3D: NPC comment: ", s);
             }
 
             if(stream.GetRemainingSize() > 4 && inrange((stream >> subversion,subversion),1u,3u)) {

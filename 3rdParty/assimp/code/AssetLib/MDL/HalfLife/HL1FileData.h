@@ -460,7 +460,7 @@ struct Texture_HL1 {
  *  \brief Data structure for a model in HL1 MDL files.
  */
 struct Model_HL1 {
-    //! Model name.
+    //! NPC name.
     char name[64];
 
     //! Was "type".

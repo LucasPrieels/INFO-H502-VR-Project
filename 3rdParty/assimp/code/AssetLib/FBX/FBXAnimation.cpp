@@ -94,7 +94,7 @@ AnimationCurveNode::AnimationCurveNode(uint64_t id, const Element &element, cons
     const Scope &sc = GetRequiredScope(element);
 
     // find target node
-    const char *whitelist[] = { "Model", "NodeAttribute", "Deformer" };
+    const char *whitelist[] = { "NPC", "NodeAttribute", "Deformer" };
     const std::vector<const Connection *> &conns = doc.GetConnectionsBySourceSequenced(ID(), whitelist, 3);
 
     for (const Connection *con : conns) {
@@ -121,7 +121,7 @@ AnimationCurveNode::AnimationCurveNode(uint64_t id, const Element &element, cons
 
         const Object *const ob = con->DestinationObject();
         if (!ob) {
-            DOMWarning("failed to read destination object for AnimationCurveNode->Model link, ignoring", &element);
+            DOMWarning("failed to read destination object for AnimationCurveNode->NPC link, ignoring", &element);
             continue;
         }
 
@@ -135,7 +135,7 @@ AnimationCurveNode::AnimationCurveNode(uint64_t id, const Element &element, cons
     }
 
     if (!target) {
-        DOMWarning("failed to resolve target Model/NodeAttribute/Constraint for AnimationCurveNode", &element);
+        DOMWarning("failed to resolve target NPC/NodeAttribute/Constraint for AnimationCurveNode", &element);
     }
 
     props = GetPropertyTable(doc, "AnimationCurveNode.FbxAnimCurveNode", element, sc, false);

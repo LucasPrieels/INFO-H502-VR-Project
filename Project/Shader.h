@@ -12,6 +12,7 @@
 
 class Shader{
 public:
+    GLuint program;
     std::string vertex_shader_code, fragment_shader_code;
     std::string vertex_shader_path, fragment_shader_path;
 
@@ -58,7 +59,6 @@ public:
     }
 
 private:
-    GLuint program;
 
     std::string read_content_file(std::string path){
         std::ifstream stream(path);

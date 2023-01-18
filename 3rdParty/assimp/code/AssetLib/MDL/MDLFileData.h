@@ -659,7 +659,7 @@ struct SimpleFrame
 
 // -------------------------------------------------------------------------------------
 /** \struct Frame
- *  \brief Model frame data structure
+ *  \brief NPC frame data structure
  */
 struct Frame
 {

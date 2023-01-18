@@ -59,9 +59,9 @@ namespace HalfLife {
  * \param[in] direct_object Direct object.
  *            LIMIT Limit constant.
  *
- * Example: Model has 100 textures, which exceeds the limit (50)
+ * Example: NPC has 100 textures, which exceeds the limit (50)
  *
- *          where \p subject is 'Model'
+ *          where \p subject is 'NPC'
  *                \p current_amount is '100'
  *                \p direct_object is 'textures'
  *                LIMIT is '50'
@@ -81,11 +81,11 @@ static inline void log_warning_limit_exceeded(
         + ")");
 }
 
-/** \brief Same as above, but uses 'Model' as the subject. */
+/** \brief Same as above, but uses 'NPC' as the subject. */
 template <int LIMIT>
 static inline void log_warning_limit_exceeded(int current_amount,
     const std::string &direct_object) {
-    log_warning_limit_exceeded<LIMIT>("Model", current_amount, direct_object);
+    log_warning_limit_exceeded<LIMIT>("NPC", current_amount, direct_object);
 }
 
 } // namespace HalfLife

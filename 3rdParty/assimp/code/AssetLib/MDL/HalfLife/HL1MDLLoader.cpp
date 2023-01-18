@@ -285,7 +285,7 @@ void HL1MDLLoader::load_texture_file() {
 
         load_file_into_buffer<Header_HL1>(texture_file_path, texture_buffer_);
     } else {
-        // Model has no external texture file. This means the texture is stored inside the main MDL file.
+        // NPC has no external texture file. This means the texture is stored inside the main MDL file.
         texture_buffer_ = const_cast<unsigned char *>(buffer_);
     }
 
@@ -613,7 +613,7 @@ void HL1MDLLoader::read_meshes() {
             unique_models_names[model_index] = pmodel->name;
     }
 
-    unique_name_generator_.set_template_name("Model");
+    unique_name_generator_.set_template_name("NPC");
     unique_name_generator_.make_unique(unique_models_names);
 
     unsigned int mesh_index = 0;

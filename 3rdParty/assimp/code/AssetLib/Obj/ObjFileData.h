@@ -262,7 +262,7 @@ struct Mesh {
 };
 
 // ------------------------------------------------------------------------------------------------
-//! \struct Model
+//! \struct NPC
 //! \brief  Data structure to store all obj-specific model data
 // ------------------------------------------------------------------------------------------------
 struct Model {
@@ -270,7 +270,7 @@ struct Model {
     using GroupMapIt = std::map<std::string, std::vector<unsigned int> *>::iterator;
     using ConstGroupMapIt = std::map<std::string, std::vector<unsigned int> *>::const_iterator;
 
-    //! Model name
+    //! NPC name
     std::string mModelName;
     //! List ob assigned objects
     std::vector<Object *> mObjects;

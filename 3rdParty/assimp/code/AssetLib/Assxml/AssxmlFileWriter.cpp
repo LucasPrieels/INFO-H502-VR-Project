@@ -211,7 +211,7 @@ static void WriteDump(const char *pFile, const char *cmd, const aiScene *scene, 
     std::string header(
             "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
             "<ASSIMP format_id=\"1\">\n\n"
-            "<!-- XML Model dump produced by assimp dump\n"
+            "<!-- XML NPC dump produced by assimp dump\n"
             "  Library version: %u.%u.%u\n"
             "  Source: %s\n"
             "  Command line: %s\n"

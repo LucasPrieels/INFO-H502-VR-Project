@@ -86,7 +86,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 static const aiImporterDesc desc = {
-    "Model 3D Importer",
+    "NPC 3D Importer",
     "",
     "",
     "",
@@ -110,7 +110,7 @@ M3DImporter::M3DImporter() :
 }
 
 // ------------------------------------------------------------------------------------------------
-//  Returns true, if file is a binary or ASCII Model 3D file.
+//  Returns true, if file is a binary or ASCII NPC 3D file.
 bool M3DImporter::CanRead(const std::string &pFile, IOSystem *pIOHandler, bool /*checkSig*/) const {
     // don't use CheckMagicToken because that checks with swapped bytes too, leading to false
     // positives. This magic is not uint32_t, but char[4], so memcmp is the best way
@@ -132,7 +132,7 @@ const aiImporterDesc *M3DImporter::GetInfo() const {
 }
 
 // ------------------------------------------------------------------------------------------------
-//  Model 3D import implementation
+//  NPC 3D import implementation
 void M3DImporter::InternReadFile(const std::string &file, aiScene *pScene, IOSystem *pIOHandler) {
     // Read file into memory
     std::unique_ptr<IOStream> pStream(pIOHandler->Open(file, "rb"));

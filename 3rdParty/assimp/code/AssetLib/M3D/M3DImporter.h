@@ -41,7 +41,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 /** @file M3DImporter.h
-*   @brief Declares the importer class to read a scene from a Model 3D file
+*   @brief Declares the importer class to read a scene from a NPC 3D file
 */
 #ifndef AI_M3DIMPORTER_H_INC
 #define AI_M3DIMPORTER_H_INC

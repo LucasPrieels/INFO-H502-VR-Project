@@ -40,7 +40,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 /** @file IQMImporter.h
-*   @brief Declares the importer class to read a scene from an Inter-Quake Model file
+*   @brief Declares the importer class to read a scene from an Inter-Quake NPC file
 */
 
 #pragma once

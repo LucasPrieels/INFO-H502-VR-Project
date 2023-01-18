@@ -51,7 +51,7 @@ namespace XmlTag {
     const char* const meta = "metadata";
     const char* const meta_name = "name";
 
-    // Model-data specific tags
+    // NPC-data specific tags
     const char* const model = "model";
     const char* const model_unit = "unit";
     const char* const metadata = "metadata";

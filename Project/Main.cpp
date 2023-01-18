@@ -21,7 +21,8 @@
 #include "Sun.h"
 #include "Shadow.h"
 #include "Particles.h"
-#include "Model.h"
+#include "NPC.h"
+#include "Animation.h"
 
 #define PATH "../../Project/" // Path to go from where the program is run to current folder
 #define MOUSE_SENSITIVITY 0.05 // Sensitivity of yaw and pitch wrt mouse movements
@@ -108,43 +109,48 @@ int main(int argc, char* argv[]){
     // Light source properties
     glm::vec3 original_light_color(1.0f, 1.0f, 1.0f); // Color of the sun light originally (becomes more orange during sunrise and sunset)
     float distance_sun_to_origin = 99.0f; // Because above 100.0f objects are hidden by perspective projection
+    glm::mat4 projection_light = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, 1.0f, 150.0f); // Need larger frustum otherwise shadows won't be computed far from the sun, aspect is 1 since depth map is 1024x1024
 
-    // Load all possible block textures
+    // Load and create textures
     for (int i = 0; i < files_textures.size(); i++){
         bool opaque = !(files_textures[i] == "leaf.png" || files_textures[i] == "glass.png"); // Whether this texture is completely opaque or not. Only non-opaque textures are leaves and glass
         Texture texture(path_string + "Textures/" + files_textures[i], textures_shininess[i], opaque, glm::vec3(0.0f), glm::vec3(0.0f), Mirror::resolution); // Previous-to-last 2 arguments are not used for non-mirror textures
     }
-    stbi_set_flip_vertically_on_load(true); //flip les textures verticalement pour les modèles importés
+    stbi_set_flip_vertically_on_load(true);
+
     // Create all relevant objects
     Cubemap cubemap(path_string);
     Map map(NUM_CUBES_SIDE, path_string);
     Input_listener::staticConstructor(window);
     Camera camera(CAMERA_SPEED);
-    //Axis axis(path_string);
     Target target(path_string);
     Sun sun(path_string, original_light_color, distance_sun_to_origin);
+    sun.projection_light = projection_light;
     Mirror::resolution = MIRROR_RESOL; // Set mirror resolutions
     Particles particles(path_string, camera.camera_pos, SPEED_RAINFALL, NUMBER_RAIN_DROPS, AREA_RAIN_DROPS);
-    Model ourModel(path_string + "perso/scene.gltf");
-    Shader shaderModel(path_string + "vertex_shader_model.txt", path_string + "fragment_shader_model.txt");
-    glfwSwapInterval(1);
+    NPC NPC_model(path_string, "vampire/dancing_vampire.dae");
+    Animation animation(path_string + "vampire/dancing_vampire.dae", &NPC_model);
+
+    // Create shadow objects
     glEnable(GL_DEPTH_TEST); // Enable depth testing to know which triangles are more in front
     glEnable(GL_STENCIL_TEST); //Enable stencil testing to draw the borders of the mirrors
     glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE); // do nothing if depth or stenicl test fails, if both succeed, replace the stored stencil value with the reference value
     glStencilMask(0x00); //prevent of writing in the stencil buffer
     Shadow::init_depth_map_framebuffer(SHADOW_DEPTH_SIZE, SHADOW_DEPTH_SIZE);
     Shader shadow_shader(path_string + "vertex_shader_shadow.txt", path_string + "fragment_shader_shadow.txt");
-    glm::mat4 projection_light = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, 1.0f, 150.0f); // Need larger frustum otherwise shadows won't be computed far from the sun, aspect is 1 since depth map is 1024x1024
     shadow_shader.use();
     shadow_shader.set_uniform("projection", projection_light);
-    sun.projection_light = projection_light;
+
     // Render loop
+    glfwSwapInterval(1);
     int frame_nb = 0;
     while (!glfwWindowShouldClose(window)){
         frame_nb++;
         std::cout << "FPS: " << fps() << std::endl;
 
-        // First pass is for computing the shadows
+        // *******************
+        // FIRST PASS: computing the shadows
+        // *******************
         glm::mat4 view_light = glm::lookAt(sun.light_pos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // View from the sun towards the center of the map
         shadow_shader.use();
         shadow_shader.set_uniform("view", view_light);
@@ -156,12 +162,14 @@ int main(int argc, char* argv[]){
         // Draw objects that should have a shadow
         map.draw_opaque_cubes(view_light, projection_light, sun, camera.camera_pos);
         map.draw_non_opaque_cubes(view_light, projection_light, sun, camera.camera_pos);
-        ourModel.draw(shaderModel, view_light, projection_light);
+        NPC_model.Draw(view_light, projection_light, animation.GetFinalBoneMatrices());
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glViewport(0, 0, Window::width, Window::height);
 
-        // Passes on all the framebuffers to generate the mirror images
+        // *******************
+        // SECOND PASSES: computing the view from each mirror
+        // *******************
         for (Texture texture: Texture::textures){
             if (!texture.mirror) continue; // If the texture is not mirror we don't have to compute the view
 
@@ -191,7 +199,7 @@ int main(int argc, char* argv[]){
             // Draw opaque cubes
             map.draw_opaque_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw light effectively
             // Draw NPC
-            ourModel.draw(shaderModel, view, projection);
+            NPC_model.Draw(view, projection, animation.GetFinalBoneMatrices());
             // Draw mirrors and their borders
             glStencilFunc(GL_ALWAYS, 1, 0xFF); //all fragments of the mirrors should pass the test
             glStencilMask(0xFF); //allow writing in the stencil buffer
@@ -208,7 +216,9 @@ int main(int argc, char* argv[]){
             glViewport(0, 0, Window::width, Window::height);
         }
 
-        // Last pass is to show on the screen
+        // *******************
+        // THIRD PASS: computing the view to show on screen
+        // *******************
         glBindFramebuffer(GL_FRAMEBUFFER, 0); // Back to default FBO
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);// | GL_STENCIL_BUFFER_BIT);
@@ -238,7 +248,8 @@ int main(int argc, char* argv[]){
         // Draw opaque cubes
         map.draw_opaque_cubes(view, projection, sun, camera.camera_pos); // Give the sun object to draw_cubes to let him read the sun color and position to draw light effectively
         // Draw NPC
-        ourModel.draw(shaderModel, view, projection);
+        animation.UpdateAnimation(delta_time);
+        NPC_model.Draw(view, projection, animation.GetFinalBoneMatrices());
         // Draw mirrors and their borders
         glStencilFunc(GL_ALWAYS, 1, 0xFF); //all fragments of the mirrors should pass the test
         glStencilMask(0xFF); //allow writing in the stencil buffer
